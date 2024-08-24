@@ -1,0 +1,17 @@
+﻿{
+  "applications": {
+    "VCardOnAbp.HttpApi.Host": {
+      "type": "dotnet-project",
+      "launchUrl": "https://localhost:44396",
+      "path": "../../../src/VCardOnAbp.HttpApi.Host/VCardOnAbp.HttpApi.Host.csproj",
+      "kubernetesService": ".*-httpapihost$"  
+    },
+    "VCardOnAbp.Angular": {
+      "type": "cli",
+      "workingDirectory": "../../../angular",
+      "startCommand": "./start.ps1",
+      "launchUrl": "http://localhost:4200",
+      "kubernetesService": ".*-angular$"        
+    }
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "template": "app",
+  "imports": {
+    "Volo.Abp.Account": {
+      "version": "8.2.2",
+      "isInstalled": true
+    },
+    "Volo.Abp.OpenIddict": {
+      "version": "8.2.2",
+      "isInstalled": true
+    },
+    "Volo.Abp.Identity": {
+      "version": "8.2.2",
+      "isInstalled": true
+    },
+    "Volo.Abp.TenantManagement": {
+      "version": "8.2.2",
+      "isInstalled": true
+    }
+  },
+  "folders": {
+    "items": {
+      "src": {},
+      "test": {}
+    }
+  },
+  "packages": {
+    "VCardOnAbp.Application": {
+      "path": "src/VCardOnAbp.Application/VCardOnAbp.Application.abppkg",
+      "folder": "src"
+    },
+    "VCardOnAbp.Application.Tests": {
+      "path": "test/VCardOnAbp.Application.Tests/VCardOnAbp.Application.Tests.abppkg",
+      "folder": "test"
+    },
+    "VCardOnAbp.Domain.Shared": {
+      "path": "src/VCardOnAbp.Domain.Shared/VCardOnAbp.Domain.Shared.abppkg",
+      "folder": "src"
+    },
+    "VCardOnAbp.Application.Contracts": {
+      "path": "src/VCardOnAbp.Application.Contracts/VCardOnAbp.Application.Contracts.abppkg",
+      "folder": "src"
+    },
+    "VCardOnAbp.HttpApi": {
+      "path": "src/VCardOnAbp.HttpApi/VCardOnAbp.HttpApi.abppkg",
+      "folder": "src"
+    },
+    "VCardOnAbp.HttpApi.Client": {
+      "path": "src/VCardOnAbp.HttpApi.Client/VCardOnAbp.HttpApi.Client.abppkg",
+      "folder": "src"
+    },
+    "VCardOnAbp.EntityFrameworkCore.Tests": {
+      "path": "test/VCardOnAbp.EntityFrameworkCore.Tests/VCardOnAbp.EntityFrameworkCore.Tests.abppkg",
+      "folder": "test"
+    },
+    "VCardOnAbp.EntityFrameworkCore": {
+      "path": "src/VCardOnAbp.EntityFrameworkCore/VCardOnAbp.EntityFrameworkCore.abppkg",
+      "folder": "src"
+    },
+    "VCardOnAbp.TestBase": {
+      "path": "test/VCardOnAbp.TestBase/VCardOnAbp.TestBase.abppkg",
+      "folder": "test"
+    },
+    "VCardOnAbp.Domain.Tests": {
+      "path": "test/VCardOnAbp.Domain.Tests/VCardOnAbp.Domain.Tests.abppkg",
+      "folder": "test"
+    },
+    "VCardOnAbp.HttpApi.Client.ConsoleTestApp": {
+      "path": "test/VCardOnAbp.HttpApi.Client.ConsoleTestApp/VCardOnAbp.HttpApi.Client.ConsoleTestApp.abppkg",
+      "folder": "test"
+    },
+    "VCardOnAbp.DbMigrator": {
+      "path": "src/VCardOnAbp.DbMigrator/VCardOnAbp.DbMigrator.abppkg",
+      "folder": "src"
+    },
+    "VCardOnAbp.HttpApi.Host": {
+      "path": "src/VCardOnAbp.HttpApi.Host/VCardOnAbp.HttpApi.Host.abppkg",
+      "folder": "src"
+    },
+    "VCardOnAbp.Domain": {
+      "path": "src/VCardOnAbp.Domain/VCardOnAbp.Domain.abppkg",
+      "folder": "src"
+    }
+  }
+}
