@@ -7,5 +7,6 @@ namespace VCardOnAbp.Cards
     public interface ICardAppService : IApplicationService
     {
         Task<CardDto> Create(CreateCardInput input);
+        Task<object> Action(ActionInput action);
     }
 }

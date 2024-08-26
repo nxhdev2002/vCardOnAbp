@@ -7,7 +7,7 @@ namespace VCardOnAbp.Cards.Validator
     {
         public CreateCardInputValidator()
         {
-            RuleFor(x => x.Amount).Length(1);
+            RuleFor(x => x.Amount).GreaterThanOrEqualTo(0);
         }
     }
 }

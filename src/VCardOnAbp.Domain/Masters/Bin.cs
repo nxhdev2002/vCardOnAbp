@@ -4,20 +4,21 @@ using Volo.Abp.Domain.Entities;
 
 namespace VCardOnAbp.Masters
 {
-    public class Supplier : Entity<Guid>
+    public class Bin : Entity<Guid>
     {
         [MaxLength(100)]
         public string Name { get; private set; }
         [MaxLength(500)]
         public string Description { get; private set; }
-        public DateTime? ValidTo { get; private set; }
+        public Guid SupplierId { get; private set; }
+        public bool IsActive { get; private set; }
 
-        private Supplier() { }
-        public Supplier(string name, string description, DateTime? validTo = null)
+        private Bin() { }
+        public Bin(string name, Guid supplierId, bool isActive = true)
         {
             Name = name;
-            Description = description;
-            ValidTo = validTo;
+            SupplierId = supplierId;
+            IsActive = isActive;
         }
     }
 }

@@ -24,10 +24,6 @@ namespace VCardOnAbp;
     )]
 public class VCardOnAbpApplicationModule : AbpModule
 {
-    public override void PreConfigureServices(ServiceConfigurationContext context)
-    {
-        context.Services.AddValidatorsFromAssembly(typeof(VCardOnAbpApplicationModule).Assembly);
-    }
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
         Configure<AbpAutoMapperOptions>(options =>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
 namespace VCardOnAbp.Cards
@@ -22,6 +23,22 @@ namespace VCardOnAbp.Cards
             SupplierIdentity = supplierIdentity;
             CardStatus = cardStatus;
             Balance = balance;
+        }
+
+        public Card ChangeStatus(CardStatus cardStatus)
+        {
+            CardStatus = cardStatus;
+            return this;
+        }
+
+        public Card SetBalance(decimal balance)
+        {
+            if (Balance + balance < 0)
+            {
+                throw new BusinessException();
+            }
+            Balance = balance; 
+            return this;
         }
     }
 }

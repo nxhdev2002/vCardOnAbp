@@ -4,6 +4,6 @@ namespace VCardOnAbp.Cards.Dto
 {
     public class CreateCardInput
     {
-        public string Amount { get; set; }
+        public decimal Amount { get; set; }
     }
 }
