@@ -1,30 +1,30 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using VCardOnAbp.BackgroundJobs.Dtos;
 using VCardOnAbp.Cards.Dto;
 using VCardOnAbp.Security;
+using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Domain.Repositories;
 
 namespace VCardOnAbp.Cards
 {
     public class CardAppService(
         CardManager cardManager,
-        IDataValidatorAppService dataValidatorAppService,
+        IBackgroundJobManager backgroundJobManager,
         IRepository<Card, Guid> cardRepository
     ) : VCardOnAbpAppService, ICardAppService
     {
         private readonly CardManager _cardManager = cardManager;
-        private readonly IDataValidatorAppService _dataValidatorAppService = dataValidatorAppService;
         private readonly IRepository<Card, Guid> _cardRepository = cardRepository;
-        public virtual async Task<CardDto> Create(CreateCardInput input)
-        {
-            var card = _cardManager.CreateCard("123", GuidGenerator.Create(), "1");
-            await _cardRepository.InsertAsync(card);
+        private readonly IBackgroundJobManager _backgroundJobManager = backgroundJobManager;
 
-            return ObjectMapper.Map<Card, CardDto>(card);
-        }
+        public virtual async Task Create(CreateCardInput input) => await _backgroundJobManager.EnqueueAsync(new CreateCardJobArgs
+        {
+            CardName = input.CardName,
+            Supplier = input.Supplier,
+            UserId = CurrentUser.Id.Value,
+            Amount = input.Amount
+        });
 
         public virtual async Task<object> Action(ActionInput input)
         {

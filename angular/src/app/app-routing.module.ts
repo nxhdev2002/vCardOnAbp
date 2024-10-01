@@ -9,6 +9,11 @@ const routes: Routes = [
     loadChildren: () => import('./home/home.module').then(m => m.HomeModule),
   },
   {
+    path: 'card',
+    pathMatch: 'full',
+    loadChildren: () => import('./card/card.module').then(m => m.CardModule),
+  },
+  {
     path: 'account',
     loadChildren: () => import('@abp/ng.account').then(m => m.AccountModule.forLazy()),
   },

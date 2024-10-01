@@ -8,6 +8,7 @@ using Volo.Abp.Modularity;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.FluentValidation;
 using FluentValidation;
+using Volo.Abp.Caching.StackExchangeRedis;
 
 namespace VCardOnAbp;
 
@@ -22,7 +23,8 @@ namespace VCardOnAbp;
     typeof(AbpSettingManagementApplicationModule),
     typeof(AbpFluentValidationModule)
     )]
-public class VCardOnAbpApplicationModule : AbpModule
+[DependsOn(typeof(AbpCachingStackExchangeRedisModule))]
+    public class VCardOnAbpApplicationModule : AbpModule
 {
     public override void ConfigureServices(ServiceConfigurationContext context)
     {

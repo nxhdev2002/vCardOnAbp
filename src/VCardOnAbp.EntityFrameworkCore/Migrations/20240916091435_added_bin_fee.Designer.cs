@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VCardOnAbp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace VCardOnAbp.Migrations
 {
     [DbContext(typeof(VCardOnAbpDbContext))]
-    partial class VCardOnAbpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240916091435_added_bin_fee")]
+    partial class added_bin_fee
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,7 +95,7 @@ namespace VCardOnAbp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cards", (string)null);
+                    b.ToTable("Cards");
                 });
 
             modelBuilder.Entity("VCardOnAbp.Cards.CardOwner", b =>
@@ -150,7 +153,7 @@ namespace VCardOnAbp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CardOwners", (string)null);
+                    b.ToTable("CardOwners");
                 });
 
             modelBuilder.Entity("VCardOnAbp.Masters.Bin", b =>
@@ -187,7 +190,7 @@ namespace VCardOnAbp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Bins", (string)null);
+                    b.ToTable("Bins");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>

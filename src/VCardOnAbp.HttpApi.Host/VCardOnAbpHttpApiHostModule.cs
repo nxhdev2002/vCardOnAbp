@@ -38,6 +38,8 @@ using Volo.Abp.OpenIddict;
 using Volo.Abp.Swashbuckle;
 using Volo.Abp.Studio.Client.AspNetCore;
 using Volo.Abp.Security.Claims;
+using Volo.Abp.Caching.StackExchangeRedis;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 
 namespace VCardOnAbp;
 
@@ -53,7 +55,8 @@ namespace VCardOnAbp;
     typeof(AbpSwashbuckleModule),
     typeof(AbpAspNetCoreSerilogModule)
     )]
-public class VCardOnAbpHttpApiHostModule : AbpModule
+[DependsOn(typeof(AbpCachingStackExchangeRedisModule))]
+    public class VCardOnAbpHttpApiHostModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
@@ -70,8 +73,8 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
             });
         });
 
-        if (!hostingEnvironment.IsDevelopment())
-        {
+        //if (!hostingEnvironment.IsDevelopment())
+        //{
             PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
             {
                 options.AddDevelopmentEncryptionAndSigningCertificate = false;
@@ -83,7 +86,7 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
                 builder.AddEncryptionCertificate(GetSigningCertificate(hostingEnvironment));
                 builder.SetIssuer(new Uri(configuration["AuthServer:Authority"]));
             });
-        }
+        //}
     }
 
     public override void ConfigureServices(ServiceConfigurationContext context)
@@ -111,12 +114,13 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
         ConfigureSwagger(context, configuration);
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
+        ConfigureCache(context);
     }
 
     private X509Certificate2 GetSigningCertificate(IWebHostEnvironment hostingEnv)
     {
         var fileName = "authserver.pfx";
-        var passPhrase = "dYS1Zzm9qqKZx074";
+        var passPhrase = "2D7AA457-5D33-48D6-936F-C48E5EF468ED";
         var file = Path.Combine(hostingEnv.ContentRootPath, fileName);
 
         if (!File.Exists(file))
@@ -133,6 +137,15 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
         context.Services.Configure<AbpClaimsPrincipalFactoryOptions>(options =>
         {
             options.IsDynamicClaimsEnabled = true;
+        });
+    }
+
+    private void ConfigureCache(ServiceConfigurationContext context)
+    {
+        context.Services.Configure<RedisCacheOptions>(options =>
+        {
+            //...
+
         });
     }
 
