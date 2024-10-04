@@ -9,7 +9,7 @@ namespace VCardOnAbp.ApiServices.Vmcardio
 {
     public class VmcardioAppService : VCardOnAbpAppService, IVmcardioAppService
     {
-        public async Task<object> GetCardsAsync(GetCardsFilterInput input)
+        public async Task<object> GetCards(GetCardsFilterInput input)
         {
             var query = input.ToDict();
             var cards = await SendVmcardioRequestAsync<object>(HttpMethod.Get, VmcardioApiConst.GetCards, queryParams: query);
@@ -40,7 +40,9 @@ namespace VCardOnAbp.ApiServices.Vmcardio
             if (headers != null)
             {
                 headers.Add("token", token);
-            } else {
+            }
+            else
+            {
                 headers = new Dictionary<string, string>
                 {
                     { "token", token },
@@ -53,7 +55,7 @@ namespace VCardOnAbp.ApiServices.Vmcardio
 
         private async Task<string> GetVmcardioTokenAsync()
         {
-            return "R=OswWioi1mO46fhiKiJyIdT21RM3IJI5.iOJz2iC9IME9oj0QAWWjiDn2230yiy=F3JyD7QWA8L6LlNbC7pgIXCeae5eh8NxeU11OMi0iNXQf3ij3JNHNEaVLVcJJj2lO2N=5UXQ7c1QOyi170NYkiAITjk7z=Iib";
+            return "yJKoIDIypAAAfiiDci1Qii0jb8J2aeyljd12O2WJIi5ef8oTiOi3LhJjeOX1TOI5NCRcYX73.=ODO6NwCN1NXxR5700=O7jQ9QIy38sW3MziU4iQ1JNeJkLlm2=iz0Fi2hIV3EIU=bHQLJ8nMNV2iaMyiEWyC62WQI";
         }
 
 

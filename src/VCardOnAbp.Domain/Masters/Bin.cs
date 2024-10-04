@@ -22,9 +22,9 @@ namespace VCardOnAbp.Masters
         private Bin() { }
         public Bin(
             Guid id,
-            string name, string? desc, Supplier supplier, 
-            decimal creationFixedFee = 0, decimal creationPercentFee = 0, 
-            decimal fundingFixedFee = 0, decimal fundingPercentFee = 0, 
+            string name, string? desc, Supplier supplier,
+            decimal creationFixedFee = 0, decimal creationPercentFee = 0,
+            decimal fundingFixedFee = 0, decimal fundingPercentFee = 0,
             bool isActive = true
         ) : base(id)
         {

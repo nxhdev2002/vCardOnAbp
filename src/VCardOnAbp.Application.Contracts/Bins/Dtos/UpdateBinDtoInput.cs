@@ -1,7 +1,4 @@
-﻿using System;
-using Volo.Abp.Application.Dtos;
-
-namespace VCardOnAbp.Bins.Dtos
+﻿namespace VCardOnAbp.Bins.Dtos
 {
     public class UpdateBinDtoInput
     {

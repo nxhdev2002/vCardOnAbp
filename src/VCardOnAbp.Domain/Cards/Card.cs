@@ -37,7 +37,7 @@ namespace VCardOnAbp.Cards
             {
                 throw new BusinessException();
             }
-            Balance = balance; 
+            Balance = balance;
             return this;
         }
     }

@@ -2,7 +2,6 @@
 using System.Threading.Tasks;
 using VCardOnAbp.BackgroundJobs.Dtos;
 using VCardOnAbp.Cards.Dto;
-using VCardOnAbp.Security;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Domain.Repositories;
 

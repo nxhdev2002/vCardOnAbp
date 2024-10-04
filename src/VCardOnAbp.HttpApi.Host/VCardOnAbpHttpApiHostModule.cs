@@ -1,45 +1,40 @@
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using OpenIddict.Server.AspNetCore;
+using OpenIddict.Validation.AspNetCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Extensions.DependencyInjection;
-using OpenIddict.Validation.AspNetCore;
-using OpenIddict.Server.AspNetCore;
 using VCardOnAbp.EntityFrameworkCore;
 using VCardOnAbp.MultiTenancy;
-using Microsoft.OpenApi.Models;
 using Volo.Abp;
-using Volo.Abp.Studio;
 using Volo.Abp.Account;
 using Volo.Abp.Account.Web;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
-using Volo.Abp.Autofac;
-using Volo.Abp.Localization;
-using Volo.Abp.Modularity;
-using Volo.Abp.UI.Navigation.Urls;
-using Volo.Abp.VirtualFileSystem;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
-using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite;
 using Volo.Abp.AspNetCore.Mvc.UI.Theme.LeptonXLite.Bundling;
-using Microsoft.AspNetCore.Hosting;
-using VCardOnAbp.HealthChecks;
+using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
-using Volo.Abp.Identity;
-using Volo.Abp.OpenIddict;
-using Volo.Abp.Swashbuckle;
-using Volo.Abp.Studio.Client.AspNetCore;
-using Volo.Abp.Security.Claims;
+using Volo.Abp.Autofac;
 using Volo.Abp.Caching.StackExchangeRedis;
-using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Volo.Abp.Modularity;
+using Volo.Abp.OpenIddict;
+using Volo.Abp.Security.Claims;
+using Volo.Abp.Studio.Client.AspNetCore;
+using Volo.Abp.Swashbuckle;
+using Volo.Abp.UI.Navigation.Urls;
+using Volo.Abp.VirtualFileSystem;
 
 namespace VCardOnAbp;
 
@@ -56,7 +51,7 @@ namespace VCardOnAbp;
     typeof(AbpAspNetCoreSerilogModule)
     )]
 [DependsOn(typeof(AbpCachingStackExchangeRedisModule))]
-    public class VCardOnAbpHttpApiHostModule : AbpModule
+public class VCardOnAbpHttpApiHostModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
@@ -75,17 +70,17 @@ namespace VCardOnAbp;
 
         //if (!hostingEnvironment.IsDevelopment())
         //{
-            PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
-            {
-                options.AddDevelopmentEncryptionAndSigningCertificate = false;
-            });
+        PreConfigure<AbpOpenIddictAspNetCoreOptions>(options =>
+        {
+            options.AddDevelopmentEncryptionAndSigningCertificate = false;
+        });
 
-            PreConfigure<OpenIddictServerBuilder>(builder =>
-            {
-                builder.AddSigningCertificate(GetSigningCertificate(hostingEnvironment));
-                builder.AddEncryptionCertificate(GetSigningCertificate(hostingEnvironment));
-                builder.SetIssuer(new Uri(configuration["AuthServer:Authority"]));
-            });
+        PreConfigure<OpenIddictServerBuilder>(builder =>
+        {
+            builder.AddSigningCertificate(GetSigningCertificate(hostingEnvironment));
+            builder.AddEncryptionCertificate(GetSigningCertificate(hostingEnvironment));
+            builder.SetIssuer(new Uri(configuration["AuthServer:Authority"]));
+        });
         //}
     }
 
@@ -253,7 +248,7 @@ namespace VCardOnAbp;
         {
             app.UseErrorPage();
         }
-        
+
         app.UseAbpSecurityHeaders();
         app.UseStaticFiles();
         app.UseAbpStudioLink();

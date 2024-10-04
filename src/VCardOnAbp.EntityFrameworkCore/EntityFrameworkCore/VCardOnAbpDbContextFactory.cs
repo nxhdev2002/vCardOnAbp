@@ -1,8 +1,7 @@
-﻿using System;
-using System.IO;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace VCardOnAbp.EntityFrameworkCore;
 
@@ -13,12 +12,12 @@ public class VCardOnAbpDbContextFactory : IDesignTimeDbContextFactory<VCardOnAbp
     public VCardOnAbpDbContext CreateDbContext(string[] args)
     {
         var configuration = BuildConfiguration();
-        
+
         VCardOnAbpEfCoreEntityExtensionMappings.Configure();
 
         var builder = new DbContextOptionsBuilder<VCardOnAbpDbContext>()
             .UseSqlServer(configuration.GetConnectionString("Default"));
-        
+
         return new VCardOnAbpDbContext(builder.Options);
     }
 

@@ -1,3 +1,3 @@
 ﻿using System.Runtime.CompilerServices;
-[assembly:InternalsVisibleToAttribute("VCardOnAbp.Domain.Tests")]
-[assembly:InternalsVisibleToAttribute("VCardOnAbp.TestBase")]
+[assembly: InternalsVisibleToAttribute("VCardOnAbp.Domain.Tests")]
+[assembly: InternalsVisibleToAttribute("VCardOnAbp.TestBase")]

@@ -1,9 +1,9 @@
 using Volo.Abp.Account;
+using Volo.Abp.FeatureManagement;
+using Volo.Abp.Identity;
 using Volo.Abp.Modularity;
 using Volo.Abp.PermissionManagement;
 using Volo.Abp.SettingManagement;
-using Volo.Abp.FeatureManagement;
-using Volo.Abp.Identity;
 using Volo.Abp.TenantManagement;
 
 namespace VCardOnAbp;
@@ -17,7 +17,7 @@ namespace VCardOnAbp;
     typeof(AbpTenantManagementApplicationContractsModule),
     typeof(AbpPermissionManagementApplicationContractsModule)
 )]
-    public class VCardOnAbpApplicationContractsModule : AbpModule
+public class VCardOnAbpApplicationContractsModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {

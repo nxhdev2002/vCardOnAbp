@@ -1,2 +1,2 @@
 ﻿using System.Runtime.CompilerServices;
-[assembly:InternalsVisibleToAttribute("VCardOnAbp.EntityFrameworkCore.Tests")]
+[assembly: InternalsVisibleToAttribute("VCardOnAbp.EntityFrameworkCore.Tests")]

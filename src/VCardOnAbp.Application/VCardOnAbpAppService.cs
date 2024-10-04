@@ -1,6 +1,5 @@
 ﻿using VCardOnAbp.Localization;
 using Volo.Abp.Application.Services;
-using Serilog;
 
 namespace VCardOnAbp;
 

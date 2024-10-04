@@ -1,5 +1,4 @@
-﻿using VCardOnAbp.EntityFrameworkCore;
-using Xunit;
+﻿using Xunit;
 
 namespace VCardOnAbp.EntityFrameworkCore;
 

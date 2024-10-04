@@ -1,12 +1,12 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VCardOnAbp.Bins.Dtos;
 using VCardOnAbp.Masters;
 using Volo.Abp.Caching;
 using Volo.Abp.Domain.Repositories;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace VCardOnAbp.Bins
 {
@@ -30,7 +30,7 @@ namespace VCardOnAbp.Bins
             );
 
             await _binRepository.InsertAsync(bin);
-            
+
             return ObjectMapper.Map<Bin, BinDto>(bin);
         }
 
@@ -46,12 +46,12 @@ namespace VCardOnAbp.Bins
             var bin = await (await _binRepository.GetQueryableAsync())
                 .AsNoTracking()
                 .PageBy(input)
-                .WhereIf(input.Filter != null, 
-                        x => EF.Functions.Like(x.Name, $"%{input.Filter}%") || 
+                .WhereIf(input.Filter != null,
+                        x => EF.Functions.Like(x.Name, $"%{input.Filter}%") ||
                              EF.Functions.Like(x.Description, $"%{input.Filter}%"))
                 .ToListAsync()
                 .ConfigureAwait(false);
-                
+
             return ObjectMapper.Map<List<Bin>, List<BinDto>>(bin);
         }
 

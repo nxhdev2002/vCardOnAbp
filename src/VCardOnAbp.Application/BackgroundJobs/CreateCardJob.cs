@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using VCardOnAbp.ApiServices.Vmcardio;
 using VCardOnAbp.BackgroundJobs.Dtos;
 using VCardOnAbp.Cards;
@@ -12,7 +11,7 @@ namespace VCardOnAbp.BackgroundJobs
     public class CreateCardJob(
         ICancellationTokenProvider cancellationTokenProvider,
         IVmcardioAppService vmcardioAppService
-    ) 
+    )
         : AsyncBackgroundJob<CreateCardJobArgs>, ITransientDependency
     {
         private readonly ICancellationTokenProvider _cancellationTokenProvider = cancellationTokenProvider;

@@ -1,7 +1,6 @@
 using VCardOnAbp.Localization;
 using Volo.Abp.Authorization.Permissions;
 using Volo.Abp.Localization;
-using Volo.Abp.MultiTenancy;
 
 namespace VCardOnAbp.Permissions;
 

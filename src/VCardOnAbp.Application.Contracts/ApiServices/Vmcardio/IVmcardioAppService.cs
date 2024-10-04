@@ -6,7 +6,7 @@ namespace VCardOnAbp.ApiServices.Vmcardio
 {
     public interface IVmcardioAppService : IApplicationService
     {
-        Task<object> GetCardsAsync(GetCardsFilterInput input);
+        Task<object> GetCards(GetCardsFilterInput input);
         Task<VmCardDto> GetCard(GetCardInput input);
         Task CreateCardAsync();
         Task DeleteCardAsync();
