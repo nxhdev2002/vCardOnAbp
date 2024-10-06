@@ -42,12 +42,14 @@ public class Program
         }
         catch (Exception ex)
         {
+            Console.WriteLine(ex.Message);
+            Log.Fatal(ex.Message, "Host terminated unexpectedly!");
+
             if (ex is HostAbortedException)
             {
                 throw;
             }
 
-            Log.Fatal(ex, "Host terminated unexpectedly!");
             return 1;
         }
         finally

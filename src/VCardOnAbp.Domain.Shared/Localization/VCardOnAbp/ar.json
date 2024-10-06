@@ -24,6 +24,8 @@
     "NewsletterHeader": "اشترك في النشرة الإخبارية!",
     "NewsletterInfo": "احصل على معلومات حول آخر الأحداث.",
     "NewsletterPreference_Default": "النشرة الإخبارية الافتراضية",
-    "NewsletterPrivacyAcceptMessage": "أوافق على <a href='/privacy-policy'> سياسة الخصوصية </a>."
+    "NewsletterPrivacyAcceptMessage": "أوافق على <a href='/privacy-policy'> سياسة الخصوصية </a>.",
+    "GetCreditCardsSuccess": "تم العثور على بطاقات الائتمان",
+    "CardPermission:View": "عرض البطاقة"
   }
 }

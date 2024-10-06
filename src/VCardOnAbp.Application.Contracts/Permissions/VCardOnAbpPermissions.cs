@@ -2,10 +2,13 @@ namespace VCardOnAbp.Permissions;
 
 public static class VCardOnAbpPermissions
 {
-    public const string GroupName = "VCardOnAbp";
-
+    public const string CardGroup = "Card";
 
 
     //Add your own permission names. Example:
     //public const string MyPermission1 = GroupName + ".MyPermission1";
+    public const string ViewCard = CardGroup + ".ViewCard";
+    public const string ViewCardTransaction = CardGroup + ".ViewCardTransaction";
+    public const string CreateCard = CardGroup + ".CreateCard";
+    public const string FundCard = CardGroup + ".FundCard";
 }

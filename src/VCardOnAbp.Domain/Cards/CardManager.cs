@@ -1,14 +1,24 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Services;
+using Volo.Abp.Identity;
+using Volo.Abp.Users;
 
 namespace VCardOnAbp.Cards
 {
-    public class CardManager(IRepository<Card, Guid> cardsRepository) : DomainService
+    public class CardManager(
+        ICardRepository cardsRepository,
+        UserManager<IdentityUser> userManager
+    ) : DomainService
     {
-        private readonly IRepository<Card, Guid> _cardsRepository = cardsRepository;
-        public Card CreateCard(string CardNo, Guid SupplierId, string SupplierIdentity, CardStatus cardStatus = CardStatus.Active, decimal Balance = 0)
+        private readonly ICardRepository _cardsRepository = cardsRepository;
+        private readonly UserManager<IdentityUser> _userManager = userManager;
+        public Card CreateCard(string CardNo, Supplier SupplierId, string SupplierIdentity, CardStatus cardStatus = CardStatus.Active, decimal Balance = 0)
         {
             // TODO: Return business exception
             if (Balance < 0) return null;
@@ -26,9 +36,11 @@ namespace VCardOnAbp.Cards
             card.ChangeStatus(CardStatus.Lock);
         }
 
-        public async Task<Card> GetCard(Guid cardId)
+        public async Task<Card?> GetCard(Guid cardId, Guid userId)
         {
-            return await _cardsRepository.GetAsync(cardId);
+            var card = await _cardsRepository.GetCard(cardId, userId);
+            if (card == null) return null;
+            return card;
         }
     }
 }

@@ -17,7 +17,7 @@ function configureRoutes(routes: RoutesService) {
       },
       {
         path: '/card',
-        name: '::Menu:Card',
+        name: '::Card',
         iconClass: 'fas fa-card',
         order: 1,
         layout: eLayoutType.application,

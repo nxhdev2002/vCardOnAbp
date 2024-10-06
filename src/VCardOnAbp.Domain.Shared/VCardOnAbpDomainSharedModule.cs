@@ -1,4 +1,4 @@
-using VCardOnAbp.Localization;
+﻿using VCardOnAbp.Localization;
 using Volo.Abp.AuditLogging;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.BlobStoring.Database;
@@ -45,10 +45,11 @@ public class VCardOnAbpDomainSharedModule : AbpModule
         Configure<AbpLocalizationOptions>(options =>
         {
             options.Resources
-                .Add<VCardOnAbpResource>("en")
+                .Add<VCardOnAbpResource>()
                 .AddBaseTypes(typeof(AbpValidationResource))
                 .AddVirtualJson("/Localization/VCardOnAbp");
 
+            options.Languages.Add(new LanguageInfo("vi", "vi", "Tiếng Việt"));
             options.DefaultResourceType = typeof(VCardOnAbpResource);
         });
 

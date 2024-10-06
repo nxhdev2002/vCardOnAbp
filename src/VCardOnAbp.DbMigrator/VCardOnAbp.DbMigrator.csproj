@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.Autofac" Version="8.2.2" />
+    <PackageReference Include="Volo.Abp.Autofac" Version="8.3.1" />
     <ProjectReference Include="..\VCardOnAbp.EntityFrameworkCore\VCardOnAbp.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\VCardOnAbp.Application.Contracts\VCardOnAbp.Application.Contracts.csproj" />
   </ItemGroup>

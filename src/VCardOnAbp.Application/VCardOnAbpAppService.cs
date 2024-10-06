@@ -1,4 +1,5 @@
-﻿using VCardOnAbp.Localization;
+﻿using Microsoft.Extensions.Localization;
+using VCardOnAbp.Localization;
 using Volo.Abp.Application.Services;
 
 namespace VCardOnAbp;

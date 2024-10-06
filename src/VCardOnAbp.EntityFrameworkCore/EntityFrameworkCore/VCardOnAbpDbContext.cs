@@ -58,6 +58,7 @@ public class VCardOnAbpDbContext :
 
     // Card
     public DbSet<Card> Cards { get; set; }
+    public DbSet<CardTransaction> CardTransactions { get; set; }
     public DbSet<CardOwner> CardOwners { get; set; }
     public DbSet<Bin> Bins { get; set; }
     #endregion

@@ -10,19 +10,19 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.BackgroundJobs.Domain.Shared" Version="8.2.2" />
-    <PackageReference Include="Volo.Abp.AuditLogging.Domain.Shared" Version="8.2.2" />
-    <PackageReference Include="Volo.Abp.FeatureManagement.Domain.Shared" Version="8.2.2" />
-    <PackageReference Include="Volo.Abp.PermissionManagement.Domain.Shared" Version="8.2.2" />
-    <PackageReference Include="Volo.Abp.SettingManagement.Domain.Shared" Version="8.2.2" />
-    <PackageReference Include="Volo.Abp.BlobStoring.Database.Domain.Shared" Version="8.2.2" />
-    <PackageReference Include="Volo.Abp.GlobalFeatures" Version="8.2.2" />
+    <PackageReference Include="Volo.Abp.BackgroundJobs.Domain.Shared" Version="8.3.1" />
+    <PackageReference Include="Volo.Abp.AuditLogging.Domain.Shared" Version="8.3.1" />
+    <PackageReference Include="Volo.Abp.FeatureManagement.Domain.Shared" Version="8.3.1" />
+    <PackageReference Include="Volo.Abp.PermissionManagement.Domain.Shared" Version="8.3.1" />
+    <PackageReference Include="Volo.Abp.SettingManagement.Domain.Shared" Version="8.3.1" />
+    <PackageReference Include="Volo.Abp.BlobStoring.Database.Domain.Shared" Version="8.3.1" />
+    <PackageReference Include="Volo.Abp.GlobalFeatures" Version="8.3.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Volo.Abp.OpenIddict.Domain.Shared" Version="8.2.2" />
-    <PackageReference Include="Volo.Abp.Identity.Domain.Shared" Version="8.2.2" />
-    <PackageReference Include="Volo.Abp.TenantManagement.Domain.Shared" Version="8.2.2" />
+    <PackageReference Include="Volo.Abp.OpenIddict.Domain.Shared" Version="8.3.1" />
+    <PackageReference Include="Volo.Abp.Identity.Domain.Shared" Version="8.3.1" />
+    <PackageReference Include="Volo.Abp.TenantManagement.Domain.Shared" Version="8.3.1" />
   </ItemGroup>
 
   <ItemGroup>
@@ -32,6 +32,10 @@
   <ItemGroup>
     <EmbeddedResource Include="Localization\VCardOnAbp\*.json" />
     <Content Remove="Localization\VCardOnAbp\*.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="localization\vcardonabp\vi.json" />
   </ItemGroup>
 
 </Project>

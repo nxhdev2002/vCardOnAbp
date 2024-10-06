@@ -10,16 +10,16 @@ namespace VCardOnAbp.Cards
         [MaxLength(20)]
         public string CardNo { get; private set; }
         public decimal Balance { get; private set; }
-        public Guid SupplierId { get; private set; }
+        public Supplier Supplier { get; private set; }
         [MaxLength(50)]
         public string SupplierIdentity { get; private set; }
         public CardStatus CardStatus { get; private set; }
 
         private Card() { }
-        public Card(string cardNo, Guid supplierId, string supplierIdentity, CardStatus cardStatus, decimal balance)
+        public Card(string cardNo, Supplier supplierId, string supplierIdentity, CardStatus cardStatus, decimal balance)
         {
             CardNo = cardNo;
-            SupplierId = supplierId;
+            Supplier = supplierId;
             SupplierIdentity = supplierIdentity;
             CardStatus = cardStatus;
             Balance = balance;

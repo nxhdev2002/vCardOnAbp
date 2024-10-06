@@ -25,6 +25,8 @@
     "NewsletterInfo": "获取最新的状态",
     "NewsletterPreference_Default": "默认简讯",
     "NewsletterPrivacyAcceptMessage": "我同意<a href='/privacy-policy'>隐私政策</a>.",
-    "ChangeLanguage": "更改语言"
+    "ChangeLanguage": "更改语言",
+    "GetCreditCardsSuccess":  "成功获取信用卡",
+    "CardPermission:View": "查看信用卡"
   }
 }

@@ -7,7 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IdentityConfigModule } from '@abp/ng.identity/config';
 import { AccountConfigModule } from '@abp/ng.account/config';
 import { TenantManagementConfigModule } from '@abp/ng.tenant-management/config';
-import { registerLocale } from '@abp/ng.core/locale';
+import { registerLocale, storeLocaleData } from '@abp/ng.core/locale';
 import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +16,7 @@ import { FeatureManagementModule } from '@abp/ng.feature-management';
 import { ThemeLeptonXModule } from '@abp/ng.theme.lepton-x';
 import { SideMenuLayoutModule } from '@abp/ng.theme.lepton-x/layouts';
 import { AbpOAuthModule } from '@abp/ng.oauth';
+
 @NgModule({
   declarations: [AppComponent],
   imports: [

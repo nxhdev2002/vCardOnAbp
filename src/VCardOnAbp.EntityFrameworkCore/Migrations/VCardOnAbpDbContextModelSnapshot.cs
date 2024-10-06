@@ -19,7 +19,7 @@ namespace VCardOnAbp.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("_Abp_DatabaseProvider", EfCoreDatabaseProvider.SqlServer)
-                .HasAnnotation("ProductVersion", "8.0.4")
+                .HasAnnotation("ProductVersion", "8.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -82,8 +82,8 @@ namespace VCardOnAbp.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("LastModifierId");
 
-                    b.Property<Guid>("SupplierId")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<int>("Supplier")
+                        .HasColumnType("int");
 
                     b.Property<string>("SupplierIdentity")
                         .IsRequired()
@@ -92,7 +92,7 @@ namespace VCardOnAbp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cards", (string)null);
+                    b.ToTable("Cards");
                 });
 
             modelBuilder.Entity("VCardOnAbp.Cards.CardOwner", b =>
@@ -150,7 +150,49 @@ namespace VCardOnAbp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("CardOwners", (string)null);
+                    b.ToTable("CardOwners");
+                });
+
+            modelBuilder.Entity("VCardOnAbp.Cards.CardTransaction", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("AuthAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid>("CardId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationTime")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("CreationTime");
+
+                    b.Property<Guid?>("CreatorId")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("CreatorId");
+
+                    b.Property<string>("Currency")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MerchantName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("SettleAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Status")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CardTransactions");
                 });
 
             modelBuilder.Entity("VCardOnAbp.Masters.Bin", b =>
@@ -187,7 +229,7 @@ namespace VCardOnAbp.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Bins", (string)null);
+                    b.ToTable("Bins");
                 });
 
             modelBuilder.Entity("Volo.Abp.AuditLogging.AuditLog", b =>

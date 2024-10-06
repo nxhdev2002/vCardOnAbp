@@ -159,6 +159,25 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         }
 
 
+        // Swagger Client
+        var swaggerClientId1 = configurationSection["VcardProd:ClientId"];
+        if (!swaggerClientId1.IsNullOrWhiteSpace())
+        {
+            var swaggerRootUrl = configurationSection["VcardProd:RootUrl"]?.TrimEnd('/');
+
+            await CreateApplicationAsync(
+                name: swaggerClientId1!,
+                type: OpenIddictConstants.ClientTypes.Public,
+                consentType: OpenIddictConstants.ConsentTypes.Implicit,
+                displayName: "Swagger Application Production",
+                secret: null,
+                grantTypes: new List<string> { OpenIddictConstants.GrantTypes.AuthorizationCode, },
+                scopes: commonScopes,
+                redirectUri: $"{swaggerRootUrl}/swagger/oauth2-redirect.html",
+                clientUri: swaggerRootUrl,
+                logoUri: "/images/clients/swagger.svg"
+            );
+        }
     }
 
     private async Task CreateApplicationAsync(
