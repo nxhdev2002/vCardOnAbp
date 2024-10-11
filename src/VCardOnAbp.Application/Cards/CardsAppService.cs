@@ -11,7 +11,6 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Domain.Repositories;
-using Volo.Abp.ObjectMapping;
 
 namespace VCardOnAbp.Cards
 {
@@ -105,12 +104,23 @@ namespace VCardOnAbp.Cards
             var card = await _cardManager.GetCard(input.Id, CurrentUser.Id!.Value) 
                 ?? throw new UserFriendlyException(L["CardNotFound"]);
 
-            await _backgroundJobManager.EnqueueAsync(new FundCardJobArgs
-            {
-                Supplier = card.Supplier,
-                UserId = CurrentUser.Id!.Value,
-                Amount = input.Amount
-            });
+            await _cardManager.FundCard(card, input.Amount);
+            //await _backgroundJobManager.EnqueueAsync(new FundCardJobArgs
+            //{
+            //    Supplier = card.Supplier,
+            //    UserId = CurrentUser.Id!.Value,
+            //    Amount = input.Amount
+            //});
         }
+
+
+        #region Admin Methods
+        [Authorize(VCardOnAbpPermissions.AddCard)]
+        public Task AddCard(AddCardInput input)
+        {
+            var card = ObjectMapper.Map<AddCardInput, Card>(input);
+            return _cardRepository.InsertAsync(card);
+        }
+        #endregion
     }
 }

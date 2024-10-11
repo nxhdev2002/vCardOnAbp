@@ -37,6 +37,11 @@ public class VCardOnAbpDomainSharedModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
+        Configure<AbpExceptionLocalizationOptions>(options =>
+        {
+            options.MapCodeNamespace(VCardOnAbpDomainErrorCodes.CardNameSpace, typeof(VCardOnAbpResource));
+        });
+
         Configure<AbpVirtualFileSystemOptions>(options =>
         {
             options.FileSets.AddEmbedded<VCardOnAbpDomainSharedModule>();

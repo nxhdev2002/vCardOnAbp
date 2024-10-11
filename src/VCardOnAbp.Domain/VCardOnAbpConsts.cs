@@ -8,4 +8,6 @@ public static class VCardOnAbpConsts
     public const string? DbSchema = null;
     public const string AdminEmailDefaultValue = IdentityDataSeedContributor.AdminEmailDefaultValue;
     public const string AdminPasswordDefaultValue = IdentityDataSeedContributor.AdminPasswordDefaultValue;
+
+    public const int CardActiveDays = 10;
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using VCardOnAbp.Bins.Dtos;
+using VCardOnAbp.Currencies;
 using VCardOnAbp.Masters;
 using Volo.Abp.Caching;
 using Volo.Abp.Domain.Repositories;
@@ -12,21 +13,25 @@ namespace VCardOnAbp.Bins
 {
     public class BinCardAppService(
         IDistributedCache<Bin> distributedCache,
-        IRepository<Bin, Guid> binRepository
+        IRepository<Bin, Guid> binRepository,
+        IRepository<Currency, Guid> currencyRepository
     ) : VCardOnAbpAppService, IBinCardAppService
     {
         private readonly IDistributedCache<Bin> _distributedCache = distributedCache;
         private readonly IRepository<Bin, Guid> _binRepository = binRepository;
+        private readonly IRepository<Currency, Guid> _currencyRepository = currencyRepository;
 
 
 
         public virtual async Task<BinDto> CreateAsync(CreateBinDtoInput input)
         {
+            var currency = await _currencyRepository.GetAsync(input.CurrencyId);
             var bin = new Bin(
                 GuidGenerator.Create(),
                 input.Name,
                 input.Description,
-                input.Supplier
+                input.Supplier,
+                currency.Id
             );
 
             await _binRepository.InsertAsync(bin);

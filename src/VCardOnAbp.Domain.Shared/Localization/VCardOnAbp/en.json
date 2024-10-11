@@ -3,6 +3,7 @@
   "Texts": {
     "AppName": "VCardOnAbp",
     "Menu:Home": "Home",
+    "Card:00404": "Card not found",
     "LongWelcomeMessage": "Welcome to the application. This is a startup project based on the ABP framework. For more information visit",
     "Welcome": "Welcome",
     "GetCreditCardsSuccess": "Credit cards have been successfully retrieved.",

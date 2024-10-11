@@ -1,4 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 using VCardOnAbp.Cards;
 using VCardOnAbp.Masters;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
@@ -15,6 +19,8 @@ using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
+using VCardOnAbp.Users;
+using VCardOnAbp.Currencies;
 
 namespace VCardOnAbp.EntityFrameworkCore;
 
@@ -61,6 +67,9 @@ public class VCardOnAbpDbContext :
     public DbSet<CardTransaction> CardTransactions { get; set; }
     public DbSet<CardOwner> CardOwners { get; set; }
     public DbSet<Bin> Bins { get; set; }
+
+    public DbSet<UserCurrency> UserCurrencies { get; set; }
+    public DbSet<Currency> Currencies { get; set; }
     #endregion
 
     public VCardOnAbpDbContext(DbContextOptions<VCardOnAbpDbContext> options)

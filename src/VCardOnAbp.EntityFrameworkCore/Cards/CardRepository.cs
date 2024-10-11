@@ -12,6 +12,14 @@ namespace VCardOnAbp.Cards
 {
     public class CardRepository(IDbContextProvider<VCardOnAbpDbContext> dbContextProvider) : EfCoreRepository<VCardOnAbpDbContext, Card, Guid>(dbContextProvider), ICardRepository
     {
+        public async Task<List<Card>> GetActiveCardAsync(Supplier? supplier = null, CancellationToken token = default)
+        {
+            return await (await GetQueryableAsync())
+                .Where(x => x.LastView <= DateTime.UtcNow.AddDays(VCardOnAbpConsts.CardActiveDays))
+                .WhereIf(supplier != null, x => x.Supplier == supplier)
+                .ToListAsync(token);
+        }
+
         public async Task<Card?> GetCard(Guid id, Guid userId, CancellationToken token = default)
         {
             return await (await GetQueryableAsync())

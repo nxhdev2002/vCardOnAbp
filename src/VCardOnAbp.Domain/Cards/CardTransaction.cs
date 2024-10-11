@@ -6,6 +6,7 @@ namespace VCardOnAbp.Cards
     public class CardTransaction : CreationAuditedEntity<Guid>
     {
         public Guid CardId { get; private set; }
+        public string? SupplierTranId { get; private set; }
         public decimal AuthAmount { get; private set; }
         public string? Currency { get; private set; }
         public string? Description { get; private set; }
@@ -21,11 +22,12 @@ namespace VCardOnAbp.Cards
         public CardTransaction(
             Guid cardId,
             decimal authAmount,
-            string currency,
-            string description,
-            string merchantName,
-            decimal settleAmount,
-            string status
+            string? currency,
+            string? description,
+            string? merchantName,
+            decimal? settleAmount,
+            string? status,
+            string? supplierTranId
         )
         {
             CardId = cardId;
@@ -35,6 +37,7 @@ namespace VCardOnAbp.Cards
             MerchantName = merchantName;
             SettleAmount = settleAmount;
             Status = status;
+            SupplierTranId = supplierTranId;
         }
     }
 }

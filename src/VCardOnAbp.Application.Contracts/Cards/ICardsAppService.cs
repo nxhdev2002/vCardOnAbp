@@ -12,6 +12,7 @@ namespace VCardOnAbp.Cards
         Task<CardDto> GetAsync(Guid id);
         Task<PagedResultDto<CardTransactionDto>> GetTransactionAsync(GetCardTransactionInput input);
         Task CreateAsync(CreateCardInput input);
+        Task AddCard(AddCardInput input);
         Task FundAsync(FundCardInput input);
     }
 }

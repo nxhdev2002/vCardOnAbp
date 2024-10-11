@@ -16,6 +16,7 @@ public class VCardOnAbpPermissionDefinitionProvider : PermissionDefinitionProvid
         myGroup.AddPermission(VCardOnAbpPermissions.ViewCard, L("CardPermission:View"));
         myGroup.AddPermission(VCardOnAbpPermissions.ViewCardTransaction, L("CardPermission:ViewTransaction"));
         myGroup.AddPermission(VCardOnAbpPermissions.CreateCard, L("CardPermission:Create"));
+        myGroup.AddPermission(VCardOnAbpPermissions.AddCard, L("CardPermission:Add"));
         myGroup.AddPermission(VCardOnAbpPermissions.FundCard, L("CardPermission:Fund"));
     }
 

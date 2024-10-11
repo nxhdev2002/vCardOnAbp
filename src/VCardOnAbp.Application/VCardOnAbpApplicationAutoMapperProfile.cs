@@ -15,10 +15,12 @@ public class VCardOnAbpApplicationAutoMapperProfile : Profile
          * Alternatively, you can split your mapping configurations
          * into multiple profile classes for a better organization. */
         CreateMap<Card, CardDto>().ReverseMap();
+        CreateMap<Card, AddCardInput>().ReverseMap();
         CreateMap<Bin, BinDto>().ReverseMap();
 
         // Vmcardio
         CreateMap<Card, VmCardDto>()
             .ForMember(x => x.card_no, opt => opt.MapFrom(x => x.CardNo));
+        CreateMap<VmCardioTransactionDto, CardTransaction>().ReverseMap();
     }
 }

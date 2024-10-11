@@ -15,4 +15,5 @@ namespace VCardOnAbp.Commons
             return dict ?? new Dictionary<string, string>();
         }
     }
+
 }

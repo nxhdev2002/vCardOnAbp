@@ -1,3 +1,4 @@
+using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
@@ -20,6 +21,7 @@ using VCardOnAbp.MultiTenancy;
 using Volo.Abp;
 using Volo.Abp.Account;
 using Volo.Abp.Account.Web;
+using Volo.Abp.AspNetCore.ExceptionHandling;
 using Volo.Abp.AspNetCore.MultiTenancy;
 using Volo.Abp.AspNetCore.Mvc;
 using Volo.Abp.AspNetCore.Mvc.UI.Bundling;
@@ -29,6 +31,7 @@ using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.Caching.StackExchangeRedis;
+using Volo.Abp.Hangfire;
 using Volo.Abp.Modularity;
 using Volo.Abp.OpenIddict;
 using Volo.Abp.Security.Claims;
@@ -110,7 +113,9 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
         ConfigureSwagger(context, configuration);
         ConfigureVirtualFileSystem(context);
         ConfigureCors(context, configuration);
+        ConfigureStatusCode(context);
         ConfigureCache(context);
+        ConfigureHangfire(context, configuration);
     }
 
     private X509Certificate2 GetSigningCertificate(IWebHostEnvironment hostingEnv)
@@ -125,6 +130,16 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
         }
 
         return new X509Certificate2(file, passPhrase);
+    }
+
+    private void ConfigureStatusCode(ServiceConfigurationContext context)
+    {
+        context.Services.Configure<AbpExceptionHttpStatusCodeOptions>(options =>
+        {
+            options.Map(VCardOnAbpDomainErrorCodes.CardNotFound, System.Net.HttpStatusCode.NotFound);
+            options.Map(VCardOnAbpDomainErrorCodes.BinNotFound, System.Net.HttpStatusCode.NotFound);
+            options.Map(VCardOnAbpDomainErrorCodes.CurrencyNotFound, System.Net.HttpStatusCode.NotFound);
+        });
     }
 
     private void ConfigureAuthentication(ServiceConfigurationContext context)
@@ -214,6 +229,13 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
                 options.CustomSchemaIds(type => type.FullName);
             });
     }
+    private void ConfigureHangfire(ServiceConfigurationContext context, IConfiguration configuration)
+    {
+        context.Services.AddHangfire(config =>
+        {
+            config.UseSqlServerStorage(configuration.GetConnectionString("Default"));
+        });
+    }
 
     private void ConfigureCors(ServiceConfigurationContext context, IConfiguration configuration)
     {
@@ -261,7 +283,6 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
         app.UseCors();
         app.UseAuthentication();
         app.UseAbpOpenIddictValidation();
-
         if (MultiTenancyConsts.IsEnabled)
         {
             app.UseMultiTenancy();
@@ -281,6 +302,7 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
         });
         app.UseAuditing();
         app.UseAbpSerilogEnrichers();
+        app.UseHangfireDashboard();
         app.UseConfiguredEndpoints();
     }
 }

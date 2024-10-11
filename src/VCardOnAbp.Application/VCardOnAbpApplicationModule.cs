@@ -1,5 +1,10 @@
+using System.Threading.Tasks;
+using VCardOnAbp.BackgroundJobs;
+using Volo.Abp;
 using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
+using Volo.Abp.BackgroundWorkers;
+using Volo.Abp.BackgroundWorkers.Hangfire;
 using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.FeatureManagement;
 using Volo.Abp.FluentValidation;
@@ -20,7 +25,8 @@ namespace VCardOnAbp;
     typeof(AbpAccountApplicationModule),
     typeof(AbpTenantManagementApplicationModule),
     typeof(AbpSettingManagementApplicationModule),
-    typeof(AbpFluentValidationModule)
+    typeof(AbpFluentValidationModule),
+    typeof(AbpBackgroundWorkersHangfireModule)
     )]
 [DependsOn(typeof(AbpCachingStackExchangeRedisModule))]
 public class VCardOnAbpApplicationModule : AbpModule
@@ -31,5 +37,11 @@ public class VCardOnAbpApplicationModule : AbpModule
         {
             options.AddMaps<VCardOnAbpApplicationModule>();
         });
+    }
+
+    public override async Task OnApplicationInitializationAsync(ApplicationInitializationContext context)
+    {
+        await context.AddBackgroundWorkerAsync<InitialWalletWorker>();
+        //await context.AddBackgroundWorkerAsync<SyncVmcardioTransactionWorker>();
     }
 }

@@ -28,7 +28,7 @@ namespace VCardOnAbp.BackgroundJobs
             switch (args.Supplier)
             {
                 case Supplier.Vmcardio:
-                    await _vmcardioAppService.CreateCardAsync();
+                    await _vmcardioAppService.FundCardAsync(new ApiServices.Vmcardio.Dtos.FundCardDto());
                     break;
                 default:
                     return;

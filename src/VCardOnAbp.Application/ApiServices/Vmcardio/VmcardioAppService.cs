@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using VCardOnAbp.ApiServices.Vmcardio.Dtos;
 using VCardOnAbp.Commons;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace VCardOnAbp.ApiServices.Vmcardio
 {
@@ -34,6 +37,20 @@ namespace VCardOnAbp.ApiServices.Vmcardio
             return card.data.virtual_card;
         }
 
+        public async Task<List<VmCardioTransactionDto>> GetCardTransactions(GetVmCardTransactionInput input)
+        {
+            var query = input.ToDict();
+            var transactions = await SendVmcardioRequestAsync<ResponseModel<VmCardioTransactionResponse>>(HttpMethod.Get, VmcardioApiConst.GetCardTransactions, queryParams: query);
+            return transactions.data.list;
+        }
+
+        public async Task FundCardAsync(FundCardDto input)
+        {
+            var query = input.ToDict();
+            var data = await SendVmcardioRequestAsync<ResponseModel<object>>(HttpMethod.Post, VmcardioApiConst.FundCard, queryParams: query);
+            Logger.LogInformation("FundCardAsync: {0}", data);
+        }
+
         private async Task<T> SendVmcardioRequestAsync<T>(HttpMethod method, string url, Dictionary<string, string> headers = null, Dictionary<string, string> queryParams = null, object body = null)
         {
             var token = await GetVmcardioTokenAsync();
@@ -55,7 +72,7 @@ namespace VCardOnAbp.ApiServices.Vmcardio
 
         private async Task<string> GetVmcardioTokenAsync()
         {
-            return "yJKoIDIypAAAfiiDci1Qii0jb8J2aeyljd12O2WJIi5ef8oTiOi3LhJjeOX1TOI5NCRcYX73.=ODO6NwCN1NXxR5700=O7jQ9QIy38sW3MziU4iQ1JNeJkLlm2=iz0Fi2hIV3EIU=bHQLJ8nMNV2iaMyiEWyC62WQI";
+            return "oA00l05ypjel6zHjihI2oiIisfAOaeeL=Jidj3WCT4N514OWiFMXwOVJiYi=28hcxTj4C86iQN1UiKRi=83cb2.WiceXQE53RENi1715yDCNODI1MNLUJxfAOQOk2IQ1n3JLQVbmMy=DIaINJizi979219QMIyJWJX";
         }
 
 
