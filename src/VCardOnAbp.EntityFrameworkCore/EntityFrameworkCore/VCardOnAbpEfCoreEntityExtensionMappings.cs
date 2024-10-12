@@ -1,4 +1,7 @@
-﻿using Volo.Abp.Threading;
+﻿using Microsoft.EntityFrameworkCore;
+using Volo.Abp.Identity;
+using Volo.Abp.ObjectExtending;
+using Volo.Abp.Threading;
 
 namespace VCardOnAbp.EntityFrameworkCore;
 
@@ -36,6 +39,15 @@ public static class VCardOnAbpEfCoreEntityExtensionMappings
              * See the documentation for more:
              * https://docs.abp.io/en/abp/latest/Customizing-Application-Modules-Extending-Entities
              */
-        });
+
+            ObjectExtensionManager.Instance
+                .MapEfCoreProperty<IdentityUser, decimal>(
+                    UserConsts.Balance,
+                    (_, propertyBuilder) =>
+                    {
+                        propertyBuilder.HasDefaultValue(0);
+                    }
+                );
+    });
     }
 }

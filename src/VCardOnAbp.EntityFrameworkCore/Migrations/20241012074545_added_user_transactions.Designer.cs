@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VCardOnAbp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace VCardOnAbp.Migrations
 {
     [DbContext(typeof(VCardOnAbpDbContext))]
-    partial class VCardOnAbpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241012074545_added_user_transactions")]
+    partial class added_user_transactions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -305,8 +308,8 @@ namespace VCardOnAbp.Migrations
 
             modelBuilder.Entity("VCardOnAbp.Transactions.UserTransaction", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
+                    b.Property<string>("TrxId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal>("Amount")
                         .HasColumnType("decimal(18,2)");
@@ -318,13 +321,10 @@ namespace VCardOnAbp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Type")
-                        .HasColumnType("int");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.HasKey("Id");
+                    b.HasKey("TrxId");
 
                     b.ToTable("UserTransactions");
                 });

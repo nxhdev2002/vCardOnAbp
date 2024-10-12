@@ -41,7 +41,6 @@ public class VCardOnAbpApplicationModule : AbpModule
 
     public override async Task OnApplicationInitializationAsync(ApplicationInitializationContext context)
     {
-        await context.AddBackgroundWorkerAsync<InitialWalletWorker>();
         //await context.AddBackgroundWorkerAsync<SyncVmcardioTransactionWorker>();
     }
 }

@@ -15,6 +15,7 @@ namespace VCardOnAbp.Cards
         public async Task<List<Card>> GetActiveCardAsync(Supplier? supplier = null, CancellationToken token = default)
         {
             return await (await GetQueryableAsync())
+                .Where(x => x.CardStatus == CardStatus.Active)
                 .Where(x => x.LastView <= DateTime.UtcNow.AddDays(VCardOnAbpConsts.CardActiveDays))
                 .WhereIf(supplier != null, x => x.Supplier == supplier)
                 .ToListAsync(token);
@@ -23,7 +24,11 @@ namespace VCardOnAbp.Cards
         public async Task<Card?> GetCard(Guid id, Guid userId, CancellationToken token = default)
         {
             return await (await GetQueryableAsync())
-                .FirstOrDefaultAsync(x => x.Id == id && x.CreatorId == userId, token);
+                .FirstOrDefaultAsync(
+                    x => x.Id == id && 
+                    x.CreatorId == userId &&
+                    x.CardStatus == CardStatus.Active
+                , token);
         }
     }
 }

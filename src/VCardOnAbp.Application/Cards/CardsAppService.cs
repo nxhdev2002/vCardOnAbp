@@ -11,6 +11,7 @@ using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.EventBus.Local;
 
 namespace VCardOnAbp.Cards
 {
@@ -19,13 +20,15 @@ namespace VCardOnAbp.Cards
         CardManager cardManager,
         IBackgroundJobManager backgroundJobManager,
         ICardRepository cardRepository,
-        IRepository<CardTransaction, Guid> cardTransactionRepository
+        IRepository<CardTransaction, Guid> cardTransactionRepository,
+        ILocalEventBus localEventBus
     ) : VCardOnAbpAppService, ICardsAppService
     {
         private readonly CardManager _cardManager = cardManager;
         private readonly ICardRepository _cardRepository = cardRepository;
         private readonly IRepository<CardTransaction, Guid> _cardTransactionRepository = cardTransactionRepository;
         private readonly IBackgroundJobManager _backgroundJobManager = backgroundJobManager;
+        private readonly ILocalEventBus _localEventBus = localEventBus;
 
         [Authorize(VCardOnAbpPermissions.ViewCard)]
         public virtual async Task<PagedResultDto<CardDto>> GetListAsync(GetCardInput input)
@@ -105,12 +108,9 @@ namespace VCardOnAbp.Cards
                 ?? throw new UserFriendlyException(L["CardNotFound"]);
 
             await _cardManager.FundCard(card, input.Amount);
-            //await _backgroundJobManager.EnqueueAsync(new FundCardJobArgs
-            //{
-            //    Supplier = card.Supplier,
-            //    UserId = CurrentUser.Id!.Value,
-            //    Amount = input.Amount
-            //});
+
+            // publish event
+            await _localEventBus.PublishAsync(new CardFundedEvent(card, input.Amount));
         }
 
 

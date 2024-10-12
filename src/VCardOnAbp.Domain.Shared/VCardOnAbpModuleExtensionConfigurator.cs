@@ -1,4 +1,6 @@
-﻿using Volo.Abp.Threading;
+﻿using System.ComponentModel.DataAnnotations;
+using Volo.Abp.ObjectExtending;
+using Volo.Abp.Threading;
 
 namespace VCardOnAbp;
 
@@ -64,5 +66,22 @@ public static class VCardOnAbpModuleExtensionConfigurator
          * See the documentation for more:
          * https://docs.abp.io/en/abp/latest/Module-Entity-Extensions
          */
+
+        ObjectExtensionManager.Instance.Modules().ConfigureIdentity(identity =>
+        {
+            identity.ConfigureUser(user =>
+            {
+                user.AddOrUpdateProperty<decimal>(
+                    UserConsts.Balance,
+                    options =>
+                    {
+                        options.Attributes.Add(new RequiredAttribute());
+                        options.Attributes.Add(
+                            new RangeAttribute(0, double.MaxValue)
+                        );
+                    }
+                );
+            });
+        });
     }
 }
