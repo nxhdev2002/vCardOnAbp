@@ -1,10 +1,9 @@
-﻿namespace VCardOnAbp.Cards
+﻿namespace VCardOnAbp.Cards;
+
+public enum CardAction
 {
-    public enum CardAction
-    {
-        LOCK,
-        DELETE,
-        FUND,
-        VIEW
-    }
+    LOCK,
+    DELETE,
+    FUND,
+    VIEW
 }

@@ -40,7 +40,7 @@ public class VCardOnAbpDbMigrationService : ITransientDependency
 
     public async Task MigrateAsync()
     {
-        var initialMigrationAdded = AddInitialMigrationIfNotExist();
+        bool initialMigrationAdded = AddInitialMigrationIfNotExist();
 
         if (initialMigrationAdded)
         {
@@ -54,16 +54,16 @@ public class VCardOnAbpDbMigrationService : ITransientDependency
 
         Logger.LogInformation($"Successfully completed host database migrations.");
 
-        var tenants = await _tenantRepository.GetListAsync(includeDetails: true);
+        List<Tenant> tenants = await _tenantRepository.GetListAsync(includeDetails: true);
 
-        var migratedDatabaseSchemas = new HashSet<string>();
-        foreach (var tenant in tenants)
+        HashSet<string> migratedDatabaseSchemas = new();
+        foreach (Tenant? tenant in tenants)
         {
             using (_currentTenant.Change(tenant.Id))
             {
                 if (tenant.ConnectionStrings.Any())
                 {
-                    var tenantConnectionStrings = tenant.ConnectionStrings
+                    List<string> tenantConnectionStrings = tenant.ConnectionStrings
                         .Select(x => x.Value)
                         .ToList();
 
@@ -90,7 +90,7 @@ public class VCardOnAbpDbMigrationService : ITransientDependency
         Logger.LogInformation(
             $"Migrating schema for {(tenant == null ? "host" : tenant.Name + " tenant")} database...");
 
-        foreach (var migrator in _dbSchemaMigrators)
+        foreach (IVCardOnAbpDbSchemaMigrator migrator in _dbSchemaMigrators)
         {
             await migrator.MigrateAsync();
         }
@@ -143,14 +143,14 @@ public class VCardOnAbpDbMigrationService : ITransientDependency
 
     private bool DbMigrationsProjectExists()
     {
-        var dbMigrationsProjectFolder = GetEntityFrameworkCoreProjectFolderPath();
+        string? dbMigrationsProjectFolder = GetEntityFrameworkCoreProjectFolderPath();
 
         return dbMigrationsProjectFolder != null;
     }
 
     private bool MigrationsFolderExists()
     {
-        var dbMigrationsProjectFolder = GetEntityFrameworkCoreProjectFolderPath();
+        string? dbMigrationsProjectFolder = GetEntityFrameworkCoreProjectFolderPath();
 
         return dbMigrationsProjectFolder != null && Directory.Exists(Path.Combine(dbMigrationsProjectFolder, "Migrations"));
     }
@@ -173,7 +173,7 @@ public class VCardOnAbpDbMigrationService : ITransientDependency
             fileName = "cmd.exe";
         }
 
-        var procStartInfo = new ProcessStartInfo(fileName,
+        ProcessStartInfo procStartInfo = new(fileName,
             $"{argumentPrefix} \"abp create-migration-and-run-migrator \"{GetEntityFrameworkCoreProjectFolderPath()}\"\""
         );
 
@@ -189,14 +189,14 @@ public class VCardOnAbpDbMigrationService : ITransientDependency
 
     private string? GetEntityFrameworkCoreProjectFolderPath()
     {
-        var slnDirectoryPath = GetSolutionDirectoryPath();
+        string? slnDirectoryPath = GetSolutionDirectoryPath();
 
         if (slnDirectoryPath == null)
         {
             throw new Exception("Solution folder not found!");
         }
 
-        var srcDirectoryPath = Path.Combine(slnDirectoryPath, "src");
+        string srcDirectoryPath = Path.Combine(slnDirectoryPath, "src");
 
         return Directory.GetDirectories(srcDirectoryPath)
             .FirstOrDefault(d => d.EndsWith(".EntityFrameworkCore"));
@@ -204,7 +204,7 @@ public class VCardOnAbpDbMigrationService : ITransientDependency
 
     private string? GetSolutionDirectoryPath()
     {
-        var currentDirectory = new DirectoryInfo(Directory.GetCurrentDirectory());
+        DirectoryInfo? currentDirectory = new(Directory.GetCurrentDirectory());
 
         while (currentDirectory != null && Directory.GetParent(currentDirectory.FullName) != null)
         {

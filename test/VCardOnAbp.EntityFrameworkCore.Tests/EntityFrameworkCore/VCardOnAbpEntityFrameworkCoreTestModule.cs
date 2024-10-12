@@ -60,14 +60,14 @@ public class VCardOnAbpEntityFrameworkCoreTestModule : AbpModule
 
     private static SqliteConnection CreateDatabaseAndGetConnection()
     {
-        var connection = new SqliteConnection("Data Source=:memory:");
+        SqliteConnection connection = new("Data Source=:memory:");
         connection.Open();
 
-        var options = new DbContextOptionsBuilder<VCardOnAbpDbContext>()
+        DbContextOptions<VCardOnAbpDbContext> options = new DbContextOptionsBuilder<VCardOnAbpDbContext>()
             .UseSqlite(connection)
             .Options;
 
-        using (var context = new VCardOnAbpDbContext(options))
+        using (VCardOnAbpDbContext context = new(options))
         {
             context.GetService<IRelationalDatabaseCreator>().CreateTables();
         }

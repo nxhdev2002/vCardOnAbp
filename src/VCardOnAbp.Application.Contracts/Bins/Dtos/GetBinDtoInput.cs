@@ -1,9 +1,8 @@
 ﻿using Volo.Abp.Application.Dtos;
 
-namespace VCardOnAbp.Bins.Dtos
+namespace VCardOnAbp.Bins.Dtos;
+
+public class GetBinDtoInput : PagedAndSortedResultRequestDto
 {
-    public class GetBinDtoInput : PagedAndSortedResultRequestDto
-    {
-        public string? Filter { get; set; }
-    }
+    public string? Filter { get; set; }
 }

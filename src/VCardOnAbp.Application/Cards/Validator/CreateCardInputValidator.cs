@@ -1,13 +1,12 @@
 ﻿using FluentValidation;
 using VCardOnAbp.Cards.Dto;
 
-namespace VCardOnAbp.Cards.Validator
+namespace VCardOnAbp.Cards.Validator;
+
+public class CreateCardInputValidator : AbstractValidator<CreateCardInput>
 {
-    public class CreateCardInputValidator : AbstractValidator<CreateCardInput>
+    public CreateCardInputValidator()
     {
-        public CreateCardInputValidator()
-        {
-            RuleFor(x => x.Amount).GreaterThanOrEqualTo(0);
-        }
+        RuleFor(x => x.Amount).GreaterThanOrEqualTo(0);
     }
 }

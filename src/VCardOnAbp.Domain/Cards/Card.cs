@@ -3,51 +3,50 @@ using System.ComponentModel.DataAnnotations;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
-namespace VCardOnAbp.Cards
+namespace VCardOnAbp.Cards;
+
+public class Card : FullAuditedAggregateRoot<Guid>
 {
-    public class Card : FullAuditedAggregateRoot<Guid>
+    [MaxLength(20)]
+    public string CardNo { get; private set; }
+    public decimal Balance { get; private set; }
+    public Guid BinId { get; private set; }
+    public Supplier Supplier { get; private set; }
+    [MaxLength(50)]
+    public string SupplierIdentity { get; private set; }
+    public CardStatus CardStatus { get; private set; }
+    public DateTime? LastView { get; private set; }
+
+    private Card() { }
+    public Card(Guid id, string cardNo, Guid binId, Supplier supplierId, string supplierIdentity, CardStatus cardStatus, decimal balance) : base(id)
     {
-        [MaxLength(20)]
-        public string CardNo { get; private set; }
-        public decimal Balance { get; private set; }
-        public Guid BinId { get; private set; }
-        public Supplier Supplier { get; private set; }
-        [MaxLength(50)]
-        public string SupplierIdentity { get; private set; }
-        public CardStatus CardStatus { get; private set; }
-        public DateTime? LastView { get; private set; }
+        CardNo = cardNo;
+        BinId = binId;
+        Supplier = supplierId;
+        SupplierIdentity = supplierIdentity;
+        CardStatus = cardStatus;
+        Balance = balance;
+    }
 
-        private Card() { }
-        public Card(Guid id, string cardNo, Guid binId, Supplier supplierId, string supplierIdentity, CardStatus cardStatus, decimal balance) : base(id)
-        {
-            CardNo = cardNo;
-            BinId = binId;
-            Supplier = supplierId;
-            SupplierIdentity = supplierIdentity;
-            CardStatus = cardStatus;
-            Balance = balance;
-        }
+    public Card ChangeStatus(CardStatus cardStatus)
+    {
+        CardStatus = cardStatus;
+        return this;
+    }
 
-        public Card ChangeStatus(CardStatus cardStatus)
+    public Card SetBalance(decimal balance)
+    {
+        if (Balance + balance < 0)
         {
-            CardStatus = cardStatus;
-            return this;
+            throw new BusinessException();
         }
+        Balance = balance;
+        return this;
+    }
 
-        public Card SetBalance(decimal balance)
-        {
-            if (Balance + balance < 0)
-            {
-                throw new BusinessException();
-            }
-            Balance = balance;
-            return this;
-        }
-
-        public Card SetLastView(DateTime lastView)
-        {
-            LastView = lastView;
-            return this;
-        }
+    public Card SetLastView(DateTime lastView)
+    {
+        LastView = lastView;
+        return this;
     }
 }

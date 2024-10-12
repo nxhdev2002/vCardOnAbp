@@ -10,24 +10,22 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        using (var application = await AbpApplicationFactory.CreateAsync<VCardOnAbpConsoleApiClientModule>(options =>
+        using IAbpApplicationWithInternalServiceProvider application = await AbpApplicationFactory.CreateAsync<VCardOnAbpConsoleApiClientModule>(options =>
         {
-            var builder = new ConfigurationBuilder();
+            ConfigurationBuilder builder = new();
             builder.AddJsonFile("appsettings.json", false);
             builder.AddJsonFile("appsettings.secrets.json", true);
             options.Services.ReplaceConfiguration(builder.Build());
             options.UseAutofac();
-        }))
-        {
-            await application.InitializeAsync();
+        });
+        await application.InitializeAsync();
 
-            var demo = application.ServiceProvider.GetRequiredService<ClientDemoService>();
-            await demo.RunAsync();
+        ClientDemoService demo = application.ServiceProvider.GetRequiredService<ClientDemoService>();
+        await demo.RunAsync();
 
-            Console.WriteLine("Press ENTER to stop application...");
-            Console.ReadLine();
+        Console.WriteLine("Press ENTER to stop application...");
+        Console.ReadLine();
 
-            await application.ShutdownAsync();
-        }
+        await application.ShutdownAsync();
     }
 }

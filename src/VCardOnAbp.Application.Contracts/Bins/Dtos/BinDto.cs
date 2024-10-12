@@ -1,11 +1,10 @@
 ﻿using System;
 
-namespace VCardOnAbp.Bins.Dtos
+namespace VCardOnAbp.Bins.Dtos;
+
+public class BinDto
 {
-    public class BinDto
-    {
-        public Guid Id { get; set; }
-        public string Name { get; set; }
-        public string Description { get; set; }
-    }
+    public Guid Id { get; set; }
+    public string Name { get; set; }
+    public string Description { get; set; }
 }

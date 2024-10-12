@@ -25,7 +25,7 @@ public abstract class SampleAppServiceTests<TStartupModule> : VCardOnAbpApplicat
     public async Task Initial_Data_Should_Contain_Admin_User()
     {
         //Act
-        var result = await _userAppService.GetListAsync(new GetIdentityUsersInput());
+        Volo.Abp.Application.Dtos.PagedResultDto<IdentityUserDto> result = await _userAppService.GetListAsync(new GetIdentityUsersInput());
 
         //Assert
         result.TotalCount.ShouldBeGreaterThan(0);

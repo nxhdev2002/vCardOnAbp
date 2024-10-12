@@ -1,10 +1,8 @@
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using VCardOnAbp.Cards;
+using VCardOnAbp.Currencies;
 using VCardOnAbp.Masters;
+using VCardOnAbp.Transactions;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
@@ -19,8 +17,6 @@ using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.TenantManagement;
 using Volo.Abp.TenantManagement.EntityFrameworkCore;
-using VCardOnAbp.Currencies;
-using VCardOnAbp.Transactions;
 
 namespace VCardOnAbp.EntityFrameworkCore;
 

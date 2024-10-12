@@ -13,21 +13,21 @@ public static class HealthChecksBuilderExtensions
     public static void AddVCardOnAbpHealthChecks(this IServiceCollection services)
     {
         // Add your health checks here
-        var healthChecksBuilder = services.AddHealthChecks();
+        IHealthChecksBuilder healthChecksBuilder = services.AddHealthChecks();
         healthChecksBuilder.AddCheck<VCardOnAbpDatabaseCheck>("VCardOnAbp DbContext Check", tags: new string[] { "database" });
 
         services.ConfigureHealthCheckEndpoint("/health-status");
 
         // If you don't want to add HealthChecksUI, remove following configurations.
-        var configuration = services.GetConfiguration();
-        var healthCheckUrl = configuration["App:HealthCheckUrl"];
+        Microsoft.Extensions.Configuration.IConfiguration configuration = services.GetConfiguration();
+        string? healthCheckUrl = configuration["App:HealthCheckUrl"];
 
         if (string.IsNullOrEmpty(healthCheckUrl))
         {
             healthCheckUrl = "/health-status";
         }
 
-        var healthChecksUiBuilder = services.AddHealthChecksUI(settings =>
+        HealthChecksUIBuilder healthChecksUiBuilder = services.AddHealthChecksUI(settings =>
         {
             settings.AddHealthCheckEndpoint("VCardOnAbp Health Status", healthCheckUrl);
         });

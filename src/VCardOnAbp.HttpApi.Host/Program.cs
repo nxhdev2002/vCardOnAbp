@@ -15,7 +15,7 @@ public class Program
         try
         {
             Log.Information("Starting VCardOnAbp.HttpApi.Host.");
-            var builder = WebApplication.CreateBuilder(args);
+            WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             builder.Host
                 .AddAppSettingsSecretsJson()
                 .UseAutofac()
@@ -35,7 +35,7 @@ public class Program
                         .WriteTo.Async(c => c.AbpStudio(services));
                 });
             await builder.AddApplicationAsync<VCardOnAbpHttpApiHostModule>();
-            var app = builder.Build();
+            WebApplication app = builder.Build();
             await app.InitializeApplicationAsync();
             await app.RunAsync();
             return 0;

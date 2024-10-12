@@ -93,13 +93,13 @@ public class VCardOnAbpTenantDatabaseMigrationHandler :
             using (_currentTenant.Change(tenantId))
             {
                 // Create database tables if needed
-                using (var uow = _unitOfWorkManager.Begin(requiresNew: true, isTransactional: false))
+                using (IUnitOfWork uow = _unitOfWorkManager.Begin(requiresNew: true, isTransactional: false))
                 {
-                    var tenantConfiguration = await _tenantStore.FindAsync(tenantId);
+                    TenantConfiguration? tenantConfiguration = await _tenantStore.FindAsync(tenantId);
                     if (tenantConfiguration?.ConnectionStrings != null &&
                         !tenantConfiguration.ConnectionStrings.Default.IsNullOrWhiteSpace())
                     {
-                        foreach (var migrator in _dbSchemaMigrators)
+                        foreach (IVCardOnAbpDbSchemaMigrator migrator in _dbSchemaMigrators)
                         {
                             await migrator.MigrateAsync();
                         }
@@ -109,7 +109,7 @@ public class VCardOnAbpTenantDatabaseMigrationHandler :
                 }
 
                 // Seed data
-                using (var uow = _unitOfWorkManager.Begin(requiresNew: true, isTransactional: true))
+                using (IUnitOfWork uow = _unitOfWorkManager.Begin(requiresNew: true, isTransactional: true))
                 {
                     await _dataSeeder.SeedAsync(
                         new DataSeedContext(tenantId)

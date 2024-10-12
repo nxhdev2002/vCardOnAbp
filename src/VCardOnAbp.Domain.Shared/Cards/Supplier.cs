@@ -1,7 +1,6 @@
-﻿namespace VCardOnAbp.Cards
+﻿namespace VCardOnAbp.Cards;
+
+public enum Supplier
 {
-    public enum Supplier
-    {
-        Vmcardio
-    }
+    Vmcardio
 }

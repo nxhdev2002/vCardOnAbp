@@ -8,7 +8,7 @@ public class VCardOnAbpPermissionDefinitionProvider : PermissionDefinitionProvid
 {
     public override void Define(IPermissionDefinitionContext context)
     {
-        var myGroup = context.AddGroup(VCardOnAbpPermissions.CardGroup);
+        PermissionGroupDefinition myGroup = context.AddGroup(VCardOnAbpPermissions.CardGroup);
 
         //Define your own permissions here. Example:
         //myGroup.AddPermission(VCardOnAbpPermissions.MyPermission1, L("Permission:MyPermission1"));

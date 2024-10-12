@@ -6,33 +6,32 @@ using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Threading;
 
-namespace VCardOnAbp.BackgroundJobs
+namespace VCardOnAbp.BackgroundJobs;
+
+public class FundCardJob(
+    ICancellationTokenProvider cancellationTokenProvider,
+    IVmcardioAppService vmcardioAppService
+)
+    : AsyncBackgroundJob<FundCardJobArgs>, ITransientDependency
 {
-    public class FundCardJob(
-        ICancellationTokenProvider cancellationTokenProvider,
-        IVmcardioAppService vmcardioAppService
-    )
-        : AsyncBackgroundJob<FundCardJobArgs>, ITransientDependency
+    private readonly ICancellationTokenProvider _cancellationTokenProvider = cancellationTokenProvider;
+    private readonly IVmcardioAppService _vmcardioAppService = vmcardioAppService;
+
+    public override async Task ExecuteAsync(FundCardJobArgs args)
     {
-        private readonly ICancellationTokenProvider _cancellationTokenProvider = cancellationTokenProvider;
-        private readonly IVmcardioAppService _vmcardioAppService = vmcardioAppService;
+        _cancellationTokenProvider.Token.ThrowIfCancellationRequested();
+        await ProcessAsync(args);
+    }
 
-        public override async Task ExecuteAsync(FundCardJobArgs args)
+    private async Task ProcessAsync(FundCardJobArgs args)
+    {
+        switch (args.Supplier)
         {
-            _cancellationTokenProvider.Token.ThrowIfCancellationRequested();
-            await ProcessAsync(args);
-        }
-
-        private async Task ProcessAsync(FundCardJobArgs args)
-        {
-            switch (args.Supplier)
-            {
-                case Supplier.Vmcardio:
-                    await _vmcardioAppService.FundCardAsync(new ApiServices.Vmcardio.Dtos.FundCardDto());
-                    break;
-                default:
-                    return;
-            }
+            case Supplier.Vmcardio:
+                await _vmcardioAppService.FundCardAsync(new ApiServices.Vmcardio.Dtos.FundCardDto());
+                break;
+            default:
+                return;
         }
     }
 }

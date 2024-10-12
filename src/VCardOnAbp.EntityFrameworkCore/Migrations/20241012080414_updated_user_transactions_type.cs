@@ -2,28 +2,27 @@
 
 #nullable disable
 
-namespace VCardOnAbp.Migrations
+namespace VCardOnAbp.Migrations;
+
+/// <inheritdoc />
+public partial class updated_user_transactions_type : Migration
 {
     /// <inheritdoc />
-    public partial class updated_user_transactions_type : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<int>(
-                name: "Type",
-                table: "UserTransactions",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-        }
+        migrationBuilder.AddColumn<int>(
+            name: "Type",
+            table: "UserTransactions",
+            type: "int",
+            nullable: false,
+            defaultValue: 0);
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Type",
-                table: "UserTransactions");
-        }
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            name: "Type",
+            table: "UserTransactions");
     }
 }

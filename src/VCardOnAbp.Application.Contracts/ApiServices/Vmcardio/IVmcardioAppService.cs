@@ -1,19 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using VCardOnAbp.ApiServices.Vmcardio.Dtos;
-using VCardOnAbp.Cards.Dto;
 using Volo.Abp.Application.Services;
 
-namespace VCardOnAbp.ApiServices.Vmcardio
+namespace VCardOnAbp.ApiServices.Vmcardio;
+
+public interface IVmcardioAppService : IApplicationService
 {
-    public interface IVmcardioAppService : IApplicationService
-    {
-        Task<object> GetCards(GetCardsFilterInput input);
-        Task<VmCardDto> GetCard(Dtos.GetCardInput input);
-        Task<List<VmCardioTransactionDto>> GetCardTransactions(GetVmCardTransactionInput input);
-        Task CreateCardAsync();
-        Task DeleteCardAsync();
-        Task FundCardAsync(FundCardDto input);
-    }
+    Task<object> GetCards(GetCardsFilterInput input);
+    Task<VmCardDto> GetCard(Dtos.GetCardInput input);
+    Task<List<VmCardioTransactionDto>> GetCardTransactions(GetVmCardTransactionInput input);
+    Task CreateCardAsync();
+    Task DeleteCardAsync();
+    Task FundCardAsync(FundCardDto input);
 }

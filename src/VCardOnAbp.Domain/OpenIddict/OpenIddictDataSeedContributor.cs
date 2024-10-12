@@ -71,7 +71,8 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 
     private async Task CreateApplicationsAsync()
     {
-        var commonScopes = new List<string> {
+        List<string> commonScopes = new()
+        {
             OpenIddictConstants.Permissions.Scopes.Address,
             OpenIddictConstants.Permissions.Scopes.Email,
             OpenIddictConstants.Permissions.Scopes.Phone,
@@ -80,14 +81,14 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             "VCardOnAbp"
         };
 
-        var configurationSection = _configuration.GetSection("OpenIddict:Applications");
+        IConfigurationSection configurationSection = _configuration.GetSection("OpenIddict:Applications");
 
 
         //Console Test / Angular Client
-        var consoleAndAngularClientId = configurationSection["VCardOnAbp_App:ClientId"];
+        string? consoleAndAngularClientId = configurationSection["VCardOnAbp_App:ClientId"];
         if (!consoleAndAngularClientId.IsNullOrWhiteSpace())
         {
-            var consoleAndAngularClientRootUrl = configurationSection["VCardOnAbp_App:RootUrl"]?.TrimEnd('/');
+            string? consoleAndAngularClientRootUrl = configurationSection["VCardOnAbp_App:RootUrl"]?.TrimEnd('/');
             await CreateApplicationAsync(
                 name: consoleAndAngularClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,
@@ -112,10 +113,10 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 
 
         //Mobile Client
-        var mobileClientId = configurationSection["VCardOnAbp_Mobile:ClientId"];
+        string? mobileClientId = configurationSection["VCardOnAbp_Mobile:ClientId"];
         if (!mobileClientId.IsNullOrWhiteSpace())
         {
-            var mobileClientRootUrl = configurationSection["VCardOnAbp_Mobile:RootUrl"]?.Replace("_", "-");
+            string? mobileClientRootUrl = configurationSection["VCardOnAbp_Mobile:RootUrl"]?.Replace("_", "-");
             await CreateApplicationAsync(
                 name: mobileClientId!,
                 type: OpenIddictConstants.ClientTypes.Public,
@@ -139,10 +140,10 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 
 
         // Swagger Client
-        var swaggerClientId = configurationSection["VCardOnAbp_Swagger:ClientId"];
+        string? swaggerClientId = configurationSection["VCardOnAbp_Swagger:ClientId"];
         if (!swaggerClientId.IsNullOrWhiteSpace())
         {
-            var swaggerRootUrl = configurationSection["VCardOnAbp_Swagger:RootUrl"]?.TrimEnd('/');
+            string? swaggerRootUrl = configurationSection["VCardOnAbp_Swagger:RootUrl"]?.TrimEnd('/');
 
             await CreateApplicationAsync(
                 name: swaggerClientId!,
@@ -160,10 +161,10 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
 
 
         // Swagger Client
-        var swaggerClientId1 = configurationSection["VcardProd:ClientId"];
+        string? swaggerClientId1 = configurationSection["VcardProd:ClientId"];
         if (!swaggerClientId1.IsNullOrWhiteSpace())
         {
-            var swaggerRootUrl = configurationSection["VcardProd:RootUrl"]?.TrimEnd('/');
+            string? swaggerRootUrl = configurationSection["VcardProd:RootUrl"]?.TrimEnd('/');
 
             await CreateApplicationAsync(
                 name: swaggerClientId1!,
@@ -206,9 +207,9 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             throw new BusinessException(L["TheClientSecretIsRequiredForConfidentialApplications"]);
         }
 
-        var client = await _openIddictApplicationRepository.FindByClientIdAsync(name);
+        OpenIddictApplication client = await _openIddictApplicationRepository.FindByClientIdAsync(name);
 
-        var application = new AbpApplicationDescriptor
+        AbpApplicationDescriptor application = new()
         {
             ClientId = name,
             ClientType = type,
@@ -239,13 +240,13 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             application.Permissions.Add(OpenIddictConstants.Permissions.Endpoints.Logout);
         }
 
-        var buildInGrantTypes = new[] {
+        string[] buildInGrantTypes = new[] {
             OpenIddictConstants.GrantTypes.Implicit, OpenIddictConstants.GrantTypes.Password,
             OpenIddictConstants.GrantTypes.AuthorizationCode, OpenIddictConstants.GrantTypes.ClientCredentials,
             OpenIddictConstants.GrantTypes.DeviceCode, OpenIddictConstants.GrantTypes.RefreshToken
         };
 
-        foreach (var grantType in grantTypes)
+        foreach (string grantType in grantTypes)
         {
             if (grantType == OpenIddictConstants.GrantTypes.AuthorizationCode)
             {
@@ -312,13 +313,13 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
             }
         }
 
-        var buildInScopes = new[] {
+        string[] buildInScopes = new[] {
             OpenIddictConstants.Permissions.Scopes.Address, OpenIddictConstants.Permissions.Scopes.Email,
             OpenIddictConstants.Permissions.Scopes.Phone, OpenIddictConstants.Permissions.Scopes.Profile,
             OpenIddictConstants.Permissions.Scopes.Roles
         };
 
-        foreach (var scope in scopes)
+        foreach (string scope in scopes)
         {
             if (buildInScopes.Contains(scope))
             {
@@ -334,7 +335,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         {
             if (!redirectUri.IsNullOrEmpty())
             {
-                if (!Uri.TryCreate(redirectUri, UriKind.Absolute, out var uri) || !uri.IsWellFormedOriginalString())
+                if (!Uri.TryCreate(redirectUri, UriKind.Absolute, out Uri? uri) || !uri.IsWellFormedOriginalString())
                 {
                     throw new BusinessException(L["InvalidRedirectUri", redirectUri]);
                 }
@@ -350,7 +351,7 @@ public class OpenIddictDataSeedContributor : IDataSeedContributor, ITransientDep
         {
             if (!postLogoutRedirectUri.IsNullOrEmpty())
             {
-                if (!Uri.TryCreate(postLogoutRedirectUri, UriKind.Absolute, out var uri) ||
+                if (!Uri.TryCreate(postLogoutRedirectUri, UriKind.Absolute, out Uri? uri) ||
                     !uri.IsWellFormedOriginalString())
                 {
                     throw new BusinessException(L["InvalidPostLogoutRedirectUri", postLogoutRedirectUri]);

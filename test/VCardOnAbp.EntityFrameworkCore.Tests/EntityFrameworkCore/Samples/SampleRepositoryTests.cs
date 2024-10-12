@@ -30,7 +30,7 @@ public class SampleRepositoryTests : VCardOnAbpEntityFrameworkCoreTestBase
         await WithUnitOfWorkAsync(async () =>
         {
             //Act
-            var adminUser = await _appUserRepository
+            IdentityUser? adminUser = await _appUserRepository
             .FirstOrDefaultAsync(u => u.UserName == "admin");
 
             //Assert

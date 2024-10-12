@@ -1,7 +1,6 @@
-﻿namespace VCardOnAbp.Transactions
+﻿namespace VCardOnAbp.Transactions;
+
+public enum UserTransactionType
 {
-    public enum UserTransactionType
-    {
-        FundCard
-    }
+    FundCard
 }

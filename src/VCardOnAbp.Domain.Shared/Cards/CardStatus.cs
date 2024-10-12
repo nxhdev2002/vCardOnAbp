@@ -1,9 +1,8 @@
-﻿namespace VCardOnAbp.Cards
+﻿namespace VCardOnAbp.Cards;
+
+public enum CardStatus
 {
-    public enum CardStatus
-    {
-        Active,
-        Inactive,
-        Lock
-    }
+    Active,
+    Inactive,
+    Lock
 }

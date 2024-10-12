@@ -1,41 +1,40 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
+using System;
 
 #nullable disable
 
-namespace VCardOnAbp.Migrations
+namespace VCardOnAbp.Migrations;
+
+/// <inheritdoc />
+public partial class updated_supplier : Migration
 {
     /// <inheritdoc />
-    public partial class updated_supplier : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "SupplierId",
-                table: "Cards");
+        migrationBuilder.DropColumn(
+            name: "SupplierId",
+            table: "Cards");
 
-            migrationBuilder.AddColumn<int>(
-                name: "Supplier",
-                table: "Cards",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
-        }
+        migrationBuilder.AddColumn<int>(
+            name: "Supplier",
+            table: "Cards",
+            type: "int",
+            nullable: false,
+            defaultValue: 0);
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "Supplier",
-                table: "Cards");
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            name: "Supplier",
+            table: "Cards");
 
-            migrationBuilder.AddColumn<Guid>(
-                name: "SupplierId",
-                table: "Cards",
-                type: "uniqueidentifier",
-                nullable: false,
-                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
-        }
+        migrationBuilder.AddColumn<Guid>(
+            name: "SupplierId",
+            table: "Cards",
+            type: "uniqueidentifier",
+            nullable: false,
+            defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
     }
 }

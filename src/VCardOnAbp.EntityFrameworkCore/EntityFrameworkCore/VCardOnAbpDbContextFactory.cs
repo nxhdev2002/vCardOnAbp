@@ -11,11 +11,11 @@ public class VCardOnAbpDbContextFactory : IDesignTimeDbContextFactory<VCardOnAbp
 {
     public VCardOnAbpDbContext CreateDbContext(string[] args)
     {
-        var configuration = BuildConfiguration();
+        IConfigurationRoot configuration = BuildConfiguration();
 
         VCardOnAbpEfCoreEntityExtensionMappings.Configure();
 
-        var builder = new DbContextOptionsBuilder<VCardOnAbpDbContext>()
+        DbContextOptionsBuilder<VCardOnAbpDbContext> builder = new DbContextOptionsBuilder<VCardOnAbpDbContext>()
             .UseSqlServer(configuration.GetConnectionString("Default"));
 
         return new VCardOnAbpDbContext(builder.Options);
@@ -23,7 +23,7 @@ public class VCardOnAbpDbContextFactory : IDesignTimeDbContextFactory<VCardOnAbp
 
     private static IConfigurationRoot BuildConfiguration()
     {
-        var builder = new ConfigurationBuilder()
+        IConfigurationBuilder builder = new ConfigurationBuilder()
             .SetBasePath(Path.Combine(Directory.GetCurrentDirectory(), "../VCardOnAbp.DbMigrator/"))
             .AddJsonFile("appsettings.json", optional: false);
 

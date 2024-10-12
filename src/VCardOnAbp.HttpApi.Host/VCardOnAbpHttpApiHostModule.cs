@@ -31,7 +31,6 @@ using Volo.Abp.AspNetCore.Mvc.UI.Theme.Shared;
 using Volo.Abp.AspNetCore.Serilog;
 using Volo.Abp.Autofac;
 using Volo.Abp.Caching.StackExchangeRedis;
-using Volo.Abp.Hangfire;
 using Volo.Abp.Modularity;
 using Volo.Abp.OpenIddict;
 using Volo.Abp.Security.Claims;
@@ -59,8 +58,8 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
-        var hostingEnvironment = context.Services.GetHostingEnvironment();
-        var configuration = context.Services.GetConfiguration();
+        IWebHostEnvironment hostingEnvironment = context.Services.GetHostingEnvironment();
+        IConfiguration configuration = context.Services.GetConfiguration();
 
         PreConfigure<OpenIddictBuilder>(builder =>
         {
@@ -90,8 +89,8 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
 
     public override void ConfigureServices(ServiceConfigurationContext context)
     {
-        var configuration = context.Services.GetConfiguration();
-        var hostingEnvironment = context.Services.GetHostingEnvironment();
+        IConfiguration configuration = context.Services.GetConfiguration();
+        IWebHostEnvironment hostingEnvironment = context.Services.GetHostingEnvironment();
 
         if (!configuration.GetValue<bool>("App:DisablePII"))
         {
@@ -120,9 +119,9 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
 
     private X509Certificate2 GetSigningCertificate(IWebHostEnvironment hostingEnv)
     {
-        var fileName = "authserver.pfx";
-        var passPhrase = "2D7AA457-5D33-48D6-936F-C48E5EF468ED";
-        var file = Path.Combine(hostingEnv.ContentRootPath, fileName);
+        string fileName = "authserver.pfx";
+        string passPhrase = "2D7AA457-5D33-48D6-936F-C48E5EF468ED";
+        string file = Path.Combine(hostingEnv.ContentRootPath, fileName);
 
         if (!File.Exists(file))
         {
@@ -192,7 +191,7 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
 
     private void ConfigureVirtualFileSystem(ServiceConfigurationContext context)
     {
-        var hostingEnvironment = context.Services.GetHostingEnvironment();
+        IWebHostEnvironment hostingEnvironment = context.Services.GetHostingEnvironment();
 
         if (hostingEnvironment.IsDevelopment())
         {
@@ -261,8 +260,8 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
 
     public override void OnApplicationInitialization(ApplicationInitializationContext context)
     {
-        var app = context.GetApplicationBuilder();
-        var env = context.GetEnvironment();
+        IApplicationBuilder app = context.GetApplicationBuilder();
+        IWebHostEnvironment env = context.GetEnvironment();
 
         if (env.IsDevelopment())
         {
@@ -297,7 +296,7 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
         {
             options.SwaggerEndpoint("/swagger/v1/swagger.json", "VCardOnAbp API");
 
-            var configuration = context.ServiceProvider.GetRequiredService<IConfiguration>();
+            IConfiguration configuration = context.ServiceProvider.GetRequiredService<IConfiguration>();
             options.OAuthClientId(configuration["AuthServer:SwaggerClientId"]);
         });
         app.UseAuditing();

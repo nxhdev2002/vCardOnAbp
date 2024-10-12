@@ -7,7 +7,7 @@ namespace VCardOnAbp.EntityFrameworkCore;
 
 public static class VCardOnAbpEfCoreEntityExtensionMappings
 {
-    private static readonly OneTimeRunner OneTimeRunner = new OneTimeRunner();
+    private static readonly OneTimeRunner OneTimeRunner = new();
 
     public static void Configure()
     {
@@ -48,6 +48,6 @@ public static class VCardOnAbpEfCoreEntityExtensionMappings
                         propertyBuilder.HasDefaultValue(0);
                     }
                 );
-    });
+        });
     }
 }

@@ -9,77 +9,76 @@ using VCardOnAbp.Masters;
 using Volo.Abp.Caching;
 using Volo.Abp.Domain.Repositories;
 
-namespace VCardOnAbp.Bins
+namespace VCardOnAbp.Bins;
+
+public class BinCardAppService(
+    IDistributedCache<Bin> distributedCache,
+    IRepository<Bin, Guid> binRepository,
+    IRepository<Currency, Guid> currencyRepository
+) : VCardOnAbpAppService, IBinCardAppService
 {
-    public class BinCardAppService(
-        IDistributedCache<Bin> distributedCache,
-        IRepository<Bin, Guid> binRepository,
-        IRepository<Currency, Guid> currencyRepository
-    ) : VCardOnAbpAppService, IBinCardAppService
+    private readonly IDistributedCache<Bin> _distributedCache = distributedCache;
+    private readonly IRepository<Bin, Guid> _binRepository = binRepository;
+    private readonly IRepository<Currency, Guid> _currencyRepository = currencyRepository;
+
+
+
+    public virtual async Task<BinDto> CreateAsync(CreateBinDtoInput input)
     {
-        private readonly IDistributedCache<Bin> _distributedCache = distributedCache;
-        private readonly IRepository<Bin, Guid> _binRepository = binRepository;
-        private readonly IRepository<Currency, Guid> _currencyRepository = currencyRepository;
+        Currency currency = await _currencyRepository.GetAsync(input.CurrencyId);
+        Bin bin = new(
+            GuidGenerator.Create(),
+            input.Name,
+            input.Description,
+            input.Supplier,
+            currency.Id
+        );
 
+        await _binRepository.InsertAsync(bin);
 
+        return ObjectMapper.Map<Bin, BinDto>(bin);
+    }
 
-        public virtual async Task<BinDto> CreateAsync(CreateBinDtoInput input)
+    public virtual async Task<BinDto> GetAsync(Guid id)
+    {
+        Bin? bin = await _distributedCache
+            .GetOrAddAsync(id.ToString(), async () => await _binRepository.GetAsync(id));
+        return ObjectMapper.Map<Bin, BinDto>(bin);
+    }
+
+    public virtual async Task<List<BinDto>> GetListAsync(GetBinDtoInput input)
+    {
+        List<Bin> bin = await (await _binRepository.GetQueryableAsync())
+            .AsNoTracking()
+            .PageBy(input)
+            .WhereIf(input.Filter != null,
+                    x => EF.Functions.Like(x.Name, $"%{input.Filter}%") ||
+                         EF.Functions.Like(x.Description, $"%{input.Filter}%"))
+            .ToListAsync()
+            .ConfigureAwait(false);
+
+        return ObjectMapper.Map<List<Bin>, List<BinDto>>(bin);
+    }
+
+    public virtual async Task<BinDto> UpdateAsync(Guid id, UpdateBinDtoInput input)
+    {
+        Bin bin = await _binRepository.GetAsync(id);
+
+        bin.If(input.FundingPercentFee > 0, b => b.UpdateFee(fundingPercentFee: input.FundingPercentFee));
+        bin.If(input.FundingFixedFee > 0, b => b.UpdateFee(fundingFixedFee: input.FundingFixedFee));
+        bin.If(input.CreationFixedFee > 0, b => b.UpdateFee(creationFixedFee: input.CreationFixedFee));
+        bin.If(input.CreationPercentFee > 0, b => b.UpdateFee(creationPercentFee: input.CreationPercentFee));
+
+        await _distributedCache.SetAsync(bin.Id.ToString(), bin, new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
         {
-            var currency = await _currencyRepository.GetAsync(input.CurrencyId);
-            var bin = new Bin(
-                GuidGenerator.Create(),
-                input.Name,
-                input.Description,
-                input.Supplier,
-                currency.Id
-            );
+            SlidingExpiration = System.TimeSpan.FromMinutes(30)
+        });
+        return ObjectMapper.Map<Bin, BinDto>(bin);
+    }
 
-            await _binRepository.InsertAsync(bin);
-
-            return ObjectMapper.Map<Bin, BinDto>(bin);
-        }
-
-        public virtual async Task<BinDto> GetAsync(Guid id)
-        {
-            var bin = await _distributedCache
-                .GetOrAddAsync(id.ToString(), async () => await _binRepository.GetAsync(id));
-            return ObjectMapper.Map<Bin, BinDto>(bin);
-        }
-
-        public virtual async Task<List<BinDto>> GetListAsync(GetBinDtoInput input)
-        {
-            var bin = await (await _binRepository.GetQueryableAsync())
-                .AsNoTracking()
-                .PageBy(input)
-                .WhereIf(input.Filter != null,
-                        x => EF.Functions.Like(x.Name, $"%{input.Filter}%") ||
-                             EF.Functions.Like(x.Description, $"%{input.Filter}%"))
-                .ToListAsync()
-                .ConfigureAwait(false);
-
-            return ObjectMapper.Map<List<Bin>, List<BinDto>>(bin);
-        }
-
-        public virtual async Task<BinDto> UpdateAsync(Guid id, UpdateBinDtoInput input)
-        {
-            var bin = await _binRepository.GetAsync(id);
-
-            bin.If(input.FundingPercentFee > 0, b => b.UpdateFee(fundingPercentFee: input.FundingPercentFee));
-            bin.If(input.FundingFixedFee > 0, b => b.UpdateFee(fundingFixedFee: input.FundingFixedFee));
-            bin.If(input.CreationFixedFee > 0, b => b.UpdateFee(creationFixedFee: input.CreationFixedFee));
-            bin.If(input.CreationPercentFee > 0, b => b.UpdateFee(creationPercentFee: input.CreationPercentFee));
-
-            await _distributedCache.SetAsync(bin.Id.ToString(), bin, new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
-            {
-                SlidingExpiration = System.TimeSpan.FromMinutes(30)
-            });
-            return ObjectMapper.Map<Bin, BinDto>(bin);
-        }
-
-        public virtual async Task DeleteAsync(Guid id)
-        {
-            await _distributedCache.RemoveAsync(id.ToString());
-            await _binRepository.DeleteAsync(id);
-        }
+    public virtual async Task DeleteAsync(Guid id)
+    {
+        await _distributedCache.RemoveAsync(id.ToString());
+        await _binRepository.DeleteAsync(id);
     }
 }

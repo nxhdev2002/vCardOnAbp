@@ -1,9 +1,7 @@
 using System.Threading.Tasks;
-using VCardOnAbp.BackgroundJobs;
 using Volo.Abp;
 using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
-using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.BackgroundWorkers.Hangfire;
 using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.FeatureManagement;
