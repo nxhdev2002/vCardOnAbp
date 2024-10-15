@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using VCardOnAbp.Cards.Events;
 using Volo.Abp;
 using Volo.Abp.Domain.Entities.Auditing;
 
@@ -30,7 +31,9 @@ public class Card : FullAuditedAggregateRoot<Guid>
 
     public Card ChangeStatus(CardStatus cardStatus)
     {
+        var previous = CardStatus;
         CardStatus = cardStatus;
+        AddLocalEvent(new CardStatusChangedEvent(this, previous, cardStatus));
         return this;
     }
 

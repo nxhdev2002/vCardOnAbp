@@ -14,6 +14,11 @@ const routes: Routes = [
     loadChildren: () => import('./card/card.module').then(m => m.CardModule),
   },
   {
+    path: 'bin',
+    pathMatch: 'full',
+    loadChildren: () => import('./bins/bin.module').then(m => m.BinModule),
+  },
+  {
     path: 'account',
     loadChildren: () => import('@abp/ng.account').then(m => m.AccountModule.forLazy()),
   },

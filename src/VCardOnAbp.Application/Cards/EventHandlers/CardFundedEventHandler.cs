@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using VCardOnAbp.BackgroundJobs.Dtos;
+using VCardOnAbp.Cards.Events;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.EventBus;

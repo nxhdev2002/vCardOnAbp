@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,11 +7,13 @@ using System.Threading.Tasks;
 using VCardOnAbp.Bins.Dtos;
 using VCardOnAbp.Currencies;
 using VCardOnAbp.Masters;
+using VCardOnAbp.Permissions;
 using Volo.Abp.Caching;
 using Volo.Abp.Domain.Repositories;
 
 namespace VCardOnAbp.Bins;
 
+[Authorize(VCardOnAbpPermissions.BinGroup)]
 public class BinCardAppService(
     IDistributedCache<Bin> distributedCache,
     IRepository<Bin, Guid> binRepository,
@@ -22,7 +25,7 @@ public class BinCardAppService(
     private readonly IRepository<Currency, Guid> _currencyRepository = currencyRepository;
 
 
-
+    [Authorize(VCardOnAbpPermissions.AddBin)]
     public virtual async Task<BinDto> CreateAsync(CreateBinDtoInput input)
     {
         Currency currency = await _currencyRepository.GetAsync(input.CurrencyId);
@@ -31,7 +34,12 @@ public class BinCardAppService(
             input.Name,
             input.Description,
             input.Supplier,
-            currency.Id
+            currency.Id,
+            input.SupplierMapping,
+            input.CreationFixedFee,
+            input.CreationPercentFee,
+            input.FundingFixedFee,
+            input.FundingPercentFee
         );
 
         await _binRepository.InsertAsync(bin);
@@ -39,6 +47,7 @@ public class BinCardAppService(
         return ObjectMapper.Map<Bin, BinDto>(bin);
     }
 
+    [Authorize(VCardOnAbpPermissions.ViewBin)]
     public virtual async Task<BinDto> GetAsync(Guid id)
     {
         Bin? bin = await _distributedCache
@@ -46,6 +55,7 @@ public class BinCardAppService(
         return ObjectMapper.Map<Bin, BinDto>(bin);
     }
 
+    [Authorize(VCardOnAbpPermissions.ViewBin)]
     public virtual async Task<List<BinDto>> GetListAsync(GetBinDtoInput input)
     {
         List<Bin> bin = await (await _binRepository.GetQueryableAsync())
@@ -60,6 +70,7 @@ public class BinCardAppService(
         return ObjectMapper.Map<List<Bin>, List<BinDto>>(bin);
     }
 
+    [Authorize(VCardOnAbpPermissions.EditBin)]
     public virtual async Task<BinDto> UpdateAsync(Guid id, UpdateBinDtoInput input)
     {
         Bin bin = await _binRepository.GetAsync(id);
@@ -76,6 +87,7 @@ public class BinCardAppService(
         return ObjectMapper.Map<Bin, BinDto>(bin);
     }
 
+    [Authorize(VCardOnAbpPermissions.EditBin)]
     public virtual async Task DeleteAsync(Guid id)
     {
         await _distributedCache.RemoveAsync(id.ToString());

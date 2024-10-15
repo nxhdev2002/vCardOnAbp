@@ -59,7 +59,6 @@ public class CardManager(
         if (amount < 0) throw new BusinessException(VCardOnAbpDomainErrorCodes.AmountMustBePositive)
                 .WithData(nameof(amount), amount);
 
-        // adjust balance
         Bin bin = await (await _binRepo.GetQueryableAsync()).AsNoTracking().FirstOrDefaultAsync(x => x.Id == card.BinId) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.BinNotFound);
         if (!bin.IsActive) throw new BusinessException(VCardOnAbpDomainErrorCodes.BinNotActive);
 

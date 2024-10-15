@@ -10,4 +10,7 @@ public static class VCardOnAbpConsts
     public const string AdminPasswordDefaultValue = IdentityDataSeedContributor.AdminPasswordDefaultValue;
 
     public const int CardActiveDays = 10;
+
+    public const int MaxNameLength = 50;
+    public const int MaxDescriptionLength = 500;
 }

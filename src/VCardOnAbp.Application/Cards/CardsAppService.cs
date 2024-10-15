@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VCardOnAbp.BackgroundJobs.Dtos;
 using VCardOnAbp.Cards.Dto;
+using VCardOnAbp.Cards.Events;
 using VCardOnAbp.Permissions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
@@ -15,7 +16,7 @@ using Volo.Abp.EventBus.Local;
 
 namespace VCardOnAbp.Cards;
 
-[Authorize(VCardOnAbpPermissions.ViewCard)]
+[Authorize(VCardOnAbpPermissions.CardGroup)]
 public class CardsAppService(
     CardManager cardManager,
     IBackgroundJobManager backgroundJobManager,
@@ -33,22 +34,20 @@ public class CardsAppService(
     [Authorize(VCardOnAbpPermissions.ViewCard)]
     public virtual async Task<PagedResultDto<CardDto>> GetListAsync(GetCardInput input)
     {
-        using (_cardRepository.DisableTracking())
-        {
-            IQueryable<Card> cards = (await _cardRepository.GetQueryableAsync())
-                .Where(x => x.CreatorId == CurrentUser.Id!.Value)
-                .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(x.CardNo, $"%{input.Filter}%"));
+        IQueryable<Card> cards = (await _cardRepository.GetQueryableAsync())
+            .AsNoTracking()
+            .Where(x => x.CreatorId == CurrentUser.Id!.Value)
+            .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(x.CardNo, $"%{input.Filter}%"));
 
-            int totalCount = await cards.CountAsync();
-            List<Card> data = await cards
-                .PageBy(input)
-                .ToListAsync();
+        int totalCount = await cards.CountAsync();
+        List<Card> data = await cards
+            .PageBy(input)
+            .ToListAsync();
 
-            return new PagedResultDto<CardDto>(
-                totalCount,
-                ObjectMapper.Map<List<Card>, List<CardDto>>(data)
-            );
-        }
+        return new PagedResultDto<CardDto>(
+            totalCount,
+            ObjectMapper.Map<List<Card>, List<CardDto>>(data)
+        );
     }
 
 
