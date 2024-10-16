@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using VCardOnAbp.Cards;
 using VCardOnAbp.Currencies;
 using VCardOnAbp.Masters;
+using VCardOnAbp.Payments;
 using VCardOnAbp.Transactions;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
@@ -65,6 +66,7 @@ public class VCardOnAbpDbContext :
     public DbSet<Bin> Bins { get; set; }
     public DbSet<Currency> Currencies { get; set; }
     public DbSet<UserTransaction> UserTransactions { get; set; }
+    public DbSet<PaymentMethod> PaymentMethods { get; set; }
     #endregion
 
     public VCardOnAbpDbContext(DbContextOptions<VCardOnAbpDbContext> options)

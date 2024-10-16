@@ -38,4 +38,8 @@
     <None Remove="localization\vcardonabp\vi.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Payments\" />
+  </ItemGroup>
+
 </Project>

@@ -12,6 +12,7 @@ public static class VCardOnAbpPermissions
     public const string ViewCardTransaction = CardGroup + ".ViewCardTransaction";
     public const string CreateCard = CardGroup + ".CreateCard";
     public const string FundCard = CardGroup + ".FundCard";
+    public const string DeleteCard = CardGroup + ".DeleteCard";
 
 
     // BIN

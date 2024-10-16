@@ -113,6 +113,13 @@ public class CardsAppService(
     }
 
 
+    [Authorize(VCardOnAbpPermissions.DeleteCard)]
+    public virtual async Task DeleteAsync(Guid id)
+    {
+        var card = await _cardManager.GetCard(id, CurrentUser.Id!.Value);
+        await _cardManager.DeleteAsync(card!);
+    }
+
     #region Admin Methods
     [Authorize(VCardOnAbpPermissions.AddCard)]
     public Task AddCard(AddCardInput input)

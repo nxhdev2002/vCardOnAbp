@@ -74,4 +74,9 @@ public class CardManager(
             new UserTransaction(GuidGenerator.Create(), card.CreatorId!.Value, card.Id, null, UserTransactionType.FundCard, amount)
         );
     }
+
+    public async Task DeleteAsync(Card card)
+    {
+        await _cardsRepository.DeleteAsync(card);
+    }
 }

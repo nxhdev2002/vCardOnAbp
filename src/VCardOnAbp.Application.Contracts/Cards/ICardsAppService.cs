@@ -14,4 +14,5 @@ public interface ICardsAppService : IApplicationService
     Task CreateAsync(CreateCardInput input);
     Task AddCard(AddCardInput input);
     Task FundAsync(FundCardInput input);
+    Task DeleteAsync(Guid id);
 }
