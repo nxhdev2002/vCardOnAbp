@@ -1,4 +1,4 @@
-import { CoreModule } from '@abp/ng.core';
+import { CoreModule, LocalizationModule } from '@abp/ng.core';
 import { SettingManagementConfigModule } from '@abp/ng.setting-management/config';
 import { ThemeSharedModule } from '@abp/ng.theme.shared';
 import { NgModule } from '@angular/core';

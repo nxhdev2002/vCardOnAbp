@@ -1,1 +1,30 @@
-<p>bins works!</p>
+<div class="card">
+  <p-table [value]="products" [tableStyle]="{'min-width': '60rem'}" [showCurrentPageReport]="true"  [paginator]="true" [rows]="5" [rowsPerPageOptions]="[1, 5, 10, 20]" (onPage)="pageChange($event)" currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries">
+      <ng-template pTemplate="caption">
+          <div class="flex align-items-center justify-content-between">
+              {{ '::Bin' | abpLocalization }}
+              <p-button icon="pi pi-refresh" />
+          </div>
+      </ng-template>
+      <ng-template pTemplate="header">
+          <tr>
+              <th>Name</th>
+              <th>Image</th>
+              <th>Price</th>
+              <th>Category</th>
+              <th>Reviews</th>
+              <th>Status</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+          <tr>
+              <td>{{product.name}}</td>
+              <td><img [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image" [alt]="product.name" width="100" class="shadow-4" /></td>
+              <td>{{product.price}}</td>
+              <td>{{product.category}}</td>
+              <td><p-rating [(ngModel)]="product.rating" [readonly]="true" [cancel]="false" /></td>
+              <td><p-tag [value]="product.inventoryStatus" [severity]="getSeverity(product.inventoryStatus)" /></td>
+          </tr>
+      </ng-template>
+  </p-table>
+</div>

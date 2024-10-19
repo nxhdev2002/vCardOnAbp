@@ -16,10 +16,17 @@ function configureRoutes(routes: RoutesService) {
         layout: eLayoutType.application,
       },
       {
+        path: '/bin',
+        name: '::Bin',
+        iconClass: 'fas fa-card',
+        order: 2,
+        layout: eLayoutType.application,
+      },
+      {
         path: '/card',
         name: '::Card',
         iconClass: 'fas fa-card',
-        order: 1,
+        order: 3,
         layout: eLayoutType.application,
       },
     ]);
