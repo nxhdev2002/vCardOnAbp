@@ -5,9 +5,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using VCardOnAbp.ApiServices.Vmcardio.Dtos;
 using VCardOnAbp.Commons;
+using Volo.Abp;
 
 namespace VCardOnAbp.ApiServices.Vmcardio;
 
+[RemoteService(false)]
 public class VmcardioAppService : VCardOnAbpAppService, IVmcardioAppService
 {
     public async Task<object> GetCards(GetCardsFilterInput input)
@@ -17,9 +19,10 @@ public class VmcardioAppService : VCardOnAbpAppService, IVmcardioAppService
         return cards;
     }
 
-    public Task CreateCardAsync()
+    public async Task<object> CreateCardAsync(VmcardioCreateCardDto input)
     {
-        return Task.CompletedTask;
+        var payload = input.ToDict();
+        return await SendVmcardioRequestAsync<object>(HttpMethod.Post, VmcardioApiConst.CreateCard, body: payload);
     }
 
     public Task DeleteCardAsync()
