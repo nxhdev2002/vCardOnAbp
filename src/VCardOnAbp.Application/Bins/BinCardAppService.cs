@@ -43,8 +43,9 @@ public class BinCardAppService(
         );
 
         await _binRepository.InsertAsync(bin);
-
-        return ObjectMapper.Map<Bin, BinDto>(bin);
+        var result = ObjectMapper.Map<Bin, BinDto>(bin);
+        result.Currency = currency.CurrencyCode;
+        return result;
     }
 
     [Authorize(VCardOnAbpPermissions.ViewBin)]
@@ -58,16 +59,35 @@ public class BinCardAppService(
     [Authorize(VCardOnAbpPermissions.ViewBin)]
     public virtual async Task<List<BinDto>> GetListAsync(GetBinDtoInput input)
     {
-        List<Bin> bin = await (await _binRepository.GetQueryableAsync())
-            .AsNoTracking()
-            .PageBy(input)
-            .WhereIf(input.Filter != null,
-                    x => EF.Functions.Like(x.Name, $"%{input.Filter}%") ||
-                         EF.Functions.Like(x.Description, $"%{input.Filter}%"))
+        var binQuery = (await _binRepository.GetQueryableAsync())
+                        .AsNoTracking()
+                        .PageBy(input)
+                        .WhereIf(input.Filter != null,
+                                x => EF.Functions.Like(x.Name, $"%{input.Filter}%") ||
+                                     EF.Functions.Like(x.Description, $"%{input.Filter}%"));
+
+        var currencyQuery = await _currencyRepository.GetQueryableAsync();
+        var query = from b in binQuery
+                    join c in currencyQuery on b.CurrencyId equals c.Id into bc
+                    from c in bc.DefaultIfEmpty()
+                    select new BinDto
+                    {
+                        Id = b.Id,
+                        Name = b.Name,
+                        Description = b.Description,
+                        Currency = c.CurrencyName,
+                        Symbol = c.CurrencySymbol,
+                        CreationFixedFee = b.CreationFixedFee,
+                        CreationPercentFee = b.CreationPercentFee,
+                        FundingFixedFee = b.FundingFixedFee,
+                        FundingPercentFee = b.FundingPercentFee,
+                    };
+
+        var bin = await query
             .ToListAsync()
             .ConfigureAwait(false);
 
-        return ObjectMapper.Map<List<Bin>, List<BinDto>>(bin);
+        return bin;
     }
 
     [Authorize(VCardOnAbpPermissions.EditBin)]

@@ -1,9 +1,9 @@
 import { Environment } from '@abp/ng.core';
 
-const baseUrl = 'http://localhost:4200';
+const baseUrl = 'https://demo.shop-procard.com';
 
 const oAuthConfig = {
-  issuer: 'https://localhost:44396/',
+  issuer: 'https://demo.shop-procard.com/',
   redirectUri: baseUrl,
   clientId: 'VCardOnAbp_App',
   responseType: 'code',
@@ -20,7 +20,7 @@ export const environment = {
   oAuthConfig,
   apis: {
     default: {
-      url: 'https://localhost:44396',
+      url: 'https://demo.shop-procard.com',
       rootNamespace: 'VCardOnAbp',
     },
     AbpAccountPublic: {

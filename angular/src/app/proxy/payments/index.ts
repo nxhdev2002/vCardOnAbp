@@ -1,3 +1,3 @@
 import * as Dtos from './dtos';
-export * from './vmcardio.service';
+export * from './payments.service';
 export { Dtos };

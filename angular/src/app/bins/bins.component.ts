@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { BinCardService } from '@proxy/bins';
+import { GetBinDtoInput } from '@proxy/bins/dtos';
+import { faker } from '@faker-js/faker';
 
 @Component({
   selector: 'app-bins',
@@ -6,59 +9,33 @@ import { Component, OnInit } from '@angular/core';
   styleUrl: './bins.component.scss'
 })
 export class BinsComponent implements OnInit {
+  layout: string = 'grid';
   products!: any[];
+  visible: boolean = false;
+  firstName: string;
+
+  constructor(private binService: BinCardService) {}
 
   ngOnInit(): void {
-    this.products = [
-      {
-        id: '1000',
-        code: 'f230fh0g3',
-        name: 'Bamboo Watch',
-        description: 'Product Description',
-        image: 'bamboo-watch.jpg',
-        price: 65,
-        category: 'Accessories',
-        quantity: 24,
-        inventoryStatus: 'INSTOCK',
-        rating: 5
-    },
-    {
-      id: '1000',
-      code: 'f230fh0g3',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      image: 'bamboo-watch.jpg',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5
-  },
-  {
-    id: '1000',
-    code: 'f230fh0g3',
-    name: 'Bamboo Watch',
-    description: 'Product Description',
-    image: 'bamboo-watch.jpg',
-    price: 65,
-    category: 'Accessories',
-    quantity: 24,
-    inventoryStatus: 'INSTOCK',
-    rating: 5
-},
-    ]
-  }
-  getSeverity(status: string) {
-    switch (status) {
-        case 'INSTOCK':
-            return 'success';
-        case 'LOWSTOCK':
-            return 'warning';
-        case 'OUTOFSTOCK':
-            return 'danger';
+    var input: GetBinDtoInput = {
+      filter: "",
+      skipCount: 0,
+      maxResultCount: 10,
     }
+    this.binService.getList(input).subscribe((res) => {
+      this.products = res;
+    })
   }
+
   pageChange(e) {
     console.log(e)
+  }
+
+  onCreateCardClicked(e) {
+    this.visible = true;
+  }
+
+  randomData() {
+    this.firstName = faker.person.firstName();
   }
 }

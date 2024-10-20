@@ -18,9 +18,9 @@ export class CardComponent implements OnInit {
   constructor(private authService: AuthService, private cardService: CardsService) {}
 
   ngOnInit() {
-    this.cardService.getList(this.input).subscribe((data) => {
-        this.products = data;
-    });
+    // this.cardService.getList(this.input).subscribe((data) => {
+    //     this.products = data;
+    // });
   }
 
   login() {

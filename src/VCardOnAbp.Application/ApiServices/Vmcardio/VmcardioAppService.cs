@@ -21,6 +21,7 @@ public class VmcardioAppService : VCardOnAbpAppService, IVmcardioAppService
 
     public async Task<object> CreateCardAsync(VmcardioCreateCardDto input)
     {
+        return Task.CompletedTask;
         var payload = input.ToDict();
         return await SendVmcardioRequestAsync<object>(HttpMethod.Post, VmcardioApiConst.CreateCard, body: payload);
     }

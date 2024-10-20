@@ -5,12 +5,24 @@ export interface BinDto {
   id?: string;
   name?: string;
   description?: string;
+  currency?: string;
+  creationFixedFee: number;
+  creationPercentFee: number;
+  fundingFixedFee: number;
+  fundingPercentFee: number;
+  symbol?: string;
 }
 
 export interface CreateBinDtoInput {
   name?: string;
   description?: string;
   supplier: Supplier;
+  currencyId?: string;
+  supplierMapping?: string;
+  creationFixedFee: number;
+  creationPercentFee: number;
+  fundingFixedFee: number;
+  fundingPercentFee: number;
 }
 
 export interface GetBinDtoInput extends PagedAndSortedResultRequestDto {

@@ -4,6 +4,7 @@
     "AppName": "VCardOnAbp",
     "Menu:Home": "Home",
     "Card": "Thẻ",
+    "Card:CreateCard": "Tạo thẻ",
     "Card:00001": "Không tìm thấy thẻ",
     "LongWelcomeMessage": "Chào mừng bạn đến với ứng dụng. Đây là một dự án khởi nghiệp dựa trên khung ABP. Để biết thêm thông tin hãy truy cập",
     "GetCreditCardsSuccess": "Lấy danh sách thẻ tín dụng thành công",

@@ -1,4 +1,4 @@
-import * as ApiServices from './api-services';
 import * as Bins from './bins';
 import * as Cards from './cards';
-export { ApiServices, Bins, Cards };
+import * as Payments from './payments';
+export { Bins, Cards, Payments };

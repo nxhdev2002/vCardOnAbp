@@ -873,310 +873,6 @@
       "rootPath": "app",
       "remoteServiceName": "Default",
       "controllers": {
-        "VCardOnAbp.ApiServices.Vmcardio.VmcardioAppService": {
-          "controllerName": "Vmcardio",
-          "controllerGroupName": "Vmcardio",
-          "isRemoteService": true,
-          "isIntegrationService": false,
-          "apiVersion": null,
-          "type": "VCardOnAbp.ApiServices.Vmcardio.VmcardioAppService",
-          "interfaces": [
-            {
-              "type": "VCardOnAbp.ApiServices.Vmcardio.IVmcardioAppService",
-              "name": "IVmcardioAppService",
-              "methods": [
-                {
-                  "name": "GetCards",
-                  "parametersOnMethod": [
-                    {
-                      "name": "input",
-                      "typeAsString": "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardsFilterInput, VCardOnAbp.Application.Contracts",
-                      "type": "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardsFilterInput",
-                      "typeSimple": "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardsFilterInput",
-                      "isOptional": false,
-                      "defaultValue": null
-                    }
-                  ],
-                  "returnValue": {
-                    "type": "System.Object",
-                    "typeSimple": "object"
-                  }
-                },
-                {
-                  "name": "GetCard",
-                  "parametersOnMethod": [
-                    {
-                      "name": "input",
-                      "typeAsString": "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardInput, VCardOnAbp.Application.Contracts",
-                      "type": "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardInput",
-                      "typeSimple": "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardInput",
-                      "isOptional": false,
-                      "defaultValue": null
-                    }
-                  ],
-                  "returnValue": {
-                    "type": "VCardOnAbp.ApiServices.Vmcardio.Dtos.VmCardDto",
-                    "typeSimple": "VCardOnAbp.ApiServices.Vmcardio.Dtos.VmCardDto"
-                  }
-                },
-                {
-                  "name": "CreateCardAsync",
-                  "parametersOnMethod": [],
-                  "returnValue": {
-                    "type": "System.Void",
-                    "typeSimple": "System.Void"
-                  }
-                },
-                {
-                  "name": "DeleteCardAsync",
-                  "parametersOnMethod": [],
-                  "returnValue": {
-                    "type": "System.Void",
-                    "typeSimple": "System.Void"
-                  }
-                }
-              ]
-            }
-          ],
-          "actions": {
-            "GetCardsByInput": {
-              "uniqueName": "GetCardsByInput",
-              "name": "GetCards",
-              "httpMethod": "GET",
-              "url": "api/app/vmcardio/cards",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "input",
-                  "typeAsString": "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardsFilterInput, VCardOnAbp.Application.Contracts",
-                  "type": "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardsFilterInput",
-                  "typeSimple": "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardsFilterInput",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "input",
-                  "name": "card_number",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "card_name_new",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "card_no",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "alias",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "status",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "bin",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "page",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "page_size",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "type",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "uid",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                }
-              ],
-              "returnValue": {
-                "type": "System.Object",
-                "typeSimple": "object"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "VCardOnAbp.ApiServices.Vmcardio.IVmcardioAppService"
-            },
-            "CreateCardAsync": {
-              "uniqueName": "CreateCardAsync",
-              "name": "CreateCardAsync",
-              "httpMethod": "POST",
-              "url": "api/app/vmcardio/card",
-              "supportedVersions": [],
-              "parametersOnMethod": [],
-              "parameters": [],
-              "returnValue": {
-                "type": "System.Void",
-                "typeSimple": "System.Void"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "VCardOnAbp.ApiServices.Vmcardio.IVmcardioAppService"
-            },
-            "DeleteCardAsync": {
-              "uniqueName": "DeleteCardAsync",
-              "name": "DeleteCardAsync",
-              "httpMethod": "DELETE",
-              "url": "api/app/vmcardio/card",
-              "supportedVersions": [],
-              "parametersOnMethod": [],
-              "parameters": [],
-              "returnValue": {
-                "type": "System.Void",
-                "typeSimple": "System.Void"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "VCardOnAbp.ApiServices.Vmcardio.IVmcardioAppService"
-            },
-            "GetCardByInput": {
-              "uniqueName": "GetCardByInput",
-              "name": "GetCard",
-              "httpMethod": "GET",
-              "url": "api/app/vmcardio/card",
-              "supportedVersions": [],
-              "parametersOnMethod": [
-                {
-                  "name": "input",
-                  "typeAsString": "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardInput, VCardOnAbp.Application.Contracts",
-                  "type": "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardInput",
-                  "typeSimple": "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardInput",
-                  "isOptional": false,
-                  "defaultValue": null
-                }
-              ],
-              "parameters": [
-                {
-                  "nameOnMethod": "input",
-                  "name": "bin",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "card_id",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                },
-                {
-                  "nameOnMethod": "input",
-                  "name": "uid",
-                  "jsonName": null,
-                  "type": "System.String",
-                  "typeSimple": "string",
-                  "isOptional": false,
-                  "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
-                }
-              ],
-              "returnValue": {
-                "type": "VCardOnAbp.ApiServices.Vmcardio.Dtos.VmCardDto",
-                "typeSimple": "VCardOnAbp.ApiServices.Vmcardio.Dtos.VmCardDto"
-              },
-              "allowAnonymous": null,
-              "implementFrom": "VCardOnAbp.ApiServices.Vmcardio.IVmcardioAppService"
-            }
-          }
-        },
         "VCardOnAbp.Bins.BinCardAppService": {
           "controllerName": "BinCard",
           "controllerGroupName": "BinCard",
@@ -1320,7 +1016,7 @@
                 "type": "VCardOnAbp.Bins.Dtos.BinDto",
                 "typeSimple": "VCardOnAbp.Bins.Dtos.BinDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Bins.IBinCardAppService"
             },
             "GetAsyncById": {
@@ -1357,7 +1053,7 @@
                 "type": "VCardOnAbp.Bins.Dtos.BinDto",
                 "typeSimple": "VCardOnAbp.Bins.Dtos.BinDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Bins.IBinCardAppService"
             },
             "GetListAsyncByInput": {
@@ -1430,7 +1126,7 @@
                 "type": "System.Collections.Generic.List<VCardOnAbp.Bins.Dtos.BinDto>",
                 "typeSimple": "[VCardOnAbp.Bins.Dtos.BinDto]"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Bins.IBinCardAppService"
             },
             "UpdateAsyncByIdAndInput": {
@@ -1487,7 +1183,7 @@
                 "type": "VCardOnAbp.Bins.Dtos.BinDto",
                 "typeSimple": "VCardOnAbp.Bins.Dtos.BinDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Bins.IBinCardAppService"
             },
             "DeleteAsyncById": {
@@ -1524,7 +1220,7 @@
                 "type": "System.Void",
                 "typeSimple": "System.Void"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Bins.IBinCardAppService"
             }
           }
@@ -1554,8 +1250,8 @@
                     }
                   ],
                   "returnValue": {
-                    "type": "System.Collections.Generic.List<VCardOnAbp.Cards.Dto.CardDto>",
-                    "typeSimple": "[VCardOnAbp.Cards.Dto.CardDto]"
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Cards.Dto.CardDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Cards.Dto.CardDto>"
                   }
                 },
                 {
@@ -1576,6 +1272,23 @@
                   }
                 },
                 {
+                  "name": "GetTransactionAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "VCardOnAbp.Cards.Dto.GetCardTransactionInput, VCardOnAbp.Application.Contracts",
+                      "type": "VCardOnAbp.Cards.Dto.GetCardTransactionInput",
+                      "typeSimple": "VCardOnAbp.Cards.Dto.GetCardTransactionInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Cards.Dto.CardTransactionDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Cards.Dto.CardTransactionDto>"
+                  }
+                },
+                {
                   "name": "CreateAsync",
                   "parametersOnMethod": [
                     {
@@ -1593,20 +1306,54 @@
                   }
                 },
                 {
-                  "name": "Action",
+                  "name": "AddCard",
                   "parametersOnMethod": [
                     {
-                      "name": "action",
-                      "typeAsString": "VCardOnAbp.Cards.Dto.ActionInput, VCardOnAbp.Application.Contracts",
-                      "type": "VCardOnAbp.Cards.Dto.ActionInput",
-                      "typeSimple": "VCardOnAbp.Cards.Dto.ActionInput",
+                      "name": "input",
+                      "typeAsString": "VCardOnAbp.Cards.Dto.AddCardInput, VCardOnAbp.Application.Contracts",
+                      "type": "VCardOnAbp.Cards.Dto.AddCardInput",
+                      "typeSimple": "VCardOnAbp.Cards.Dto.AddCardInput",
                       "isOptional": false,
                       "defaultValue": null
                     }
                   ],
                   "returnValue": {
-                    "type": "System.Object",
-                    "typeSimple": "object"
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "FundAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "VCardOnAbp.Cards.Dto.FundCardInput, VCardOnAbp.Application.Contracts",
+                      "type": "VCardOnAbp.Cards.Dto.FundCardInput",
+                      "typeSimple": "VCardOnAbp.Cards.Dto.FundCardInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
+                },
+                {
+                  "name": "DeleteAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
                   }
                 }
               ]
@@ -1668,8 +1415,8 @@
                 }
               ],
               "returnValue": {
-                "type": "System.Collections.Generic.List<VCardOnAbp.Cards.Dto.CardDto>",
-                "typeSimple": "[VCardOnAbp.Cards.Dto.CardDto]"
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Cards.Dto.CardDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Cards.Dto.CardDto>"
               },
               "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Cards.ICardsAppService"
@@ -1711,6 +1458,79 @@
               "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Cards.ICardsAppService"
             },
+            "GetTransactionAsyncByInput": {
+              "uniqueName": "GetTransactionAsyncByInput",
+              "name": "GetTransactionAsync",
+              "httpMethod": "GET",
+              "url": "api/app/cards/transaction",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "VCardOnAbp.Cards.Dto.GetCardTransactionInput, VCardOnAbp.Application.Contracts",
+                  "type": "VCardOnAbp.Cards.Dto.GetCardTransactionInput",
+                  "typeSimple": "VCardOnAbp.Cards.Dto.GetCardTransactionInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "CardId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Cards.Dto.CardTransactionDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Cards.Dto.CardTransactionDto>"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "VCardOnAbp.Cards.ICardsAppService"
+            },
             "CreateAsyncByInput": {
               "uniqueName": "CreateAsyncByInput",
               "name": "CreateAsync",
@@ -1748,18 +1568,18 @@
               "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Cards.ICardsAppService"
             },
-            "ActionByInput": {
-              "uniqueName": "ActionByInput",
-              "name": "Action",
+            "FundAsyncByInput": {
+              "uniqueName": "FundAsyncByInput",
+              "name": "FundAsync",
               "httpMethod": "POST",
-              "url": "api/app/cards/action",
+              "url": "api/app/cards/fund",
               "supportedVersions": [],
               "parametersOnMethod": [
                 {
                   "name": "input",
-                  "typeAsString": "VCardOnAbp.Cards.Dto.ActionInput, VCardOnAbp.Application.Contracts",
-                  "type": "VCardOnAbp.Cards.Dto.ActionInput",
-                  "typeSimple": "VCardOnAbp.Cards.Dto.ActionInput",
+                  "typeAsString": "VCardOnAbp.Cards.Dto.FundCardInput, VCardOnAbp.Application.Contracts",
+                  "type": "VCardOnAbp.Cards.Dto.FundCardInput",
+                  "typeSimple": "VCardOnAbp.Cards.Dto.FundCardInput",
                   "isOptional": false,
                   "defaultValue": null
                 }
@@ -1769,8 +1589,8 @@
                   "nameOnMethod": "input",
                   "name": "input",
                   "jsonName": null,
-                  "type": "VCardOnAbp.Cards.Dto.ActionInput",
-                  "typeSimple": "VCardOnAbp.Cards.Dto.ActionInput",
+                  "type": "VCardOnAbp.Cards.Dto.FundCardInput",
+                  "typeSimple": "VCardOnAbp.Cards.Dto.FundCardInput",
                   "isOptional": false,
                   "defaultValue": null,
                   "constraintTypes": null,
@@ -1779,11 +1599,193 @@
                 }
               ],
               "returnValue": {
-                "type": "System.Object",
-                "typeSimple": "object"
+                "type": "System.Void",
+                "typeSimple": "System.Void"
               },
               "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Cards.ICardsAppService"
+            },
+            "DeleteAsyncById": {
+              "uniqueName": "DeleteAsyncById",
+              "name": "DeleteAsync",
+              "httpMethod": "DELETE",
+              "url": "api/app/cards/{id}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "VCardOnAbp.Cards.ICardsAppService"
+            },
+            "AddCardByInput": {
+              "uniqueName": "AddCardByInput",
+              "name": "AddCard",
+              "httpMethod": "POST",
+              "url": "api/app/cards/card",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "VCardOnAbp.Cards.Dto.AddCardInput, VCardOnAbp.Application.Contracts",
+                  "type": "VCardOnAbp.Cards.Dto.AddCardInput",
+                  "typeSimple": "VCardOnAbp.Cards.Dto.AddCardInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "VCardOnAbp.Cards.Dto.AddCardInput",
+                  "typeSimple": "VCardOnAbp.Cards.Dto.AddCardInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "VCardOnAbp.Cards.ICardsAppService"
+            }
+          }
+        },
+        "VCardOnAbp.Payments.PaymentsAppService": {
+          "controllerName": "Payments",
+          "controllerGroupName": "Payments",
+          "isRemoteService": true,
+          "isIntegrationService": false,
+          "apiVersion": null,
+          "type": "VCardOnAbp.Payments.PaymentsAppService",
+          "interfaces": [
+            {
+              "type": "VCardOnAbp.Payments.IPaymentsAppService",
+              "name": "IPaymentsAppService",
+              "methods": [
+                {
+                  "name": "GetPaymentMethodsAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "VCardOnAbp.Payments.Dtos.GetPaymentMethodsInput, VCardOnAbp.Application.Contracts",
+                      "type": "VCardOnAbp.Payments.Dtos.GetPaymentMethodsInput",
+                      "typeSimple": "VCardOnAbp.Payments.Dtos.GetPaymentMethodsInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Payments.Dtos.PaymentMethodDto>",
+                    "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Payments.Dtos.PaymentMethodDto>"
+                  }
+                }
+              ]
+            }
+          ],
+          "actions": {
+            "GetPaymentMethodsAsyncByInput": {
+              "uniqueName": "GetPaymentMethodsAsyncByInput",
+              "name": "GetPaymentMethodsAsync",
+              "httpMethod": "GET",
+              "url": "api/app/payments/payment-methods",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "VCardOnAbp.Payments.Dtos.GetPaymentMethodsInput, VCardOnAbp.Application.Contracts",
+                  "type": "VCardOnAbp.Payments.Dtos.GetPaymentMethodsInput",
+                  "typeSimple": "VCardOnAbp.Payments.Dtos.GetPaymentMethodsInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "Filter",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "Sorting",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "SkipCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "MaxResultCount",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": "input"
+                }
+              ],
+              "returnValue": {
+                "type": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Payments.Dtos.PaymentMethodDto>",
+                "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Payments.Dtos.PaymentMethodDto>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "VCardOnAbp.Payments.IPaymentsAppService"
             }
           }
         }
@@ -4432,501 +4434,6 @@
     }
   },
   "types": {
-    "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardInput": {
-      "baseType": null,
-      "isEnum": false,
-      "enumNames": null,
-      "enumValues": null,
-      "genericArguments": null,
-      "properties": [
-        {
-          "name": "bin",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "card_id",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "uid",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        }
-      ]
-    },
-    "VCardOnAbp.ApiServices.Vmcardio.Dtos.GetCardsFilterInput": {
-      "baseType": null,
-      "isEnum": false,
-      "enumNames": null,
-      "enumValues": null,
-      "genericArguments": null,
-      "properties": [
-        {
-          "name": "card_number",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "card_name_new",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "card_no",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "alias",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "status",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "bin",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "page",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "page_size",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "type",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "uid",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        }
-      ]
-    },
-    "VCardOnAbp.ApiServices.Vmcardio.Dtos.VmCardDto": {
-      "baseType": null,
-      "isEnum": false,
-      "enumNames": null,
-      "enumValues": null,
-      "genericArguments": null,
-      "properties": [
-        {
-          "name": "id",
-          "jsonName": null,
-          "type": "System.Int64",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "uid",
-          "jsonName": null,
-          "type": "System.Int64",
-          "typeSimple": "number",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "user_name",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "card_name",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "card_use_name",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "tag",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "bin",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "card_id",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "card_number",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "card_no",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "trans_merchant",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "encrypted_cvv",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "encrypted_expiration",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "last_four",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "skip_reconcil",
-          "jsonName": null,
-          "type": "System.Int32?",
-          "typeSimple": "number?",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "alias",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "status",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "available_amount",
-          "jsonName": null,
-          "type": "System.Decimal?",
-          "typeSimple": "number?",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "visable",
-          "jsonName": null,
-          "type": "System.Int32?",
-          "typeSimple": "number?",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "status_remark",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "create_time",
-          "jsonName": null,
-          "type": "System.DateTime?",
-          "typeSimple": "string?",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "update_time",
-          "jsonName": null,
-          "type": "System.DateTime?",
-          "typeSimple": "string?",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "frozen_time",
-          "jsonName": null,
-          "type": "System.DateTime?",
-          "typeSimple": "string?",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "frozen_amount",
-          "jsonName": null,
-          "type": "System.Decimal?",
-          "typeSimple": "number?",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "bin_num",
-          "jsonName": null,
-          "type": "System.String",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "due_days",
-          "jsonName": null,
-          "type": "System.Int32?",
-          "typeSimple": "number?",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        }
-      ]
-    },
     "VCardOnAbp.Bins.Dtos.BinDto": {
       "baseType": null,
       "isEnum": false,
@@ -4963,6 +4470,78 @@
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Currency",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CreationFixedFee",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CreationPercentFee",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "FundingFixedFee",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "FundingPercentFee",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Symbol",
+          "jsonName": null,
+          "type": "System.Char?",
+          "typeSimple": "string?",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -5008,6 +4587,78 @@
           "jsonName": null,
           "type": "VCardOnAbp.Cards.Supplier",
           "typeSimple": "VCardOnAbp.Cards.Supplier",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CurrencyId",
+          "jsonName": null,
+          "type": "System.Guid",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "SupplierMapping",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CreationFixedFee",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CreationPercentFee",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "FundingFixedFee",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "FundingPercentFee",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -5095,24 +4746,6 @@
         }
       ]
     },
-    "VCardOnAbp.Cards.CardAction": {
-      "baseType": "System.Enum",
-      "isEnum": true,
-      "enumNames": [
-        "LOCK",
-        "DELETE",
-        "FUND",
-        "VIEW"
-      ],
-      "enumValues": [
-        0,
-        1,
-        2,
-        3
-      ],
-      "genericArguments": null,
-      "properties": null
-    },
     "VCardOnAbp.Cards.CardStatus": {
       "baseType": "System.Enum",
       "isEnum": true,
@@ -5129,18 +4762,18 @@
       "genericArguments": null,
       "properties": null
     },
-    "VCardOnAbp.Cards.Dto.ActionInput": {
-      "baseType": "Volo.Abp.Application.Dtos.EntityDto<System.Guid>",
+    "VCardOnAbp.Cards.Dto.AddCardInput": {
+      "baseType": null,
       "isEnum": false,
       "enumNames": null,
       "enumValues": null,
       "genericArguments": null,
       "properties": [
         {
-          "name": "Action",
+          "name": "UserId",
           "jsonName": null,
-          "type": "VCardOnAbp.Cards.CardAction",
-          "typeSimple": "VCardOnAbp.Cards.CardAction",
+          "type": "System.Guid",
+          "typeSimple": "string",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -5149,22 +4782,58 @@
           "regex": null
         },
         {
-          "name": "Value",
-          "jsonName": null,
-          "type": "System.Decimal?",
-          "typeSimple": "number?",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
-        {
-          "name": "DataHash",
+          "name": "CardNo",
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "SupplierIdentity",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Status",
+          "jsonName": null,
+          "type": "VCardOnAbp.Cards.CardStatus",
+          "typeSimple": "VCardOnAbp.Cards.CardStatus",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Balance",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Supplier",
+          "jsonName": null,
+          "type": "VCardOnAbp.Cards.Supplier",
+          "typeSimple": "VCardOnAbp.Cards.Supplier",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,
@@ -5219,6 +4888,123 @@
         }
       ]
     },
+    "VCardOnAbp.Cards.Dto.CardTransactionDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "CardId",
+          "jsonName": null,
+          "type": "System.Guid",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "AuthAmount",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Currency",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Description",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "MerchantName",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "SettleAmount",
+          "jsonName": null,
+          "type": "System.Decimal?",
+          "typeSimple": "number?",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Status",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Type",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "CreationTime",
+          "jsonName": null,
+          "type": "System.DateTime",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
     "VCardOnAbp.Cards.Dto.CreateCardInput": {
       "baseType": null,
       "isEnum": false,
@@ -5264,6 +5050,27 @@
         }
       ]
     },
+    "VCardOnAbp.Cards.Dto.FundCardInput": {
+      "baseType": "Volo.Abp.Application.Dtos.EntityDto<System.Guid>",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Amount",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
     "VCardOnAbp.Cards.Dto.GetCardInput": {
       "baseType": "Volo.Abp.Application.Dtos.PagedResultRequestDto",
       "isEnum": false,
@@ -5271,6 +5078,39 @@
       "enumValues": null,
       "genericArguments": null,
       "properties": [
+        {
+          "name": "Filter",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "VCardOnAbp.Cards.Dto.GetCardTransactionInput": {
+      "baseType": "Volo.Abp.Application.Dtos.PagedResultRequestDto",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "CardId",
+          "jsonName": null,
+          "type": "System.Guid",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
         {
           "name": "Filter",
           "jsonName": null,
@@ -5296,6 +5136,96 @@
       ],
       "genericArguments": null,
       "properties": null
+    },
+    "VCardOnAbp.Payments.Dtos.GetPaymentMethodsInput": {
+      "baseType": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Filter",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "VCardOnAbp.Payments.Dtos.PaymentMethodDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Name",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Description",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "IsEnabled",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "FixedFee",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "PercentageFee",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
     },
     "Volo.Abp.Account.ChangePasswordInput": {
       "baseType": null,
