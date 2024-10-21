@@ -34,3 +34,16 @@ button {
 .col-12 {
   width: 100%;
 }
+
+.p-datatable .p-datatable-tbody > tr > td {
+  border-width: 0 0 1px 0;
+  border-color: rgb(206, 194, 194);  
+}
+
+.p-dropdown-items {
+  padding: 0;
+}
+
+.p-button.p-button-icon-only.p-button-rounded {
+  border-radius: 50%;
+}

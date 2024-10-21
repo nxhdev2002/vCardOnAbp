@@ -11,10 +11,11 @@ import { DataViewModule } from 'primeng/dataview';
 import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from "@angular/forms";
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [BinsComponent],
-  imports: [SharedModule, BinRoutingModule, PageModule, DataViewModule, CardModule, ButtonModule, CommonModule, LocalizationModule, TagModule, DialogModule, FormsModule],
+  imports: [SharedModule, BinRoutingModule, PageModule, DataViewModule, CardModule, ButtonModule, CommonModule, LocalizationModule, TagModule, DialogModule, FormsModule, InputTextModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class BinModule {}

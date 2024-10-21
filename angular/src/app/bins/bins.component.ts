@@ -13,7 +13,7 @@ export class BinsComponent implements OnInit {
   products!: any[];
   visible: boolean = false;
   firstName: string;
-
+  textSearch: string;
   constructor(private binService: BinCardService) {}
 
   ngOnInit(): void {
