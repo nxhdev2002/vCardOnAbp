@@ -120,12 +120,12 @@ public class CardsAppService(
         await _cardManager.DeleteAsync(card!);
     }
 
-    #region Admin Methods
-    [Authorize(VCardOnAbpPermissions.AddCard)]
-    public Task AddCard(AddCardInput input)
+
+    [Authorize(VCardOnAbpPermissions.ViewCard)]
+    public virtual async Task<CardSecretDto> GetSecretAsync(Guid id)
     {
-        Card card = ObjectMapper.Map<AddCardInput, Card>(input);
-        return _cardRepository.InsertAsync(card);
+        var (cvv, exp) = await _cardManager.ViewCardSecret(id, CurrentUser.Id!.Value);
+        return new CardSecretDto(cvv, exp);
     }
-    #endregion
+
 }

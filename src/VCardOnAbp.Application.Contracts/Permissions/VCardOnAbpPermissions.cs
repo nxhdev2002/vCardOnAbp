@@ -8,7 +8,6 @@ public static class VCardOnAbpPermissions
     //Add your own permission names. Example:
     //public const string MyPermission1 = GroupName + ".MyPermission1";
     public const string ViewCard = CardGroup + ".ViewCard";
-    public const string AddCard = CardGroup + ".AddCard";
     public const string ViewCardTransaction = CardGroup + ".ViewCardTransaction";
     public const string CreateCard = CardGroup + ".CreateCard";
     public const string FundCard = CardGroup + ".FundCard";

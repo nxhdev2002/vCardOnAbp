@@ -6,11 +6,11 @@ export interface BinDto {
   name?: string;
   description?: string;
   currency?: string;
+  symbol?: string;
   creationFixedFee: number;
   creationPercentFee: number;
   fundingFixedFee: number;
   fundingPercentFee: number;
-  symbol?: string;
 }
 
 export interface CreateBinDtoInput {

@@ -4,6 +4,7 @@ using System;
 using System.Threading.Tasks;
 using VCardOnAbp.Currencies;
 using VCardOnAbp.Masters;
+using VCardOnAbp.Security;
 using VCardOnAbp.Transactions;
 using Volo.Abp;
 using Volo.Abp.Data;
@@ -18,7 +19,8 @@ public class CardManager(
     IRepository<Currency, Guid> currencyRepo,
     IRepository<Bin, Guid> binRepo,
     UserManager<Volo.Abp.Identity.IdentityUser> userManager,
-    IRepository<UserTransaction, Guid> userTransRepository
+    IRepository<UserTransaction, Guid> userTransRepository,
+    SecurityManager securityManager
 ) : DomainService
 {
     private readonly ICardRepository _cardsRepository = cardsRepository;
@@ -26,6 +28,7 @@ public class CardManager(
     private readonly IRepository<Bin, Guid> _binRepo = binRepo;
     private readonly UserManager<Volo.Abp.Identity.IdentityUser> _userManager = userManager;
     private readonly IRepository<UserTransaction, Guid> _userTransRepository = userTransRepository;
+    private readonly SecurityManager _securityManager = securityManager;
 
     public Card CreateCard(string CardNo, Guid BinId, Supplier SupplierId, string SupplierIdentity, CardStatus cardStatus = CardStatus.Active, decimal Balance = 0)
     {
@@ -78,5 +81,13 @@ public class CardManager(
     public async Task DeleteAsync(Card card)
     {
         await _cardsRepository.DeleteAsync(card);
+    }
+
+    public async Task<(string, string)> ViewCardSecret(Guid cardId, Guid userId)
+    {
+        Card? card = await GetCard(cardId, userId);
+        if (card == null) throw new BusinessException(VCardOnAbpDomainErrorCodes.CardNotFound);
+
+        return (card.Cvv, card.ExpirationTime);
     }
 }

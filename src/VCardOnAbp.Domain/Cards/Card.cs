@@ -18,6 +18,14 @@ public class Card : FullAuditedAggregateRoot<Guid>
     public CardStatus CardStatus { get; private set; }
     public DateTime? LastView { get; private set; }
 
+    #region SECRET
+    public string PublicKey { get; private set; }
+    [MaxLength(500)]
+    public string Cvv { get; private set; }
+    [MaxLength(500)]
+    public string ExpirationTime { get; private set; }
+    #endregion
+
     private Card() { }
     public Card(Guid id, string cardNo, Guid binId, Supplier supplierId, string supplierIdentity, CardStatus cardStatus, decimal balance) : base(id)
     {
@@ -50,6 +58,14 @@ public class Card : FullAuditedAggregateRoot<Guid>
     public Card SetLastView(DateTime lastView)
     {
         LastView = lastView;
+        return this;
+    }
+
+    public Card SetSecret(string publicKey, string cvv, string expirationTime)
+    {
+        PublicKey = publicKey;
+        Cvv = cvv;
+        ExpirationTime = expirationTime;
         return this;
     }
 }

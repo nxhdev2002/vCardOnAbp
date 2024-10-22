@@ -1,4 +1,4 @@
-import type { AddCardInput, CardDto, CardTransactionDto, CreateCardInput, FundCardInput, GetCardInput, GetCardTransactionInput } from './dto/models';
+import type { CardDto, CardSecretDto, CardTransactionDto, CreateCardInput, FundCardInput, GetCardInput, GetCardTransactionInput } from './dto/models';
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
@@ -8,15 +8,6 @@ import { Injectable } from '@angular/core';
 })
 export class CardsService {
   apiName = 'Default';
-  
-
-  addCardByInput = (input: AddCardInput, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, void>({
-      method: 'POST',
-      url: '/api/app/cards/card',
-      body: input,
-    },
-    { apiName: this.apiName,...config });
   
 
   create = (input: CreateCardInput, config?: Partial<Rest.Config>) =>
@@ -58,6 +49,14 @@ export class CardsService {
       method: 'GET',
       url: '/api/app/cards',
       params: { filter: input.filter, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+    },
+    { apiName: this.apiName,...config });
+  
+
+  getSecret = (id: string, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, CardSecretDto>({
+      method: 'GET',
+      url: `/api/app/cards/${id}/secret`,
     },
     { apiName: this.apiName,...config });
   

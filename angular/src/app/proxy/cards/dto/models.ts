@@ -1,20 +1,16 @@
+import type { EntityDto, PagedResultRequestDto } from '@abp/ng.core';
 import type { CardStatus } from '../card-status.enum';
 import type { Supplier } from '../supplier.enum';
-import type { EntityDto, PagedResultRequestDto } from '@abp/ng.core';
-
-export interface AddCardInput {
-  userId?: string;
-  cardNo?: string;
-  supplierIdentity?: string;
-  status: CardStatus;
-  balance: number;
-  supplier: Supplier;
-}
 
 export interface CardDto extends EntityDto<string> {
   cardNo?: string;
   balance: number;
   cardStatus: CardStatus;
+}
+
+export interface CardSecretDto {
+  cvv?: string;
+  expirationTime?: string;
 }
 
 export interface CardTransactionDto {
