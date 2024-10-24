@@ -1,4 +1,3 @@
-import { authGuard, permissionGuard } from '@abp/ng.core';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
@@ -12,6 +11,11 @@ const routes: Routes = [
     path: 'card',
     pathMatch: 'full',
     loadChildren: () => import('./card/card.module').then(m => m.CardModule),
+  },
+  {
+    path: 'card/:id',
+    pathMatch: 'full',
+    loadChildren: () => import('./card-details/card-details.module').then(m => m.CardDetailsModule),
   },
   {
     path: 'bin',

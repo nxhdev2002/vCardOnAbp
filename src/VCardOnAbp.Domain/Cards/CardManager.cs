@@ -30,12 +30,12 @@ public class CardManager(
     private readonly IRepository<UserTransaction, Guid> _userTransRepository = userTransRepository;
     private readonly SecurityManager _securityManager = securityManager;
 
-    public Card CreateCard(string CardNo, Guid BinId, Supplier SupplierId, string SupplierIdentity, CardStatus cardStatus = CardStatus.Active, decimal Balance = 0)
+    public Card CreateCard(string CardNo, Guid BinId, Supplier SupplierId, string SupplierIdentity, string CardName, CardStatus cardStatus = CardStatus.Active, decimal Balance = 0)
     {
         // TODO: Return business exception
         if (Balance < 0) return null;
 
-        return new Card(GuidGenerator.Create(), CardNo, BinId, SupplierId, SupplierIdentity, cardStatus, Balance);
+        return new Card(GuidGenerator.Create(), CardNo, BinId, SupplierId, SupplierIdentity, cardStatus, Balance, CardName);
     }
 
     public async Task Delete(Card card)
@@ -48,10 +48,9 @@ public class CardManager(
         card.ChangeStatus(CardStatus.Lock);
     }
 
-    public async Task<Card?> GetCard(Guid cardId, Guid userId)
+    public async Task<Card> GetCard(Guid cardId, Guid userId, bool isNoTracking = true)
     {
-        Card? card = await _cardsRepository.GetCard(cardId, userId);
-        if (card == null) throw new BusinessException(VCardOnAbpDomainErrorCodes.CardNotFound);
+        Card? card = await _cardsRepository.GetCard(cardId, userId, isNoTracking) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.CardNotFound);
         card.SetLastView(DateTime.UtcNow);
         return card;
     }

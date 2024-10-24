@@ -40,6 +40,5 @@ export interface GetCardInput extends PagedResultRequestDto {
 }
 
 export interface GetCardTransactionInput extends PagedResultRequestDto {
-  cardId?: string;
   filter?: string;
 }

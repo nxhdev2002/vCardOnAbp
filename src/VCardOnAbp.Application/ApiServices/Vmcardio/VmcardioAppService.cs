@@ -22,7 +22,7 @@ public class VmcardioAppService : VCardOnAbpAppService, IVmcardioAppService
     public async Task<object> CreateCardAsync(VmcardioCreateCardDto input)
     {
         return Task.CompletedTask;
-        var payload = input.ToDict();
+        Dictionary<string, string> payload = input.ToDict();
         return await SendVmcardioRequestAsync<object>(HttpMethod.Post, VmcardioApiConst.CreateCard, body: payload);
     }
 
@@ -74,6 +74,7 @@ public class VmcardioAppService : VCardOnAbpAppService, IVmcardioAppService
     private async Task<string> GetVmcardioTokenAsync()
     {
         return "oA00l05ypjel6zHjihI2oiIisfAOaeeL=Jidj3WCT4N514OWiFMXwOVJiYi=28hcxTj4C86iQN1UiKRi=83cb2.WiceXQE53RENi1715yDCNODI1MNLUJxfAOQOk2IQ1n3JLQVbmMy=DIaINJizi979219QMIyJWJX";
+        return "RW72DAEyIy8731J530i0INxNWCVIi2iwI==eO3a81ii3N.5kj31aejLL1yzOQE5JjIO9FR1OM1isjpKJbiCiJfN0Q36yWAnD0IefLXbxoJQMV2MhAjlOi=TQhHlj6eWicQiUT12X=Y6UOINd5XiJi6AYoNcmiJC2N9";
     }
 
 

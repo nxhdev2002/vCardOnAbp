@@ -3,9 +3,9 @@
   "Texts": {
     "AppName": "VCardOnAbp",
     "Menu:Home": "Home",
-    "Card": "Thẻ",
+    "Card": "Thẻ tín dụng",
     "Card:CreateCard": "Tạo thẻ",
-    "Card:00001": "Không tìm thấy thẻ",
+    "Card:00001": "Không tìm thấy thẻ tín dụng",
     "CardNumber": "Số thẻ",
     "ExpirationTime": "Thời điểm hết hạn",
     "CVV": "Mã bảo mật",
@@ -23,6 +23,11 @@
     "CardPermission:Fund": "Nạp tiền vào thẻ tín dụng",
     "CardNotFound": "Không tìm thấy thẻ tín dụng",
     "UserFundedTransaction": "Nạp tiền vào thẻ tín dụng {1}",
-    "Welcome": "Welcome"
+    "Welcome": "Welcome",
+    "Merchant": "Thương gia",
+    "Amount": "Số lượng",
+    "Currency": "Tiền tệ",
+    "AuthorizationTime": "Thời gian ủy quyền",
+    "Notification": "Thông báo"
   }
 }

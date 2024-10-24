@@ -14,12 +14,12 @@ public class PaymentsAppService(
     private readonly IRepository<PaymentMethod, int> _paymentMethodRepository = paymentMethodRepository;
     public async Task<PagedResultDto<PaymentMethodDto>> GetPaymentMethodsAsync(GetPaymentMethodsInput input)
     {
-        var payments = (await _paymentMethodRepository.GetQueryableAsync()).AsNoTracking()
+        IQueryable<PaymentMethod> payments = (await _paymentMethodRepository.GetQueryableAsync()).AsNoTracking()
             .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(input.Filter, $"%{input.Filter}%"));
-        
-        var totalCount = await payments.CountAsync();
 
-        var data = await payments
+        int totalCount = await payments.CountAsync();
+
+        List<PaymentMethod> data = await payments
             .PageBy(input)
             .ToListAsync();
 

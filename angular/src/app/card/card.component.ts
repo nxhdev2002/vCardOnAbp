@@ -1,5 +1,6 @@
 import { AuthService } from '@abp/ng.core';
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { CardsService } from '@proxy/cards';
 import { CardDto, GetCardInput } from '@proxy/cards/dto';
 
@@ -16,7 +17,11 @@ export class CardComponent implements OnInit {
   filter: string;
   
   dataViewIdName: string = 'data-view';
-  constructor(private authService: AuthService, private cardService: CardsService) {}
+  constructor(
+    private authService: AuthService, 
+    private cardService: CardsService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.loading = true;
@@ -60,5 +65,9 @@ export class CardComponent implements OnInit {
         exp.setAttribute(this.dataViewIdName, 'false');
         cvv.setAttribute(this.dataViewIdName, 'false');
     }
+  }
+
+  viewCardDetails(card: CardDto) {
+    this.router.navigate([`/card/${card.id}`]);
   }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using VCardOnAbp.EntityFrameworkCore;
+using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Domain.Repositories.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
 
@@ -21,9 +22,10 @@ public class CardRepository(IDbContextProvider<VCardOnAbpDbContext> dbContextPro
             .ToListAsync(token);
     }
 
-    public async Task<Card?> GetCard(Guid id, Guid userId, CancellationToken token = default)
+    public async Task<Card?> GetCard(Guid id, Guid userId, bool isNoTracking = false, CancellationToken token = default)
     {
         return await (await GetQueryableAsync())
+            .AsNoTrackingIf(isNoTracking)
             .FirstOrDefaultAsync(
                 x => x.Id == id &&
                 x.CreatorId == userId &&

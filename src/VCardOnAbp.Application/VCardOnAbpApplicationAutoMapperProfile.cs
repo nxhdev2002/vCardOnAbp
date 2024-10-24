@@ -25,6 +25,7 @@ public class VCardOnAbpApplicationAutoMapperProfile : Profile
         CreateMap<Card, VmCardDto>()
             .ForMember(x => x.card_no, opt => opt.MapFrom(x => x.CardNo));
         CreateMap<VmCardioTransactionDto, CardTransaction>().ReverseMap();
+        CreateMap<CardTransaction, CardTransactionDto>().ReverseMap();
 
     }
 }

@@ -61,11 +61,11 @@ export class CardsService {
     { apiName: this.apiName,...config });
   
 
-  getTransaction = (input: GetCardTransactionInput, config?: Partial<Rest.Config>) =>
+  getTransaction = (id: string, input: GetCardTransactionInput, config?: Partial<Rest.Config>) =>
     this.restService.request<any, PagedResultDto<CardTransactionDto>>({
       method: 'GET',
-      url: '/api/app/cards/transaction',
-      params: { cardId: input.cardId, filter: input.filter, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+      url: `/api/app/cards/${id}/transaction`,
+      params: { filter: input.filter, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
     },
     { apiName: this.apiName,...config });
 

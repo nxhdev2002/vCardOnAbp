@@ -1424,6 +1424,14 @@
                   "name": "GetTransactionAsync",
                   "parametersOnMethod": [
                     {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
                       "name": "input",
                       "typeAsString": "VCardOnAbp.Cards.Dto.GetCardTransactionInput, VCardOnAbp.Application.Contracts",
                       "type": "VCardOnAbp.Cards.Dto.GetCardTransactionInput",
@@ -1607,13 +1615,21 @@
               "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Cards.ICardsAppService"
             },
-            "GetTransactionAsyncByInput": {
-              "uniqueName": "GetTransactionAsyncByInput",
+            "GetTransactionAsyncByIdAndInput": {
+              "uniqueName": "GetTransactionAsyncByIdAndInput",
               "name": "GetTransactionAsync",
               "httpMethod": "GET",
-              "url": "api/app/cards/transaction",
+              "url": "api/app/cards/{id}/transaction",
               "supportedVersions": [],
               "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
                 {
                   "name": "input",
                   "typeAsString": "VCardOnAbp.Cards.Dto.GetCardTransactionInput, VCardOnAbp.Application.Contracts",
@@ -1625,16 +1641,16 @@
               ],
               "parameters": [
                 {
-                  "nameOnMethod": "input",
-                  "name": "CardId",
+                  "nameOnMethod": "id",
+                  "name": "id",
                   "jsonName": null,
                   "type": "System.Guid",
                   "typeSimple": "string",
                   "isOptional": false,
                   "defaultValue": null,
-                  "constraintTypes": null,
-                  "bindingSourceId": "ModelBinding",
-                  "descriptorName": "input"
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
                 },
                 {
                   "nameOnMethod": "input",
@@ -5200,18 +5216,6 @@
       "enumValues": null,
       "genericArguments": null,
       "properties": [
-        {
-          "name": "CardId",
-          "jsonName": null,
-          "type": "System.Guid",
-          "typeSimple": "string",
-          "isRequired": false,
-          "minLength": null,
-          "maxLength": null,
-          "minimum": null,
-          "maximum": null,
-          "regex": null
-        },
         {
           "name": "Filter",
           "jsonName": null,

@@ -61,28 +61,24 @@ public class CardsAppService(
 
 
     [Authorize(VCardOnAbpPermissions.ViewCardTransaction)]
-    public virtual async Task<PagedResultDto<CardTransactionDto>> GetTransactionAsync(GetCardTransactionInput input)
+    public virtual async Task<PagedResultDto<CardTransactionDto>> GetTransactionAsync(Guid id, GetCardTransactionInput input)
     {
-        using (_cardRepository.DisableTracking())
+        Card card = await _cardManager.GetCard(id, CurrentUser.Id!.Value, true);
+
+        using (_cardTransactionRepository.DisableTracking())
         {
-            Card card = await _cardManager.GetCard(input.CardId, CurrentUser.Id!.Value)
-                ?? throw new UserFriendlyException(L["CardNotFound"]);
+            IQueryable<CardTransaction> transaction = (await _cardTransactionRepository.GetQueryableAsync())
+                .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(x.Description, $"%{input.Filter}%"));
 
-            using (_cardTransactionRepository.DisableTracking())
-            {
-                IQueryable<CardTransaction> transaction = (await _cardTransactionRepository.GetQueryableAsync())
-                    .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(x.Description, $"%{input.Filter}%"));
+            int totalCount = await transaction.CountAsync();
+            List<CardTransaction> data = await transaction
+                .PageBy(input)
+                .ToListAsync();
 
-                int totalCount = await transaction.CountAsync();
-                List<CardTransaction> data = await transaction
-                    .PageBy(input)
-                    .ToListAsync();
-
-                return new PagedResultDto<CardTransactionDto>(
-                    totalCount,
-                    ObjectMapper.Map<List<CardTransaction>, List<CardTransactionDto>>(data)
-                );
-            }
+            return new PagedResultDto<CardTransactionDto>(
+                totalCount,
+                ObjectMapper.Map<List<CardTransaction>, List<CardTransactionDto>>(data)
+            );
         }
     }
 
@@ -116,7 +112,7 @@ public class CardsAppService(
     [Authorize(VCardOnAbpPermissions.DeleteCard)]
     public virtual async Task DeleteAsync(Guid id)
     {
-        var card = await _cardManager.GetCard(id, CurrentUser.Id!.Value);
+        Card card = await _cardManager.GetCard(id, CurrentUser.Id!.Value);
         await _cardManager.DeleteAsync(card!);
     }
 
@@ -124,7 +120,7 @@ public class CardsAppService(
     [Authorize(VCardOnAbpPermissions.ViewCard)]
     public virtual async Task<CardSecretDto> GetSecretAsync(Guid id)
     {
-        var (cvv, exp) = await _cardManager.ViewCardSecret(id, CurrentUser.Id!.Value);
+        (string cvv, string exp) = await _cardManager.ViewCardSecret(id, CurrentUser.Id!.Value);
         return new CardSecretDto(cvv, exp);
     }
 
