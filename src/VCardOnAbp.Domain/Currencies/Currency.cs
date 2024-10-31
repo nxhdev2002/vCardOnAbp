@@ -5,9 +5,9 @@ namespace VCardOnAbp.Currencies;
 
 public class Currency : FullAuditedEntity<Guid>
 {
-    public string CurrencyName { get; private set; }
-    public string CurrencyCode { get; private set; }
-    public char CurrencySymbol { get; private set; }
+    public string Name { get; private set; }
+    public string Code { get; private set; }
+    public char Symbol { get; private set; }
     public decimal UsdRate { get; private set; }
 
     private Currency()
@@ -16,9 +16,9 @@ public class Currency : FullAuditedEntity<Guid>
 
     public Currency(Guid id, string currencyName, string currencyCode, char currencySymbol, decimal usdRate) : base(id)
     {
-        CurrencyName = currencyName;
-        CurrencyCode = currencyCode;
-        CurrencySymbol = currencySymbol;
+        Name = currencyName;
+        Code = currencyCode;
+        Symbol = currencySymbol;
         UsdRate = usdRate;
     }
 }

@@ -3,6 +3,8 @@ using VCardOnAbp.ApiServices.Vmcardio.Dtos;
 using VCardOnAbp.Bins.Dtos;
 using VCardOnAbp.Cards;
 using VCardOnAbp.Cards.Dto;
+using VCardOnAbp.Currencies;
+using VCardOnAbp.Currencies.Dto;
 using VCardOnAbp.Masters;
 using VCardOnAbp.Payments;
 using VCardOnAbp.Payments.Dtos;
@@ -19,6 +21,9 @@ public class VCardOnAbpApplicationAutoMapperProfile : Profile
         CreateMap<Card, CardDto>().ReverseMap();
         CreateMap<Card, AddCardInput>().ReverseMap();
         CreateMap<Bin, BinDto>().ReverseMap();
+        CreateMap<Currency, CurrencyDto>().ReverseMap();
+        CreateMap<Currency, CreateCurrencyDto>().ReverseMap();
+        CreateMap<Currency, UpdateCurrencyDto>().ReverseMap();
         CreateMap<PaymentMethod, PaymentMethodDto>().ReverseMap();
 
         // Vmcardio

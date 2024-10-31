@@ -44,7 +44,7 @@ public class BinCardAppService(
 
         await _binRepository.InsertAsync(bin);
         BinDto result = ObjectMapper.Map<Bin, BinDto>(bin);
-        result.Currency = currency.CurrencyCode;
+        result.Currency = currency.Code;
         return result;
     }
 
@@ -75,8 +75,8 @@ public class BinCardAppService(
                                        Id = b.Id,
                                        Name = b.Name,
                                        Description = b.Description,
-                                       Currency = c.CurrencyName,
-                                       Symbol = c.CurrencySymbol,
+                                       Currency = c.Name,
+                                       Symbol = c.Symbol,
                                        CreationFixedFee = b.CreationFixedFee,
                                        CreationPercentFee = b.CreationPercentFee,
                                        FundingFixedFee = b.FundingFixedFee,

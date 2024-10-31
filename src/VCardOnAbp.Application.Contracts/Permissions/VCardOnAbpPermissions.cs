@@ -7,11 +7,11 @@ public static class VCardOnAbpPermissions
 
     //Add your own permission names. Example:
     //public const string MyPermission1 = GroupName + ".MyPermission1";
-    public const string ViewCard = CardGroup + ".ViewCard";
-    public const string ViewCardTransaction = CardGroup + ".ViewCardTransaction";
-    public const string CreateCard = CardGroup + ".CreateCard";
-    public const string FundCard = CardGroup + ".FundCard";
-    public const string DeleteCard = CardGroup + ".DeleteCard";
+    public const string ViewCard = CardGroup + ".View";
+    public const string ViewCardTransaction = CardGroup + ".ViewTransaction";
+    public const string CreateCard = CardGroup + ".Create";
+    public const string FundCard = CardGroup + ".Fund";
+    public const string DeleteCard = CardGroup + ".Delete";
 
 
     // BIN
@@ -20,7 +20,14 @@ public static class VCardOnAbpPermissions
 
     //Add your own permission names. Example:
     //public const string MyPermission1 = GroupName + ".MyPermission1";
-    public const string ViewBin = BinGroup + ".ViewBin";
-    public const string AddBin = BinGroup + ".AddBin";
-    public const string EditBin = BinGroup + ".EditBin";
+    public const string ViewBin = BinGroup + ".View";
+    public const string AddBin = BinGroup + ".Add";
+    public const string EditBin = BinGroup + ".Edit";
+
+
+    // Currency
+    public const string CurrencyGroup = "Currency";
+    public const string ViewCurrency = CurrencyGroup + ".View";
+    public const string AddCurrency = CurrencyGroup + ".Add";
+    public const string EditCurrency = CurrencyGroup + ".Edit";
 }

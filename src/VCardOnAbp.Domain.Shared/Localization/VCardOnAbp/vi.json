@@ -7,6 +7,8 @@
     "Card:CreateCard": "Tạo thẻ",
     "Card:00001": "Không tìm thấy thẻ tín dụng",
     "CardNumber": "Số thẻ",
+    "Description": "Mô tả",
+    "Supplier": "Nhà cung cấp",
     "ExpirationTime": "Thời điểm hết hạn",
     "CVV": "Mã bảo mật",
     "Balance": "Số dư",
@@ -28,6 +30,14 @@
     "Amount": "Số lượng",
     "Currency": "Tiền tệ",
     "AuthorizationTime": "Thời gian ủy quyền",
-    "Notification": "Thông báo"
+    "Notification": "Thông báo",
+    "FirstName": "Họ",
+    "LastName": "Tên",
+    "Add": "Thêm",
+    "Bin:Name": "Tên bin",
+    "CreationFixedFee": "Phí cố định tạo",
+    "CreationPercentageFee": "Phí phần trăm tạo",
+    "FundingFixedFee": "Phí cố định nạp tiền",
+    "FundingPercentageFee": "Phí phần trăm nạp tiền",
   }
 }
