@@ -1,7 +1,18 @@
-<p-dataView #dv [value]="products" [layout]="layout">
-    <ng-template let-product pTemplate="grid" let-products>
+<div class="card">
+
+<p-dataView #dv [value]="bins" [layout]="layout">
+    <ng-template pTemplate="header" *ngIf="canCreate">
+        <button 
+            pButton 
+            pRipple 
+            label="{{ '::Add' | abpLocalization }}" 
+            (click)="openCreateBinModal()"
+            class="p-button-success">
+        </button>
+    </ng-template>
+    <ng-template let-product pTemplate="grid" let-bins>
         <div class="grid grid-nogutter">
-            <div class="sm:col-6 md:col-4 xl:col-3 p-2" *ngFor="let product of products">
+            <div class="sm:col-6 md:col-4 xl:col-3 p-2" *ngFor="let product of bins">
                 <div class="p-4 border-1 surface-border surface-card border-round flex flex-column">
                     <div class="surface-50 flex justify-content-center border-round p-3">
                         <div class="relative mx-auto">
@@ -25,6 +36,7 @@
                             <span class="text-2xl font-semibold">BIN - {{ product.name }}</span>
                             <div class="flex gap-2">
                                 <p-button icon="pi pi-shopping-cart" class="flex-auto md:flex-initial white-space-nowrap" label="{{ '::Card:CreateCard' | abpLocalization }}" (onClick)="onCreateCardClicked($event)" />
+                                <p-button icon="pi pi-trash" class="flex-auto md:flex-initial white-space-nowrap" severity="danger" (onClick)="deleteBin(product.id)" />
                             </div>
                         </div>
                     </div>
@@ -33,20 +45,121 @@
         </div>
     </ng-template>
 </p-dataView>
+</div>
 
-<p-dialog header="Edit Profile" [modal]="true" [(visible)]="visible" [style]="{ width: '25rem' }">
-    <span class="p-text-secondary block mb-5">Update your information.</span>
+
+<p-dialog header="{{ '::Card:CreateCard' | abpLocalization }}" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
     <div class="flex align-items-center gap-3 mb-3">
-        <label for="username" class="font-semibold w-6rem">Username</label>
-        <input pInputText id="username" class="flex-auto" [(ngModel)]="firstName" autocomplete="off" />
+        <label for="firstname" class="font-semibold w-6rem">{{ '::FirstName' | abpLocalization }}</label>
+        <input pInputText id="firstname" class="flex-auto" [(ngModel)]="firstName" autocomplete="off" />
     </div>
-    <div class="flex align-items-center gap-3 mb-5">
-        <label for="email" class="font-semibold w-6rem">Email</label>
-        <input pInputText id="email" class="flex-auto" autocomplete="off" />
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="lastname" class="font-semibold w-6rem">{{ '::LastName' | abpLocalization }}</label>
+        <input pInputText id="lastname" class="flex-auto" [(ngModel)]="lastName" autocomplete="off" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="lastname" class="font-semibold w-6rem">{{ '::Merchant' | abpLocalization }}</label>
+        <input pInputText id="lastname" class="flex-auto" [(ngModel)]="lastName" autocomplete="off" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="amount" class="font-semibold w-6rem">{{ '::Amount' | abpLocalization }}</label>
+        <p-inputNumber 
+            class="flex-auto"
+            [(ngModel)]="amount" 
+            inputId="minmaxfraction" 
+            mode="decimal" 
+            [minFractionDigits]="2" 
+            [maxFractionDigits]="5" /> 
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="lastname" class="font-semibold w-6rem">{{ '::Note' | abpLocalization }}</label>
+        <textarea 
+            rows="5"
+            cols="30" 
+            pInputTextarea 
+            [(ngModel)]="note">
+        </textarea>
     </div>
     <div class="flex justify-content-end gap-2">
         <p-button label="Random" (onClick)="randomData()" />
         <p-button label="Cancel" severity="secondary" (onClick)="visible = false" />
-        <p-button label="Save" (onClick)="visible = false" />
+        <p-button label="Save" (onClick)="createCard()" />
+    </div>
+</p-dialog>
+
+
+<p-dialog header="{{ '::Bin:AddBin' | abpLocalization }}" [modal]="true" [(visible)]="addBinVisible" [style]="{ width: '60rem' }">
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="binName" class="font-semibold w-10rem">{{ '::Bin:Name' | abpLocalization }}</label>
+        <input pInputText id="binName" class="flex-auto" [(ngModel)]="binName" autocomplete="off" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="binDescription" class="font-semibold w-10rem">{{ '::Description' | abpLocalization }}</label>
+        <input pInputText id="binDescription" class="flex-auto" [(ngModel)]="binDescription" autocomplete="off" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="binSupplier" class="font-semibold w-10rem">{{ '::Supplier' | abpLocalization }}</label>
+        <p-dropdown 
+            [options]="suppliers" 
+            [(ngModel)]="binSupplier" 
+            optionLabel="name" 
+            placeholder="Select a Supplier" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="binCurrency" class="font-semibold w-10rem">{{ '::Currency' | abpLocalization }}</label>
+        <p-dropdown 
+            [options]="currencies" 
+            [(ngModel)]="binCurrencyId" 
+            optionLabel="name" 
+            placeholder="Select a Currency" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="binMapping" class="font-semibold w-10rem">{{ '::Bin:Mapping' | abpLocalization }}</label>
+        <input pInputText id="binMapping" class="flex-auto" [(ngModel)]="binMapping" autocomplete="off" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="binCreationFixedFee" class="font-semibold w-10rem">{{ '::CreationFixedFee' | abpLocalization }}</label>
+        <p-inputNumber 
+            class="flex-auto"
+            [(ngModel)]="binCreationFixedFee" 
+            inputId="minmaxfraction" 
+            mode="decimal" 
+            [minFractionDigits]="2" 
+            [maxFractionDigits]="5" /> 
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="binCreationPercentFee" class="font-semibold w-10rem">{{ '::CreationPercentageFee' | abpLocalization }}</label>
+        <p-inputNumber 
+            class="flex-auto"
+            [(ngModel)]="binCreationPercentFee" 
+            inputId="percent" 
+            mode="decimal" 
+            suffix="%"
+            [min]="0"  
+            [max]="100" /> 
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="binFundingFixedFee" class="font-semibold w-10rem">{{ '::FundingFixedFee' | abpLocalization }}</label>
+        <p-inputNumber 
+            class="flex-auto"
+            [(ngModel)]="binFundingFixedFee" 
+            inputId="minmaxfraction" 
+            mode="decimal" 
+            [minFractionDigits]="2" 
+            [maxFractionDigits]="5" /> 
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="binFundingPercentFee" class="font-semibold w-10rem">{{ '::FundingPercentageFee' | abpLocalization }}</label>
+        <p-inputNumber 
+            class="flex-auto"
+            [(ngModel)]="binFundingPercentFee" 
+            inputId="percent" 
+            suffix="%"
+            [min]="0"  
+            [max]="100" /> 
+    </div>
+    <div class="flex justify-content-end gap-2">
+        <p-button label="Cancel" severity="secondary" (onClick)="addBinVisible = false" />
+        <p-button label="Save" (onClick)="createBin()" />
     </div>
 </p-dialog>

@@ -16,6 +16,7 @@
     "Search": "Tìm kiếm",
     "Action": "Hành động",
     "AccountDontHaveACard": "Tài khoản không có thẻ tín dụng nào",
+    "AccountDontHaveACurrency": "Tài khoản không có tiền tệ nào",
     "LongWelcomeMessage": "Chào mừng bạn đến với ứng dụng. Đây là một dự án khởi nghiệp dựa trên khung ABP. Để biết thêm thông tin hãy truy cập",
     "GetCreditCardsSuccess": "Lấy danh sách thẻ tín dụng thành công",
     "CardPermission:View": "Xem thẻ tín dụng",
@@ -35,9 +36,12 @@
     "LastName": "Tên",
     "Add": "Thêm",
     "Bin:Name": "Tên bin",
+    "Bin:AddBin": "Thêm bin",
+    "Bin:DeleteBin": "Xoá bin",
     "CreationFixedFee": "Phí cố định tạo",
     "CreationPercentageFee": "Phí phần trăm tạo",
     "FundingFixedFee": "Phí cố định nạp tiền",
     "FundingPercentageFee": "Phí phần trăm nạp tiền",
+    "SuccessToast": "{0} thành công"
   }
 }

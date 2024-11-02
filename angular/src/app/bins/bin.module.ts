@@ -12,10 +12,13 @@ import { TagModule } from 'primeng/tag';
 import { DialogModule } from 'primeng/dialog';
 import { FormsModule } from "@angular/forms";
 import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   declarations: [BinsComponent],
-  imports: [SharedModule, BinRoutingModule, PageModule, DataViewModule, CardModule, ButtonModule, CommonModule, LocalizationModule, TagModule, DialogModule, FormsModule, InputTextModule],
+  imports: [SharedModule, DropdownModule, BinRoutingModule, InputTextareaModule, InputNumberModule, PageModule, DataViewModule, CardModule, ButtonModule, CommonModule, LocalizationModule, TagModule, DialogModule, FormsModule, InputTextModule],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class BinModule {}
