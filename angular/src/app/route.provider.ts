@@ -18,14 +18,21 @@ function configureRoutes(routes: RoutesService) {
       {
         path: '/bin',
         name: '::Bin',
-        iconClass: 'fas fa-card',
+        iconClass: 'pi pi-cart-plus',
+        order: 2,
+        layout: eLayoutType.application,
+      },
+      {
+        path: '/currency',
+        name: '::Currency',
+        iconClass: 'pi pi-dollar',
         order: 2,
         layout: eLayoutType.application,
       },
       {
         path: '/card',
         name: '::Card',
-        iconClass: 'fas fa-card',
+        iconClass: 'pi pi-credit-card',
         order: 3,
         layout: eLayoutType.application,
       },

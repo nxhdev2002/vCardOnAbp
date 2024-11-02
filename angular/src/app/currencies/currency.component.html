@@ -1,0 +1,73 @@
+<div class="card">
+  <p-table
+      #dt2
+      [value]="currencies"
+      dataKey="id"
+      [rows]="10"
+      [rowsPerPageOptions]="[10, 25, 50]"
+      [loading]="loading"
+      [paginator]="true"
+      [tableStyle]="{ 'min-width': '75rem' }"
+  >
+  <ng-template pTemplate="caption">
+      <div class="flex">
+          <p-iconField iconPosition="left" class="ml-auto">
+              <input 
+                  pInputText 
+                  type="text" 
+                  (input)="dt2.filterGlobal($event.target.value, 'contains')" 
+                  placeholder="{{ '::Search' | abpLocalization }}" />
+          </p-iconField>
+      </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+      <tr>
+          <th style="width:5%">{{ '::Id' | abpLocalization }}</th>
+          <th style="width:20%">{{ '::Name' | abpLocalization }}</th>
+          <th style="width:20%">{{ '::Code' | abpLocalization }}</th>
+          <th style="width:10%">{{ '::Symbol' | abpLocalization }}</th>
+          <th style="width:10%">{{ '::UsdRate' | abpLocalization }}</th>
+          <th style="width:20%">{{ '::Action' | abpLocalization }}</th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-currency let-rowIndex="rowIndex" >
+      <tr>
+            <td>{{rowIndex + 1}}</td>
+            <td>
+                {{ currency.name }}
+            </td>
+            <td>
+                {{ currency.code }}
+            </td>
+            <td>
+                {{ currency.symbol }}
+            </td>
+            <td>
+              {{ currency.usdRate }}
+          </td>
+            <td>
+                <p-button   
+                    icon="pi pi-pencil" 
+                    class="mr-2" 
+                    [rounded]="true" 
+                    [outlined]="true" 
+                    severity="success" 
+                    (onClick)="edit(product)" /> 
+                <p-button 
+                    icon="pi pi-trash" 
+                    class="mr-2" 
+                    severity="warning" 
+                    [rounded]="true" 
+                    [outlined]="true" 
+                    (onClick)="delete(card)" />            
+            </td>
+            
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+      <tr>
+          <td colspan="5">{{ '::AccountDontHaveACurrency' | abpLocalization }}</td>
+      </tr>
+  </ng-template>
+  </p-table>
+</div>

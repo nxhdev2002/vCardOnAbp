@@ -5,6 +5,7 @@ export interface GetPaymentMethodsInput extends PagedAndSortedResultRequestDto {
 }
 
 export interface PaymentMethodDto {
+  id: number;
   name?: string;
   description?: string;
   isEnabled: boolean;
