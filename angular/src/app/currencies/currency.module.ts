@@ -8,9 +8,10 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { CurrencyComponent } from './currency.component';
 import { CurrencyRoutingModule } from './currency-routing.module';
+import { DialogModule } from 'primeng/dialog';
 
 @NgModule({
   declarations: [CurrencyComponent],
-  imports: [SharedModule, CurrencyRoutingModule, PageModule, TableModule, InputTextModule, InputIconModule, CommonModule, ButtonModule],
+  imports: [SharedModule, CurrencyRoutingModule, PageModule, TableModule, InputTextModule, InputIconModule, CommonModule, ButtonModule, DialogModule],
 })
 export class CurrencyModule {}

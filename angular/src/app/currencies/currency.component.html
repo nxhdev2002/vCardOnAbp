@@ -8,13 +8,18 @@
   >
   <ng-template pTemplate="caption">
       <div class="flex">
-          <p-iconField iconPosition="left" class="ml-auto">
-              <input 
-                  pInputText 
-                  type="text" 
-                  (input)="dt2.filterGlobal($event.target.value, 'contains')" 
-                  placeholder="{{ '::Search' | abpLocalization }}" />
-          </p-iconField>
+        <p-button 
+            icon="pi pi-external-link" 
+            label="{{ '::Add' | abpLocalization }}"
+            (onClick)="openAddModal()" 
+         />
+        <p-iconField iconPosition="left" class="ml-auto">
+            <input 
+                pInputText 
+                type="text" 
+                (input)="dt2.filterGlobal($event.target.value, 'contains')" 
+                placeholder="{{ '::Search' | abpLocalization }}" />
+        </p-iconField>
       </div>
   </ng-template>
   <ng-template pTemplate="header">
@@ -49,14 +54,14 @@
                     [rounded]="true" 
                     [outlined]="true" 
                     severity="success" 
-                    (onClick)="edit(product)" /> 
+                    (onClick)="edit(currency)" /> 
                 <p-button 
                     icon="pi pi-trash" 
                     class="mr-2" 
                     severity="warning" 
                     [rounded]="true" 
                     [outlined]="true" 
-                    (onClick)="delete(card)" />            
+                    (onClick)="deleleCurrency(currency)" />            
             </td>
             
       </tr>
@@ -68,3 +73,28 @@
   </ng-template>
   </p-table>
 </div>
+
+
+<p-dialog header="{{ '::Currency:AddCurrency' | abpLocalization }}" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="firstname" class="font-semibold w-6rem">{{ '::Name' | abpLocalization }}</label>
+        <input pInputText id="firstname" class="flex-auto" [(ngModel)]="name" autocomplete="off" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="lastname" class="font-semibold w-6rem">{{ '::Code' | abpLocalization }}</label>
+        <input pInputText id="lastname" class="flex-auto" [(ngModel)]="code" autocomplete="off" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="lastname" class="font-semibold w-6rem">{{ '::Symbol' | abpLocalization }}</label>
+        <input pInputText id="lastname" class="flex-auto" [(ngModel)]="symbol" autocomplete="off" />
+    </div>
+    <div class="flex align-items-center gap-3 mb-3">
+        <label for="lastname" class="font-semibold w-6rem">{{ '::UsdRate' | abpLocalization }}</label>
+        <input pInputText id="lastname" class="flex-auto" [(ngModel)]="usdRate" autocomplete="off" />
+    </div>
+    <div class="flex justify-content-end gap-2">
+        <p-button label="Random" />
+        <p-button label="Cancel" severity="secondary" (onClick)="visible = false" />
+        <p-button label="Save" (onClick)="!id ? addCurrency() : saveCurrency()" />
+    </div>
+</p-dialog>
