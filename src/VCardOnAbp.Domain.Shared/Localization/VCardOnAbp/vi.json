@@ -38,10 +38,14 @@
     "Bin:Name": "Tên bin",
     "Bin:AddBin": "Thêm bin",
     "Bin:DeleteBin": "Xoá bin",
+    "Currency:AddCurrency": "Thêm tiền tệ",
+    "Currency:DeleteCurrency": "Xoá tiền tệ",
+    "Currency:UpdateCurrency": "Cập nhật tiền tệ",
     "CreationFixedFee": "Phí cố định tạo",
     "CreationPercentageFee": "Phí phần trăm tạo",
     "FundingFixedFee": "Phí cố định nạp tiền",
     "FundingPercentageFee": "Phí phần trăm nạp tiền",
+    "UsdRate": "Tỷ giá USD",
     "SuccessToast": "{0} thành công"
   }
 }
