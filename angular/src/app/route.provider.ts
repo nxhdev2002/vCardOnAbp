@@ -16,10 +16,19 @@ function configureRoutes(routes: RoutesService) {
         layout: eLayoutType.application,
       },
       {
+        path: '/payment',
+        name: '::Payment',
+        iconClass: 'pi pi-dollar',
+        order: 1,
+        requiredPolicy: 'Payment.View',
+        layout: eLayoutType.application,
+      },
+      {
         path: '/bin',
         name: '::Bin',
         iconClass: 'pi pi-cart-plus',
         order: 2,
+        requiredPolicy: 'Bin.View',
         layout: eLayoutType.application,
       },
       {
@@ -27,6 +36,7 @@ function configureRoutes(routes: RoutesService) {
         name: '::Currency',
         iconClass: 'pi pi-dollar',
         order: 2,
+        requiredPolicy: 'Currency.View',
         layout: eLayoutType.application,
       },
       {
@@ -34,6 +44,7 @@ function configureRoutes(routes: RoutesService) {
         name: '::Card',
         iconClass: 'pi pi-credit-card',
         order: 3,
+        requiredPolicy: 'Card.View',
         layout: eLayoutType.application,
       },
     ]);

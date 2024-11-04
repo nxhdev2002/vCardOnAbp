@@ -45,12 +45,20 @@
     "Currency:UpdateCurrency": "Cập nhật tiền tệ",
     "Payment": "Thanh toán",
     "Gateway": "Cổng thanh toán",
+    "Deposit": "Nạp tiền",
+    "FixedFee": "Phí cố định",
+    "PercentageFee": "Phí phần trăm",
     "CreationFixedFee": "Phí cố định tạo",
     "CreationPercentageFee": "Phí phần trăm tạo",
     "FundingFixedFee": "Phí cố định nạp tiền",
     "FundingPercentageFee": "Phí phần trăm nạp tiền",
     "UsdRate": "Tỷ giá USD",
     "SuccessToast": "{0} thành công",
-    "TransactionAlreadyProcessed": "Giao dịch đã được xử lý"
+    "TransactionAlreadyProcessed": "Giao dịch đã được xử lý",
+    "NoData": "Không có dữ liệu",
+    "IsEnabled": "Đã kích hoạt",
+    "Type": "Loại",
+    "GatewayType_0": "Thủ công",
+    "GatewayType_1": "Ngân hàng tự động",
   }
 }
