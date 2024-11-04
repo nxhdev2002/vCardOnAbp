@@ -15,6 +15,7 @@
     "Note": "Ghi chú",
     "Search": "Tìm kiếm",
     "Action": "Hành động",
+    "Transaction": "Giao dịch",
     "AccountDontHaveACard": "Tài khoản không có thẻ tín dụng nào",
     "AccountDontHaveACurrency": "Tài khoản không có tiền tệ nào",
     "LongWelcomeMessage": "Chào mừng bạn đến với ứng dụng. Đây là một dự án khởi nghiệp dựa trên khung ABP. Để biết thêm thông tin hãy truy cập",
@@ -25,6 +26,7 @@
     "CardPermission:Add": "Thêm thẻ tín dụng",
     "CardPermission:Fund": "Nạp tiền vào thẻ tín dụng",
     "CardNotFound": "Không tìm thấy thẻ tín dụng",
+    "NotFound": "Không tìm thấy {0}",
     "UserFundedTransaction": "Nạp tiền vào thẻ tín dụng {1}",
     "Welcome": "Welcome",
     "Merchant": "Thương gia",
@@ -41,11 +43,14 @@
     "Currency:AddCurrency": "Thêm tiền tệ",
     "Currency:DeleteCurrency": "Xoá tiền tệ",
     "Currency:UpdateCurrency": "Cập nhật tiền tệ",
+    "Payment": "Thanh toán",
+    "Gateway": "Cổng thanh toán",
     "CreationFixedFee": "Phí cố định tạo",
     "CreationPercentageFee": "Phí phần trăm tạo",
     "FundingFixedFee": "Phí cố định nạp tiền",
     "FundingPercentageFee": "Phí phần trăm nạp tiền",
     "UsdRate": "Tỷ giá USD",
-    "SuccessToast": "{0} thành công"
+    "SuccessToast": "{0} thành công",
+    "TransactionAlreadyProcessed": "Giao dịch đã được xử lý"
   }
 }
