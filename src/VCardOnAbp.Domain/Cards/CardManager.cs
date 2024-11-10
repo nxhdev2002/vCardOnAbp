@@ -70,7 +70,7 @@ public class CardManager(
         IdentityUser? user = await _userManager.FindByIdAsync(card.CreatorId.ToString()!);
         user!.SetProperty(nameof(UserConsts.Balance), user!.GetProperty<decimal>(nameof(UserConsts.Balance)) - usdRate);
         card.SetLastView(DateTime.UtcNow);
-        card.SetBalance(-amount);
+        card.SetBalance(amount);
 
         await _userTransRepository.InsertAsync(
             new UserTransaction(GuidGenerator.Create(), card.CreatorId!.Value, card.Id, null, UserTransactionType.FundCard, amount)

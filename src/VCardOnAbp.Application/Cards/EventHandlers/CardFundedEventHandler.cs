@@ -18,6 +18,7 @@ public class CardFundedEventHandler(
         await _backgroundJobManager.EnqueueAsync(new FundCardJobArgs
         {
             Supplier = eventData.Card.Supplier,
+            CardId = eventData.Card.Id,
             UserId = eventData.Card.CreatorId!.Value,
             Amount = eventData.Amount
         });

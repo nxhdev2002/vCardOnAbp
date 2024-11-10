@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
@@ -31,28 +32,30 @@ public class VmcardioAppService : VCardOnAbpAppService, IVmcardioAppService
         throw new NotImplementedException();
     }
 
-    public async Task<VmCardDto> GetCard(GetCardInput input)
+    public async Task<VmCardDto> GetCard(GetVmcardioCardInput input)
     {
         Dictionary<string, string> query = input.ToDict();
-        ResponseModel<GetCardOutput> card = await SendVmcardioRequestAsync<ResponseModel<GetCardOutput>>(HttpMethod.Get, VmcardioApiConst.GetCard, queryParams: query);
+        VmcardioResponseModel<GetCardOutput> card = await SendVmcardioRequestAsync<VmcardioResponseModel<GetCardOutput>>(HttpMethod.Get, VmcardioApiConst.GetCard, queryParams: query);
         return card.data.virtual_card;
     }
 
     public async Task<List<VmCardioTransactionDto>> GetCardTransactions(GetVmCardTransactionInput input)
     {
         Dictionary<string, string> query = input.ToDict();
-        ResponseModel<VmCardioTransactionResponse> transactions = await SendVmcardioRequestAsync<ResponseModel<VmCardioTransactionResponse>>(HttpMethod.Get, VmcardioApiConst.GetCardTransactions, queryParams: query);
+        VmcardioResponseModel<VmCardioTransactionResponse> transactions = await SendVmcardioRequestAsync<VmcardioResponseModel<VmCardioTransactionResponse>>(HttpMethod.Get, VmcardioApiConst.GetCardTransactions, queryParams: query);
         return transactions.data.list;
     }
 
-    public async Task FundCardAsync(FundCardDto input)
+    public async Task<VmcardioResponseModel<object>> FundCardAsync(VmcardioFundCardDto input)
     {
         Dictionary<string, string> query = input.ToDict();
-        ResponseModel<object> data = await SendVmcardioRequestAsync<ResponseModel<object>>(HttpMethod.Post, VmcardioApiConst.FundCard, queryParams: query);
+        VmcardioResponseModel<object> data = await SendVmcardioRequestAsync<VmcardioResponseModel<object>>(HttpMethod.Post, VmcardioApiConst.FundCard, formData: query);
         Logger.LogInformation("FundCardAsync: {0}", data);
+
+        return data;
     }
 
-    private async Task<T> SendVmcardioRequestAsync<T>(HttpMethod method, string url, Dictionary<string, string> headers = null, Dictionary<string, string> queryParams = null, object body = null)
+    private async Task<T> SendVmcardioRequestAsync<T>(HttpMethod method, string url, Dictionary<string, string> headers = null, Dictionary<string, string> queryParams = null, Dictionary<string, string> formData = null, object body = null)
     {
         string token = await GetVmcardioTokenAsync();
         if (headers != null)
@@ -64,17 +67,15 @@ public class VmcardioAppService : VCardOnAbpAppService, IVmcardioAppService
             headers = new Dictionary<string, string>
             {
                 { "token", token },
-                { "Accept", "application/json" },
                 { "user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36" }
             };
         }
-        return await HttpHelper.SendRequestAsync<T>(method, url, headers, queryParams, body);
+        return await HttpHelper.SendRequestAsync<T>(method, url, headers, queryParams, formData, body);
     }
 
     private async Task<string> GetVmcardioTokenAsync()
     {
-        return "oA00l05ypjel6zHjihI2oiIisfAOaeeL=Jidj3WCT4N514OWiFMXwOVJiYi=28hcxTj4C86iQN1UiKRi=83cb2.WiceXQE53RENi1715yDCNODI1MNLUJxfAOQOk2IQ1n3JLQVbmMy=DIaINJizi979219QMIyJWJX";
-        return "RW72DAEyIy8731J530i0INxNWCVIi2iwI==eO3a81ii3N.5kj31aejLL1yzOQE5JjIO9FR1OM1isjpKJbiCiJfN0Q36yWAnD0IefLXbxoJQMV2MhAjlOi=TQhHlj6eWicQiUT12X=Y6UOINd5XiJi6AYoNcmiJC2N9";
+        return "Ya5TWWh=c1D=Xw6I0EbsCi067NyfMe12eQWXo4K.oOjTRiDOVI6IHjxIE0eif3wiFiij5J3OXzApNlz321UQQIjRbIn25W=L093kC8yJ0aOOiMO7c18yiJk2NMN1iJ7NiQUAJd5iiy2NJV3M9LiJcTLheQCilN=m1A";
     }
 
 

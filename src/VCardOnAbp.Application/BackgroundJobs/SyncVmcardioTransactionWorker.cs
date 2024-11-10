@@ -82,7 +82,7 @@ public class SyncVmcardioTransactionWorker : HangfireBackgroundWorkerBase
                 .ToList();
 
             await _cardTransactionRepository.InsertManyAsync(transNotInDb, cancellationToken: cancellationToken);
-            await uow.CompleteAsync(cancellationToken);
         }
+        await uow.CompleteAsync(cancellationToken);
     }
 }

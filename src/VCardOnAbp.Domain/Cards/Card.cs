@@ -13,7 +13,7 @@ public class Card : FullAuditedAggregateRoot<Guid>
     public decimal Balance { get; private set; }
     public Guid BinId { get; private set; }
     public Supplier Supplier { get; private set; }
-    [MaxLength(50)]
+    [MaxLength(500)]
     public string SupplierIdentity { get; private set; }
     public CardStatus CardStatus { get; private set; }
     public DateTime? LastView { get; private set; }
@@ -54,7 +54,7 @@ public class Card : FullAuditedAggregateRoot<Guid>
         {
             throw new BusinessException();
         }
-        Balance = balance;
+        Balance += balance;
         return this;
     }
 

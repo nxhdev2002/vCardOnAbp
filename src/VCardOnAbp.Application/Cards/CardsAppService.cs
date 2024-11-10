@@ -8,6 +8,7 @@ using VCardOnAbp.BackgroundJobs.Dtos;
 using VCardOnAbp.Cards.Dto;
 using VCardOnAbp.Cards.Events;
 using VCardOnAbp.Permissions;
+using VCardOnAbp.Transactions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.BackgroundJobs;
@@ -97,9 +98,9 @@ public class CardsAppService(
 
 
     [Authorize(VCardOnAbpPermissions.FundCard)]
-    public virtual async Task FundAsync(FundCardInput input)
+    public virtual async Task FundAsync(Guid id, FundCardInput input)
     {
-        Card card = await _cardManager.GetCard(input.Id, CurrentUser.Id!.Value)
+        Card card = await _cardManager.GetCard(id, CurrentUser.Id!.Value)
             ?? throw new UserFriendlyException(L["CardNotFound"]);
 
         await _cardManager.FundCard(card, input.Amount);

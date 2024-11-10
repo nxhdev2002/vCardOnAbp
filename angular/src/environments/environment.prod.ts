@@ -1,11 +1,11 @@
 import { Environment } from '@abp/ng.core';
 
-const baseUrl = 'https://demo.shop-procard.com';
+const baseUrl = 'https://fe.hoangnx.info';
 
 const oAuthConfig = {
-  issuer: 'https://demo.shop-procard.com/',
+  issuer: 'https://vcard.hoangnx.info/',
   redirectUri: baseUrl,
-  clientId: 'VCardOnAbp_App',
+  clientId: 'VCard_Angular',
   responseType: 'code',
   scope: 'offline_access VCardOnAbp',
   requireHttps: true,
@@ -20,7 +20,7 @@ export const environment = {
   oAuthConfig,
   apis: {
     default: {
-      url: 'https://demo.shop-procard.com',
+      url: 'https://vcard.hoangnx.info',
       rootNamespace: 'VCardOnAbp',
     },
     AbpAccountPublic: {
@@ -28,10 +28,7 @@ export const environment = {
       rootNamespace: 'AbpAccountPublic',
     },
   },
-  remoteEnv: {
-    url: '/getEnvConfig',
-    mergeStrategy: 'deepmerge'
-  },
+
   localization: {
     defaultResourceName: "VCardOnAbp",
   },
