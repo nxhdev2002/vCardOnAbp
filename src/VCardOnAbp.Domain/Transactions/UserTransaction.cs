@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using Volo.Abp.Domain.Entities;
 
 namespace VCardOnAbp.Transactions;
 
+[Index(nameof(Description), Name = "IX_UserTransaction_Description")]
 public class UserTransaction : Entity<Guid>
 {
     public DateTime CreationTime { get; private set; }
