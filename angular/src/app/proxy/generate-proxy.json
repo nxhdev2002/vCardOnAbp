@@ -2159,6 +2159,64 @@
                     "type": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Payments.Dtos.PaymentMethodDto>",
                     "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Payments.Dtos.PaymentMethodDto>"
                   }
+                },
+                {
+                  "name": "CreateTransaction",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Int32, System.Private.CoreLib",
+                      "type": "System.Int32",
+                      "typeSimple": "number",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "VCardOnAbp.Payments.Dtos.CreateDepositTransactionInput, VCardOnAbp.Application.Contracts",
+                      "type": "VCardOnAbp.Payments.Dtos.CreateDepositTransactionInput",
+                      "typeSimple": "VCardOnAbp.Payments.Dtos.CreateDepositTransactionInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "VCardOnAbp.Payments.Dtos.CreateDepositTransactionDto",
+                    "typeSimple": "VCardOnAbp.Payments.Dtos.CreateDepositTransactionDto"
+                  }
+                },
+                {
+                  "name": "UpdateTransaction",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Int32, System.Private.CoreLib",
+                      "type": "System.Int32",
+                      "typeSimple": "number",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "transId",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "VCardOnAbp.Payments.Dtos.ProcessTransactionInput, VCardOnAbp.Application.Contracts",
+                      "type": "VCardOnAbp.Payments.Dtos.ProcessTransactionInput",
+                      "typeSimple": "VCardOnAbp.Payments.Dtos.ProcessTransactionInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "System.Void",
+                    "typeSimple": "System.Void"
+                  }
                 }
               ]
             }
@@ -2234,7 +2292,141 @@
                 "type": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Payments.Dtos.PaymentMethodDto>",
                 "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Payments.Dtos.PaymentMethodDto>"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
+              "implementFrom": "VCardOnAbp.Payments.IPaymentsAppService"
+            },
+            "CreateTransactionByIdAndInput": {
+              "uniqueName": "CreateTransactionByIdAndInput",
+              "name": "CreateTransaction",
+              "httpMethod": "POST",
+              "url": "api/app/payments/{id}/transaction",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Int32, System.Private.CoreLib",
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "VCardOnAbp.Payments.Dtos.CreateDepositTransactionInput, VCardOnAbp.Application.Contracts",
+                  "type": "VCardOnAbp.Payments.Dtos.CreateDepositTransactionInput",
+                  "typeSimple": "VCardOnAbp.Payments.Dtos.CreateDepositTransactionInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "VCardOnAbp.Payments.Dtos.CreateDepositTransactionInput",
+                  "typeSimple": "VCardOnAbp.Payments.Dtos.CreateDepositTransactionInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "VCardOnAbp.Payments.Dtos.CreateDepositTransactionDto",
+                "typeSimple": "VCardOnAbp.Payments.Dtos.CreateDepositTransactionDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "VCardOnAbp.Payments.IPaymentsAppService"
+            },
+            "UpdateTransactionByIdAndTransIdAndInput": {
+              "uniqueName": "UpdateTransactionByIdAndTransIdAndInput",
+              "name": "UpdateTransaction",
+              "httpMethod": "PUT",
+              "url": "api/app/payments/{id}/transaction/{transId}",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Int32, System.Private.CoreLib",
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "transId",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "VCardOnAbp.Payments.Dtos.ProcessTransactionInput, VCardOnAbp.Application.Contracts",
+                  "type": "VCardOnAbp.Payments.Dtos.ProcessTransactionInput",
+                  "typeSimple": "VCardOnAbp.Payments.Dtos.ProcessTransactionInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Int32",
+                  "typeSimple": "number",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "transId",
+                  "name": "transId",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "VCardOnAbp.Payments.Dtos.ProcessTransactionInput",
+                  "typeSimple": "VCardOnAbp.Payments.Dtos.ProcessTransactionInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "System.Void",
+                "typeSimple": "System.Void"
+              },
+              "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Payments.IPaymentsAppService"
             }
           }
@@ -5674,6 +5866,76 @@
         }
       ]
     },
+    "VCardOnAbp.Payments.DepositTransactionStatus": {
+      "baseType": "System.Enum",
+      "isEnum": true,
+      "enumNames": [
+        "Pending",
+        "Completed",
+        "Failed"
+      ],
+      "enumValues": [
+        0,
+        1,
+        2
+      ],
+      "genericArguments": null,
+      "properties": null
+    },
+    "VCardOnAbp.Payments.Dtos.CreateDepositTransactionDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Id",
+          "jsonName": null,
+          "type": "System.Guid",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "VCardOnAbp.Payments.Dtos.CreateDepositTransactionInput": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Signature",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Amount",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
     "VCardOnAbp.Payments.Dtos.GetPaymentMethodsInput": {
       "baseType": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
       "isEnum": false,
@@ -5773,8 +6035,79 @@
           "minimum": null,
           "maximum": null,
           "regex": null
+        },
+        {
+          "name": "GatewayType",
+          "jsonName": null,
+          "type": "VCardOnAbp.Payments.GatewayType",
+          "typeSimple": "VCardOnAbp.Payments.GatewayType",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
         }
       ]
+    },
+    "VCardOnAbp.Payments.Dtos.ProcessTransactionInput": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Status",
+          "jsonName": null,
+          "type": "VCardOnAbp.Payments.DepositTransactionStatus",
+          "typeSimple": "VCardOnAbp.Payments.DepositTransactionStatus",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Comment",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "ConcurrencyStamp",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "VCardOnAbp.Payments.GatewayType": {
+      "baseType": "System.Enum",
+      "isEnum": true,
+      "enumNames": [
+        "MANUAL",
+        "AUTOBANK"
+      ],
+      "enumValues": [
+        0,
+        1
+      ],
+      "genericArguments": null,
+      "properties": null
     },
     "Volo.Abp.Account.ChangePasswordInput": {
       "baseType": null,

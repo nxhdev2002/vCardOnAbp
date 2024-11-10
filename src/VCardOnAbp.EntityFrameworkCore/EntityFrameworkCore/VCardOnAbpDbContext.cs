@@ -67,6 +67,7 @@ public class VCardOnAbpDbContext :
     public DbSet<Currency> Currencies { get; set; }
     public DbSet<UserTransaction> UserTransactions { get; set; }
     public DbSet<PaymentMethod> PaymentMethods { get; set; }
+    public DbSet<DepositTransaction> DepositTransactions { get; set; }
     #endregion
 
     public VCardOnAbpDbContext(DbContextOptions<VCardOnAbpDbContext> options)
@@ -99,5 +100,6 @@ public class VCardOnAbpDbContext :
         //    b.ConfigureByConvention(); //auto configure for the base class props
         //    //...
         //});
+
     }
 }

@@ -34,6 +34,15 @@ public class VCardOnAbpPermissionDefinitionProvider : PermissionDefinitionProvid
         currencyGroup.AddPermission(VCardOnAbpPermissions.ViewCurrency, L("CurrencyPermission:View"));
         currencyGroup.AddPermission(VCardOnAbpPermissions.AddCurrency, L("CurrencyPermission:Add"));
         currencyGroup.AddPermission(VCardOnAbpPermissions.EditCurrency, L("CurrencyPermission:Edit"));
+
+        // Payment
+        PermissionGroupDefinition paymentGroup = context.AddGroup(VCardOnAbpPermissions.PaymentGroup);
+        paymentGroup.AddPermission(VCardOnAbpPermissions.PaymentGroup, L("PaymentPermission:Payment"));
+        paymentGroup.AddPermission(VCardOnAbpPermissions.AddPayment, L("PaymentPermission:View"));
+        paymentGroup.AddPermission(VCardOnAbpPermissions.ViewPayment, L("PaymentPermission:Add"));
+        paymentGroup.AddPermission(VCardOnAbpPermissions.EditPayment, L("PaymentPermission:Edit"));
+        paymentGroup.AddPermission(VCardOnAbpPermissions.Deposit, L("PaymentPermission:Deposit"));
+        paymentGroup.AddPermission(VCardOnAbpPermissions.ProcessDeposit, L("PaymentPermission:Process"));
     }
 
     private static LocalizableString L(string name)

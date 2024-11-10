@@ -30,4 +30,13 @@ public static class VCardOnAbpPermissions
     public const string ViewCurrency = CurrencyGroup + ".View";
     public const string AddCurrency = CurrencyGroup + ".Add";
     public const string EditCurrency = CurrencyGroup + ".Edit";
+
+
+    // Payment
+    public const string PaymentGroup = "Payment";
+    public const string ViewPayment = PaymentGroup + ".View";
+    public const string AddPayment = PaymentGroup + ".Add";
+    public const string EditPayment = PaymentGroup + ".Edit";
+    public const string Deposit = PaymentGroup + ".Deposit";
+    public const string ProcessDeposit = PaymentGroup + ".ProcessDeposit";
 }

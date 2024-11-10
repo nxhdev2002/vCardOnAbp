@@ -36,6 +36,15 @@ const routes: Routes = [
     }
   },
   {
+    path: 'payment',
+    pathMatch: 'full',
+    loadChildren: () => import('./payments/payment.module').then(m => m.PaymentModule),
+    canActivate: [permissionGuard],
+    data: {
+      requiredPolicy: 'Payment.View'
+    }
+  },
+  {
     path: 'currency',
     pathMatch: 'full',
     loadChildren: () => import('./currencies/currency.module').then(m => m.CurrencyModule),
