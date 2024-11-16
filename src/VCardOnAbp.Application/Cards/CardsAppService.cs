@@ -121,7 +121,7 @@ public class CardsAppService(
 
 
     [Authorize(VCardOnAbpPermissions.FundCard)]
-    public virtual async Task FundAsync(Guid id, FundCardInput input)
+    public virtual async Task<ResponseModel> FundAsync(Guid id, FundCardInput input)
     {
         Card card;
         try
@@ -149,6 +149,8 @@ public class CardsAppService(
         await _userTransaction.InsertAsync(
             new UserTransaction(GuidGenerator.Create(), card.CreatorId!.Value, card.Id, L["CardPermission:Fund"], UserTransactionType.FundCard, input.Amount)
         );
+
+        return ResponseModel.SuccessResponse(L["SuccessToast", L["CardPermission:Fund"]]);
     }
 
 
