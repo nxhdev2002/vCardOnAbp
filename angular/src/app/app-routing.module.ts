@@ -54,6 +54,11 @@ const routes: Routes = [
     }
   },
   {
+    path: 'transactions',
+    pathMatch: 'full',
+    loadChildren: () => import('./transactions/transaction.module').then(m => m.TransactionModule),
+  },
+  {
     path: 'account',
     loadChildren: () => import('@abp/ng.account').then(m => m.AccountModule.forLazy()),
   },

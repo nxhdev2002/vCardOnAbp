@@ -40,7 +40,7 @@ export class BinsComponent implements OnInit {
 
   textSearch: string;
   suppliers: any[];
-
+  selectedBin: string;
   constructor(
     private _cardService: CardsService,
     private _permissionService: PermissionService,
@@ -51,7 +51,8 @@ export class BinsComponent implements OnInit {
   ) {
     this.canCreate = this._permissionService.getGrantedPolicy('Bin.Add');
     this.suppliers = [
-      { name: "Vmcardio", code: Supplier.Vmcardio }
+      { name: "Vmcardio", code: Supplier.Vmcardio },
+      { name: "Vcc51", code: Supplier.Vcc51}
     ];
   }
 
@@ -81,7 +82,8 @@ export class BinsComponent implements OnInit {
     console.log(e)
   }
 
-  onCreateCardClicked(e) {
+  onCreateCardClicked(e, binId) {
+    this.selectedBin = binId;
     this.visible = true;
   }
 
@@ -93,7 +95,7 @@ export class BinsComponent implements OnInit {
   createCard() {
     let payload: CreateCardInput = {
       amount: this.amount,
-      supplier: Supplier.Vmcardio,
+      binId: this.selectedBin,
       cardName: `${this.firstName} ${this.lastName}`
     };
 

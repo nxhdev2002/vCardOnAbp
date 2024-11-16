@@ -47,6 +47,14 @@ function configureRoutes(routes: RoutesService) {
         requiredPolicy: 'Card.View',
         layout: eLayoutType.application,
       },
+      {
+        path: '/transactions',
+        name: '::Transaction',
+        iconClass: 'pi pi-credit-card',
+        order: 3,
+        requiredPolicy: 'Card.View',
+        layout: eLayoutType.application,
+      },
     ]);
   };
 }

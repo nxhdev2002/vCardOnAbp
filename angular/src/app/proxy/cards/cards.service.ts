@@ -2,6 +2,7 @@ import type { CardDto, CardSecretDto, CardTransactionDto, CreateCardInput, FundC
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
+import type { ResponseModel } from '../models/models';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class CardsService {
   
 
   create = (input: CreateCardInput, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, void>({
+    this.restService.request<any, ResponseModel>({
       method: 'POST',
       url: '/api/app/cards',
       body: input,
@@ -27,10 +28,10 @@ export class CardsService {
     { apiName: this.apiName,...config });
   
 
-  fund = (input: FundCardInput, config?: Partial<Rest.Config>) =>
+  fund = (id: string, input: FundCardInput, config?: Partial<Rest.Config>) =>
     this.restService.request<any, void>({
       method: 'POST',
-      url: '/api/app/cards/fund',
+      url: `/api/app/cards/${id}/fund`,
       body: input,
     },
     { apiName: this.apiName,...config });
