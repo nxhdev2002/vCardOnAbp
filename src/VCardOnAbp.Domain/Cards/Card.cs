@@ -15,21 +15,21 @@ public class Card : FullAuditedAggregateRoot<Guid>
     public Supplier Supplier { get; private set; }
     [MaxLength(500)]
     public string SupplierIdentity { get; private set; }
-    public CardStatus CardStatus { get; private set; }
+    public CardStatus CardStatus { get; private set; } = CardStatus.Active;
     public DateTime? LastView { get; private set; }
     [MaxLength(50)]
     public string CardName { get; private set; }
-
+    public Guid OwnerId { get; private set; }
     #region SECRET
-    public string PublicKey { get; private set; }
+    public string? PublicKey { get; private set; }
     [MaxLength(500)]
-    public string Cvv { get; private set; }
+    public string? Cvv { get; private set; }
     [MaxLength(500)]
-    public string ExpirationTime { get; private set; }
+    public string? ExpirationTime { get; private set; }
     #endregion
 
     private Card() { }
-    public Card(Guid id, string cardNo, Guid binId, Supplier supplierId, string supplierIdentity, CardStatus cardStatus, decimal balance, string cardName) : base(id)
+    public Card(Guid id, string cardNo, Guid binId, Supplier supplierId, string supplierIdentity, CardStatus cardStatus, decimal balance, string cardName, Guid ownerId) : base(id)
     {
         CardNo = cardNo;
         BinId = binId;
@@ -38,6 +38,7 @@ public class Card : FullAuditedAggregateRoot<Guid>
         CardStatus = cardStatus;
         Balance = balance;
         CardName = cardName;
+        OwnerId = ownerId;
     }
 
     public Card ChangeStatus(CardStatus cardStatus)

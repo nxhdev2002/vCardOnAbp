@@ -2,5 +2,6 @@
 
 public enum Supplier
 {
-    Vmcardio
+    Vmcardio,
+    Vcc51
 }

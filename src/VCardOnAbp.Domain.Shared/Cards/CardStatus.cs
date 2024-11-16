@@ -2,6 +2,7 @@
 
 public enum CardStatus
 {
+    Pending,
     Active,
     Inactive,
     Lock

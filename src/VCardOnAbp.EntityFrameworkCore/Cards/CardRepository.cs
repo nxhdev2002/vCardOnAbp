@@ -28,7 +28,7 @@ public class CardRepository(IDbContextProvider<VCardOnAbpDbContext> dbContextPro
             .AsNoTrackingIf(isNoTracking)
             .FirstOrDefaultAsync(
                 x => x.Id == id &&
-                x.CreatorId == userId &&
+                x.OwnerId == userId &&
                 x.CardStatus == CardStatus.Active
             , token);
     }

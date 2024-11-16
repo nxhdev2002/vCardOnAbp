@@ -28,7 +28,8 @@ public class CreateCardJob(
         switch (args.Supplier)
         {
             case Supplier.Vmcardio:
-                //await _vmcardioAppService.CreateCardAsync();
+                break;
+            case Supplier.Vcc51:
                 break;
             default:
                 return;
