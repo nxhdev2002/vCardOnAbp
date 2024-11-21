@@ -10,18 +10,21 @@ public class UserTransaction : Entity<Guid>
     public DateTime CreationTime { get; private set; }
     public Guid UserId { get; private set; }
     public Guid RelatedEntity { get; private set; }
+    public RelatedTransactionType RelatedTransactionType { get; private set; }
     public string? Description { get; private set; }
     public decimal Amount { get; private set; }
     public UserTransactionType Type { get; private set; }
     private UserTransaction() { }
 
-    public UserTransaction(Guid id, Guid userId, Guid relatedEntity, string? description, UserTransactionType type, decimal amount = 0) : base(id)
+    public UserTransaction(Guid id, Guid userId, Guid relatedEntity, string? description, UserTransactionType type, decimal amount = 0, RelatedTransactionType relatedTransactionType  = RelatedTransactionType.Card) : base(id)
     {
         UserId = userId;
         Description = description;
         RelatedEntity = relatedEntity;
         Amount = amount;
         Type = type;
-        CreationTime = DateTime.Now;
+        CreationTime = DateTime.UtcNow;
+        RelatedTransactionType = relatedTransactionType;
     }
+
 }

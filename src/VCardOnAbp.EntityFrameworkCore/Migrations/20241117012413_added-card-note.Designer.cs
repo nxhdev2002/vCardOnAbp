@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VCardOnAbp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace VCardOnAbp.Migrations
 {
     [DbContext(typeof(VCardOnAbpDbContext))]
-    partial class VCardOnAbpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241117012413_added-card-note")]
+    partial class addedcardnote
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,6 +108,7 @@ namespace VCardOnAbp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Note")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -192,9 +196,6 @@ namespace VCardOnAbp.Migrations
 
                     b.Property<decimal>("AuthAmount")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("AuthTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("CardId")
                         .HasColumnType("uniqueidentifier");
@@ -452,9 +453,6 @@ namespace VCardOnAbp.Migrations
 
                     b.Property<Guid>("RelatedEntity")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("RelatedTransactionType")
-                        .HasColumnType("int");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");

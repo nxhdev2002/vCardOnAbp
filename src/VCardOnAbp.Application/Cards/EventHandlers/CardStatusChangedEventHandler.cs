@@ -8,6 +8,6 @@ public class CardStatusChangedEventHandler : ILocalEventHandler<CardStatusChange
 {
     public Task HandleEventAsync(CardStatusChangedEvent eventData)
     {
-        throw new System.NotImplementedException();
+        return Task.CompletedTask;
     }
 }
