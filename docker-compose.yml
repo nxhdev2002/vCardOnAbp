@@ -1,0 +1,6 @@
+services:
+  vcardonabp.httpapi.host:
+    image: ${DOCKER_REGISTRY-}vcardonabphttpapihost
+    build:
+      context: .
+      dockerfile: src/VCardOnAbp.HttpApi.Host/Dockerfile

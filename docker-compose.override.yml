@@ -1,0 +1,32 @@
+services:
+  vcardonabp.httpapi.host:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__Default=Server=db;User=sa;Password=Caube_2k2@;Database=VCardOnAbp;Trusted_Connection=false;TrustServerCertificate=true
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=Caube_2k2
+    ports:
+      - "8080"
+      - "8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+      - ${USERPROFILE}/.aspnet/https:/https/
+    depends_on:
+      - db  # Ensures that the app starts after the database is up
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Caube_2k2@
+    ports:
+      - "1434:1433"  # Exposes SQL Server on port 1433
+    volumes:
+      - db_data:/var/opt/mssql  # Persist database data between container restarts
+    networks:
+      - default
+
+volumes:
+  db_data: # This defines the volume for the SQL Server data persistence.
