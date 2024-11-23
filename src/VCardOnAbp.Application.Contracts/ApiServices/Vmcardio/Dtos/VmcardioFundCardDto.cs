@@ -1,6 +1,6 @@
 ﻿namespace VCardOnAbp.ApiServices.Vmcardio.Dtos;
 
-public class FundCardDto
+public class VmcardioFundCardDto
 {
     public string amount { get; set; }
     public string card_id { get; set; }

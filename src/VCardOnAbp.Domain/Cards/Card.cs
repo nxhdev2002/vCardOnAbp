@@ -13,23 +13,26 @@ public class Card : FullAuditedAggregateRoot<Guid>
     public decimal Balance { get; private set; }
     public Guid BinId { get; private set; }
     public Supplier Supplier { get; private set; }
-    [MaxLength(50)]
+    [MaxLength(500)]
     public string SupplierIdentity { get; private set; }
-    public CardStatus CardStatus { get; private set; }
+    public CardStatus CardStatus { get; private set; } = CardStatus.Active;
     public DateTime? LastView { get; private set; }
     [MaxLength(50)]
     public string CardName { get; private set; }
-
+    public Guid OwnerId { get; private set; }
+    public DateTime? LastSync { get; set; }
+    [MaxLength(500)]
+    public string? Note { get; set; }
     #region SECRET
-    public string PublicKey { get; private set; }
+    public string? PublicKey { get; private set; }
     [MaxLength(500)]
-    public string Cvv { get; private set; }
+    public string? Cvv { get; private set; }
     [MaxLength(500)]
-    public string ExpirationTime { get; private set; }
+    public string? ExpirationTime { get; private set; }
     #endregion
 
     private Card() { }
-    public Card(Guid id, string cardNo, Guid binId, Supplier supplierId, string supplierIdentity, CardStatus cardStatus, decimal balance, string cardName) : base(id)
+    public Card(Guid id, string cardNo, Guid binId, Supplier supplierId, string supplierIdentity, CardStatus cardStatus, decimal balance, string cardName, Guid ownerId, string? note) : base(id)
     {
         CardNo = cardNo;
         BinId = binId;
@@ -38,6 +41,8 @@ public class Card : FullAuditedAggregateRoot<Guid>
         CardStatus = cardStatus;
         Balance = balance;
         CardName = cardName;
+        OwnerId = ownerId;
+        Note = note;
     }
 
     public Card ChangeStatus(CardStatus cardStatus)
@@ -54,7 +59,7 @@ public class Card : FullAuditedAggregateRoot<Guid>
         {
             throw new BusinessException();
         }
-        Balance = balance;
+        Balance += balance;
         return this;
     }
 
@@ -64,11 +69,26 @@ public class Card : FullAuditedAggregateRoot<Guid>
         return this;
     }
 
-    public Card SetSecret(string publicKey, string cvv, string expirationTime)
+    public Card SetSecret(string? publicKey, string? cvv, string? expirationTime)
     {
         PublicKey = publicKey;
         Cvv = cvv;
         ExpirationTime = expirationTime;
+        return this;
+    }
+
+    public Card SetIdentifyKey(string identify)
+    {
+        SupplierIdentity = identify;
+        return this;
+    }
+
+    public Card SetSyncInfo(string cardNo, string cvv, string exp)
+    {
+        CardNo = cardNo;
+        Cvv = cvv;
+        ExpirationTime = exp;
+        LastSync = DateTime.UtcNow;
         return this;
     }
 }

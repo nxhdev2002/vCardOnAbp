@@ -1,10 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 using VCardOnAbp.Currencies;
 using VCardOnAbp.Masters;
-using VCardOnAbp.Security;
 using VCardOnAbp.Transactions;
 using Volo.Abp;
 using Volo.Abp.Data;
@@ -19,8 +19,7 @@ public class CardManager(
     IRepository<Currency, Guid> currencyRepo,
     IRepository<Bin, Guid> binRepo,
     UserManager<Volo.Abp.Identity.IdentityUser> userManager,
-    IRepository<UserTransaction, Guid> userTransRepository,
-    SecurityManager securityManager
+    IRepository<UserTransaction, Guid> userTransRepository
 ) : DomainService
 {
     private readonly ICardRepository _cardsRepository = cardsRepository;
@@ -28,14 +27,43 @@ public class CardManager(
     private readonly IRepository<Bin, Guid> _binRepo = binRepo;
     private readonly UserManager<Volo.Abp.Identity.IdentityUser> _userManager = userManager;
     private readonly IRepository<UserTransaction, Guid> _userTransRepository = userTransRepository;
-    private readonly SecurityManager _securityManager = securityManager;
 
-    public Card CreateCard(string CardNo, Guid BinId, Supplier SupplierId, string SupplierIdentity, string CardName, CardStatus cardStatus = CardStatus.Active, decimal Balance = 0)
+    /// <summary>
+    /// Create a new card
+    /// </summary>
+    /// <param name="CardNo"></param>
+    /// <param name="BinId"></param>
+    /// <param name="SupplierId"></param>
+    /// <param name="SupplierIdentity"></param>
+    /// <param name="CardName"></param>
+    /// <param name="cardStatus"></param>
+    /// <param name="Amount"></param>
+    /// <param name="OwnerId"></param>
+    /// <returns></returns>
+    /// <exception cref="BusinessException"></exception>
+    public async Task<Card?> CreateCard(string CardNo, Guid BinId, string SupplierIdentity, string CardName, CardStatus cardStatus, decimal Amount, Guid OwnerId, string? Remark)
     {
-        // TODO: Return business exception
-        if (Balance < 0) return null;
+        var cardId = GuidGenerator.Create();
+        Logger.LogInformation($"{nameof(CreateCard)}: User {OwnerId} create card with Id: {cardId}, Amount: {Amount}");
 
-        return new Card(GuidGenerator.Create(), CardNo, BinId, SupplierId, SupplierIdentity, cardStatus, Balance, CardName);
+        if (Amount <= 0) throw new BusinessException(VCardOnAbpDomainErrorCodes.AmountMustBePositive);
+        var user = await _userManager.FindByIdAsync(OwnerId.ToString());
+        if (user == null || !user.IsActive) throw new BusinessException(VCardOnAbpDomainErrorCodes.UserNotFound);
+        var bin = await (await _binRepo.GetQueryableAsync()).FirstOrDefaultAsync(x => x.Id == BinId) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.BinNotFound);
+
+        var userBalance = user.GetProperty<decimal>(UserConsts.Balance);
+        var requireBalance = bin.CreationFixedFee + (bin.FundingPercentFee * Amount / 100);
+
+        if (userBalance <= requireBalance) throw new BusinessException(VCardOnAbpDomainErrorCodes.InsufficientBalance);
+        Logger.LogInformation($"{nameof(CreateCard)}: User {OwnerId} validate successfully with Id: {cardId}, Amount: {Amount}");
+        user.SetProperty(UserConsts.Balance, userBalance - requireBalance);
+        await _userManager.UpdateAsync(user);
+
+        await _userTransRepository.InsertAsync(new UserTransaction(
+            GuidGenerator.Create(), OwnerId, cardId, "Create Card", UserTransactionType.CreateCard, requireBalance
+        ));
+
+        return new Card(cardId, CardNo, BinId, bin.Supplier, SupplierIdentity, cardStatus, Amount, CardName, OwnerId, Remark);
     }
 
     public async Task Delete(Card card)
@@ -48,9 +76,9 @@ public class CardManager(
         card.ChangeStatus(CardStatus.Lock);
     }
 
-    public async Task<Card> GetCard(Guid cardId, Guid userId, bool isNoTracking = true)
+    public async Task<Card> GetCard(Guid cardId, Guid userId)
     {
-        Card? card = await _cardsRepository.GetCard(cardId, userId, isNoTracking) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.CardNotFound);
+        Card? card = await _cardsRepository.GetCard(cardId, userId, false) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.CardNotFound);
         card.SetLastView(DateTime.UtcNow);
         return card;
     }
@@ -70,11 +98,7 @@ public class CardManager(
         IdentityUser? user = await _userManager.FindByIdAsync(card.CreatorId.ToString()!);
         user!.SetProperty(nameof(UserConsts.Balance), user!.GetProperty<decimal>(nameof(UserConsts.Balance)) - usdRate);
         card.SetLastView(DateTime.UtcNow);
-        card.SetBalance(-amount);
-
-        await _userTransRepository.InsertAsync(
-            new UserTransaction(GuidGenerator.Create(), card.CreatorId!.Value, card.Id, null, UserTransactionType.FundCard, amount)
-        );
+        card.SetBalance(amount);
     }
 
     public async Task DeleteAsync(Card card)

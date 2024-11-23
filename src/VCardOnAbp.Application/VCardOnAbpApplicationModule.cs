@@ -1,7 +1,10 @@
 using System.Threading.Tasks;
+using VCardOnAbp.BackgroundJobs;
+using VCardOnAbp.BackgroundJobs.Vcc51;
 using Volo.Abp;
 using Volo.Abp.Account;
 using Volo.Abp.AutoMapper;
+using Volo.Abp.BackgroundWorkers;
 using Volo.Abp.BackgroundWorkers.Hangfire;
 using Volo.Abp.Caching.StackExchangeRedis;
 using Volo.Abp.FeatureManagement;
@@ -40,5 +43,8 @@ public class VCardOnAbpApplicationModule : AbpModule
     public override async Task OnApplicationInitializationAsync(ApplicationInitializationContext context)
     {
         //await context.AddBackgroundWorkerAsync<SyncVmcardioTransactionWorker>();
+        //await context.AddBackgroundWorkerAsync<SyncVmcardioCardWorker>();
+        await context.AddBackgroundWorkerAsync<SyncVcc51CardTransactionWorker>();
+        await context.AddBackgroundWorkerAsync<SyncVcc51PendingCardWorker>();
     }
 }

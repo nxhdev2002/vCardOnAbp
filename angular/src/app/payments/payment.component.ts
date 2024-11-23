@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { th } from '@faker-js/faker/.';
 import { GetCardInput } from '@proxy/cards/dto';
 import { CurrencyDto } from '@proxy/currencies/dto';
-import { GatewayType, PaymentsService } from '@proxy/payments';
+import { DepositTransactionStatus, GatewayType, PaymentsService } from '@proxy/payments';
 import { DepositTransactionDto, GetDepositTransactionInput, GetPaymentMethodsInput, PaymentMethodDto } from '@proxy/payments/dtos';
 import * as crypto from 'crypto-js';
 import { MenuItem } from 'primeng/api';
@@ -90,6 +90,21 @@ export class PaymentComponent implements OnInit {
 
   getGatewayType(gateways: PaymentMethodDto) {
     return this._localizationService.instant(`::GatewayType_${gateways.gatewayType}`);
+  }
+
+  getTransactionType(transaction: DepositTransactionDto) {
+    switch (transaction.transactionStatus) {
+      case DepositTransactionStatus.Pending:
+        return 'info';
+      case DepositTransactionStatus.Completed:
+        return 'success';
+      case DepositTransactionStatus.Failed:
+        return 'warning';
+    }
+  }
+
+  getTransactionStatusType(status: DepositTransactionStatus) {
+    return this._localizationService.instant(`::DepositTransactionStatusType_${status}`);
   }
 
   submitDeposit() {

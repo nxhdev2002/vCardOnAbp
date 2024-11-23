@@ -11,7 +11,6 @@ public class DepositTransactionDto
     public DateTime? ApprovedAt { get; private set; }
     [MaxLength(500)]
     public string? Comment { get; private set; }
-    public Guid Requester { get; private set; }
     public DateTime? CreationTime { get; private set; }
 }
 

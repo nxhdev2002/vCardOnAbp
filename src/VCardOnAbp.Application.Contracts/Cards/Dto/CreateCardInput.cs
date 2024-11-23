@@ -1,8 +1,11 @@
-﻿namespace VCardOnAbp.Cards.Dto;
+﻿using System;
+
+namespace VCardOnAbp.Cards.Dto;
 
 public class CreateCardInput
 {
     public decimal Amount { get; set; }
-    public Supplier Supplier { get; set; }
     public string CardName { get; set; }
+    public Guid BinId { get; set; }
+    public string? Note { get; set; }
 }

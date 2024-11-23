@@ -64,7 +64,6 @@ namespace VCardOnAbp.Migrations
                         .HasColumnName("CreatorId");
 
                     b.Property<string>("Cvv")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -77,7 +76,6 @@ namespace VCardOnAbp.Migrations
                         .HasColumnName("DeletionTime");
 
                     b.Property<string>("ExpirationTime")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -100,11 +98,20 @@ namespace VCardOnAbp.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("LastModifierId");
 
+                    b.Property<DateTime?>("LastSync")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("LastView")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("OwnerId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("PublicKey")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Supplier")
@@ -112,8 +119,8 @@ namespace VCardOnAbp.Migrations
 
                     b.Property<string>("SupplierIdentity")
                         .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.HasKey("Id");
 
@@ -185,6 +192,9 @@ namespace VCardOnAbp.Migrations
 
                     b.Property<decimal>("AuthAmount")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("AuthTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("CardId")
                         .HasColumnType("uniqueidentifier");
@@ -445,10 +455,13 @@ namespace VCardOnAbp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<Guid>("RelatedEntity")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("RelatedTransactionType")
+                        .HasColumnType("int");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -457,6 +470,8 @@ namespace VCardOnAbp.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
+
+                    b.HasIndex(new[] { "Description" }, "IX_UserTransaction_Description");
 
                     b.ToTable("UserTransactions");
                 });

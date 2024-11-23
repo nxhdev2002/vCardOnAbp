@@ -1,4 +1,5 @@
 using AutoMapper;
+using VCardOnAbp.Accounts.Dtos;
 using VCardOnAbp.ApiServices.Vmcardio.Dtos;
 using VCardOnAbp.Bins.Dtos;
 using VCardOnAbp.Cards;
@@ -8,6 +9,7 @@ using VCardOnAbp.Currencies.Dto;
 using VCardOnAbp.Masters;
 using VCardOnAbp.Payments;
 using VCardOnAbp.Payments.Dtos;
+using VCardOnAbp.Transactions;
 
 namespace VCardOnAbp;
 
@@ -33,6 +35,7 @@ public class VCardOnAbpApplicationAutoMapperProfile : Profile
         CreateMap<CardTransaction, CardTransactionDto>().ReverseMap();
         CreateMap<DepositTransaction, CreateDepositTransactionDto>().ReverseMap();
         CreateMap<DepositTransaction, DepositTransactionDto>().ReverseMap();
+        CreateMap<UserTransaction, UserTransactionDto>().ReverseMap();
 
     }
 }

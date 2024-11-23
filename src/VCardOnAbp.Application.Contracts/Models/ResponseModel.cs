@@ -1,11 +1,11 @@
 ﻿namespace VCardOnAbp.Models;
 
-public class ResponseModel<T>
+public class ResponseModel
 {
     public string Message { get; set; }
-    public T Data { get; set; }
+    public object? Data { get; set; }
     public bool Success { get; set; }
-    public ResponseModel(string message, T data, bool success)
+    public ResponseModel(string message, object? data, bool success)
     {
         Message = message;
         Data = data;
@@ -13,18 +13,18 @@ public class ResponseModel<T>
     }
 
     // static
-    public static ResponseModel<T> SuccessResponse(string message, T data)
+    public static ResponseModel SuccessResponse(string message, object? data = null)
     {
-        return new ResponseModel<T>(message, data, true);
+        return new ResponseModel(message, data, true);
     }
 
-    public static ResponseModel<T> ErrorResponse(string message, T data)
+    public static ResponseModel ErrorResponse(string message, object? data = null)
     {
-        return new ResponseModel<T>(message, data, false);
+        return new ResponseModel(message, data, false);
     }
 
-    public static ResponseModel<object> ErrorResponse(string message)
+    public static ResponseModel ErrorResponse(string message)
     {
-        return new ResponseModel<object>(message, null, false);
+        return new ResponseModel(message, null, false);
     }
 }

@@ -8,9 +8,10 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
   declarations: [CardComponent],
-  imports: [SharedModule, CardRoutingModule, PageModule, TableModule, InputTextModule, InputIconModule, CommonModule, ButtonModule],
+  imports: [SharedModule, CardRoutingModule, PageModule, TableModule, InputTextModule, InputIconModule, CommonModule, ButtonModule, TagModule],
 })
 export class CardModule {}

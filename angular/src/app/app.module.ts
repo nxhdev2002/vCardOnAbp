@@ -16,7 +16,10 @@ import { FeatureManagementModule } from '@abp/ng.feature-management';
 import { ThemeLeptonXModule } from '@abp/ng.theme.lepton-x';
 import { SideMenuLayoutModule } from '@abp/ng.theme.lepton-x/layouts';
 import { AbpOAuthModule } from '@abp/ng.oauth';
+import localeVi from '@angular/common/locales/vi';
+import { registerLocaleData } from '@angular/common';
 
+registerLocaleData(localeVi, 'vi');
 @NgModule({
   declarations: [AppComponent],
   imports: [

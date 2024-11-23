@@ -40,6 +40,7 @@ public class SyncVmcardioTransactionWorker : HangfireBackgroundWorkerBase
 
     public override async Task DoWorkAsync(CancellationToken cancellationToken = default)
     {
+        return;
         using IUnitOfWork uow = LazyServiceProvider.LazyGetRequiredService<IUnitOfWorkManager>().Begin();
         System.Collections.Generic.List<Card> cards = await _cardRepository.GetActiveCardAsync(Supplier.Vmcardio);
         foreach (Card card in cards)
@@ -82,7 +83,7 @@ public class SyncVmcardioTransactionWorker : HangfireBackgroundWorkerBase
                 .ToList();
 
             await _cardTransactionRepository.InsertManyAsync(transNotInDb, cancellationToken: cancellationToken);
-            await uow.CompleteAsync(cancellationToken);
         }
+        await uow.CompleteAsync(cancellationToken);
     }
 }

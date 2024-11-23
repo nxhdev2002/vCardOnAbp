@@ -3,7 +3,7 @@ using Volo.Abp.Application.Dtos;
 
 namespace VCardOnAbp.Cards.Dto;
 
-public class FundCardInput : EntityDto<Guid>
+public class FundCardInput
 {
     public decimal Amount { get; set; }
 }

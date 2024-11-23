@@ -16,6 +16,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
+using VCardOnAbp.Accounts;
 using VCardOnAbp.EntityFrameworkCore;
 using VCardOnAbp.MultiTenancy;
 using Volo.Abp;
@@ -115,6 +116,8 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
         ConfigureStatusCode(context);
         ConfigureCache(context);
         ConfigureHangfire(context, configuration);
+
+        context.Services.AddScoped<IAccountsAppService, AccountsAppService>();
     }
 
     private X509Certificate2 GetSigningCertificate(IWebHostEnvironment hostingEnv)

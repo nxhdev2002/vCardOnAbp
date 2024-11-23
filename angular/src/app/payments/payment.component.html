@@ -83,7 +83,8 @@
                     {{ transaction.amount }}
                 </td>
                 <td>
-                    {{ transaction.status }}
+                    <span class="p-column-title">Status</span>
+                    <p-tag [value]="getTransactionStatusType(transaction.transactionStatus)" [severity]="getTransactionType(transaction)" />
                 </td>
                 <td>
                     {{ transaction.approveAt }}

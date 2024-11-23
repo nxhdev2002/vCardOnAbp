@@ -1,6 +1,6 @@
+import type { DepositTransactionStatus } from '../deposit-transaction-status.enum';
 import type { PagedAndSortedResultRequestDto } from '@abp/ng.core';
 import type { GatewayType } from '../gateway-type.enum';
-import type { DepositTransactionStatus } from '../deposit-transaction-status.enum';
 
 export interface CreateDepositTransactionDto {
   id?: string;
@@ -12,6 +12,13 @@ export interface CreateDepositTransactionInput {
 }
 
 export interface DepositTransactionDto {
+  paymentMethodId: number;
+  amount: number;
+  transactionStatus: DepositTransactionStatus;
+  approvedAt?: string;
+  comment?: string;
+  requester?: string;
+  creationTime?: string;
 }
 
 export interface GetDepositTransactionInput extends PagedAndSortedResultRequestDto {
