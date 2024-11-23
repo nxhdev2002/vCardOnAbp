@@ -11,6 +11,15 @@ export interface CreateDepositTransactionInput {
   amount: number;
 }
 
+export interface DepositTransactionDto {
+}
+
+export interface GetDepositTransactionInput extends PagedAndSortedResultRequestDto {
+  filter?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
 export interface GetPaymentMethodsInput extends PagedAndSortedResultRequestDto {
   filter?: string;
 }
@@ -23,6 +32,8 @@ export interface PaymentMethodDto {
   fixedFee: number;
   percentageFee: number;
   gatewayType: GatewayType;
+  guideContent?: string;
+  minAmount: number;
 }
 
 export interface ProcessTransactionInput {

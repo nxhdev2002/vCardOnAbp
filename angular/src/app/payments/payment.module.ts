@@ -10,9 +10,11 @@ import { DialogModule } from 'primeng/dialog';
 import { PaymentComponent } from './payment.component';
 import { PaymentRoutingModule } from './payment-routing.module';
 import { TagModule } from 'primeng/tag';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 @NgModule({
   declarations: [PaymentComponent],
-  imports: [SharedModule, PaymentRoutingModule, PageModule, TableModule, InputTextModule, InputIconModule, CommonModule, ButtonModule, DialogModule, TagModule],
+  imports: [SharedModule, TabMenuModule, InputNumberModule, PaymentRoutingModule, PageModule, TableModule, InputTextModule, InputIconModule, CommonModule, ButtonModule, DialogModule, TagModule],
 })
 export class PaymentModule {}

@@ -30,6 +30,7 @@
     "NotFound": "Không tìm thấy {0}",
     "UserFundedTransaction": "Nạp tiền vào thẻ tín dụng {1}",
     "Welcome": "Welcome",
+    "MinAmount": "Số lượng tối thiểu",
     "Merchant": "Thương gia",
     "Amount": "Số lượng",
     "Currency": "Tiền tệ",

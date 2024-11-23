@@ -43,6 +43,7 @@ public class VCardOnAbpPermissionDefinitionProvider : PermissionDefinitionProvid
         paymentGroup.AddPermission(VCardOnAbpPermissions.EditPayment, L("PaymentPermission:Edit"));
         paymentGroup.AddPermission(VCardOnAbpPermissions.Deposit, L("PaymentPermission:Deposit"));
         paymentGroup.AddPermission(VCardOnAbpPermissions.ProcessDeposit, L("PaymentPermission:Process"));
+        paymentGroup.AddPermission(VCardOnAbpPermissions.ViewDepositTransaction, L("PaymentPermission:ViewDepositTransaction"));
     }
 
     private static LocalizableString L(string name)
