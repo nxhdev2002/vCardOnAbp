@@ -78,6 +78,27 @@ public class PaymentsAppService(
         await _depositTransactionRepository.UpdateAsync(transaction, autoSave: true);
     }
 
+
+    [Authorize(VCardOnAbpPermissions.ViewDepositTransaction)]
+    public async Task<PagedResultDto<DepositTransactionDto>> GetDepositTransactions(GetDepositTransactionInput input)
+    {
+        var query = (await _depositTransactionRepository.GetQueryableAsync()).AsNoTracking()
+            .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(input.Filter, $"%{input.Filter}%"))
+            .WhereIf(input.StartDate.HasValue, x => x.CreationTime >= input.StartDate)
+            .WhereIf(input.EndDate.HasValue, x => x.CreationTime <= input.EndDate);
+
+        var data = await query
+            .OrderByDescending(x => x.CreationTime)
+            .PageBy(input)
+            .ToListAsync();
+
+        return new PagedResultDto<DepositTransactionDto>(
+            await query.CountAsync(),
+            ObjectMapper.Map<List<DepositTransaction>, List<DepositTransactionDto>>(data)
+        );
+    }
+
+
     #region Private Methods
 
     private async Task<CreateDepositTransactionDto> CreateManualTransaction(CreateDepositTransactionInput input, PaymentMethod gateway)
