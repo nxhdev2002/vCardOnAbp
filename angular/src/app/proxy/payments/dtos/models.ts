@@ -12,6 +12,7 @@ export interface CreateDepositTransactionInput {
 }
 
 export interface DepositTransactionDto {
+<<<<<<< HEAD
   paymentMethodId: number;
   amount: number;
   transactionStatus: DepositTransactionStatus;
@@ -19,6 +20,8 @@ export interface DepositTransactionDto {
   comment?: string;
   requester?: string;
   creationTime?: string;
+=======
+>>>>>>> payment
 }
 
 export interface GetDepositTransactionInput extends PagedAndSortedResultRequestDto {

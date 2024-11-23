@@ -107,6 +107,7 @@ export class PaymentComponent implements OnInit {
     return this._localizationService.instant(`::DepositTransactionStatusType_${status}`);
   }
 
+
   submitDeposit() {
     const hmacDigest = crypto.HmacSHA1(this.secretKey, this.selectedGateway.id.toString());
 
