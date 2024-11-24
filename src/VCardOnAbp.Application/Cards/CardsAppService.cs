@@ -66,10 +66,11 @@ public class CardsAppService(
     [Authorize(VCardOnAbpPermissions.ViewCardTransaction)]
     public virtual async Task<PagedResultDto<CardTransactionDto>> GetTransactionAsync(Guid id, GetCardTransactionInput input)
     {
-        Card card = await _cardManager.GetCard(id, CurrentUser.Id!.Value, true);
+        Card card = await _cardManager.GetCard(id, CurrentUser.Id!.Value);
 
         IQueryable<CardTransaction> transaction = (await _cardTransactionRepository.GetQueryableAsync())
             .AsNoTracking()
+            .Where(x => x.CardId == id)
             .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(x.Description, $"%{input.Filter}%"));
 
         int totalCount = await transaction.CountAsync();
@@ -93,7 +94,7 @@ public class CardsAppService(
         Card card;
         try
         {
-            card = await _cardManager.CreateCard("_", input.BinId, string.Empty, input.CardName, CardStatus.Pending, input.Amount, CurrentUser.Id!.Value)
+            card = await _cardManager.CreateCard("_", input.BinId, string.Empty, input.CardName, CardStatus.Pending, input.Amount, CurrentUser.Id!.Value, input.Note)
             ?? throw new UserFriendlyException(L["CardCreationFailed"]);
 
             await _cardRepository.InsertAsync(card);
@@ -103,17 +104,14 @@ public class CardsAppService(
             _semaphore.Release();
         }
 
-        await _userTransaction.InsertAsync(new UserTransaction(
-            GuidGenerator.Create(), card.OwnerId, card.Id, L["Card:CreateCard"], UserTransactionType.CreateCard, input.Amount
-        ));
-
         await _backgroundJobManager.EnqueueAsync(new CreateCardJobArgs
         {
             CardId = card.Id,
             CardName = card.CardName,
             Supplier = card.Supplier,
             UserId = CurrentUser.Id!.Value,
-            Amount = input.Amount
+            Amount = input.Amount,
+            BinId = input.BinId,
         });
 
         return ResponseModel.SuccessResponse(L["SuccessToast", L["Card:CreateCard"]]);

@@ -1,68 +1,226 @@
 <div class="card">
-  <p-table
-      #dt2
-      [value]="gateways"
-      dataKey="id"
-      [loading]="loading"
-      [tableStyle]="{ 'min-width': '75rem' }"
-  >
-  <ng-template pTemplate="header">
-      <tr>
-          <th style="width:5%">{{ '::Id' | abpLocalization }}</th>
-          <th style="width:20%">{{ '::Name' | abpLocalization }}</th>
-          <th style="width:20%">{{ '::Description' | abpLocalization }}</th>
-          <th style="width:10%">{{ '::FixedFee' | abpLocalization }}</th>
-          <th style="width:10%">{{ '::PercentageFee' | abpLocalization }}</th>
-          <th style="width:10%">{{ '::Type' | abpLocalization }}</th>
-          <th style="width:10%">{{ '::IsEnabled' | abpLocalization }}</th>
-          <th style="width:20%">{{ '::Action' | abpLocalization }}</th>
-      </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-gateway let-rowIndex="rowIndex" >
-      <tr>
-            <td>{{rowIndex + 1}}</td>
-            <td>
-                {{ gateway.name }}
-            </td>
-            <td>
-                {{ gateway.description }}
-            </td>
-            <td>
-                ${{ gateway.fixedFee }}
-            </td>
-            <td>
-                {{ gateway.percentageFee }}%
-            </td>
-            <td>
-                <span class="p-column-title">Status</span>
-                <p-tag [value]="getGatewayType(gateway)" [severity]="getType(gateway)" />
-            </td>
-            <td>
-                <span class="p-column-title">Status</span>
-                <p-tag [value]="gateway.isEnabled" [severity]="gateway.isEnabled ? 'info' : 'danger'" />
-            </td>
-            <td>
-                <p-button label="{{ '::Deposit' | abpLocalization }}" />     
-            </td>
-      </tr>
-  </ng-template>
-  <ng-template pTemplate="emptymessage">
-      <tr>
-          <td colspan="5">{{ '::NoData' | abpLocalization }}</td>
-      </tr>
-  </ng-template>
-  </p-table>
+    <p-tabMenu [model]="items" 
+     [activeItem]="activeItem" 
+     (activeItemChange)="onActiveItemChange($event)"
+    />
+    <p-table
+        *ngIf="activeItem === items[0]"
+        #dt2
+        [value]="gateways"
+        dataKey="id"
+        [loading]="loading"
+        [tableStyle]="{ 'min-width': '75rem' }"
+    >
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:5%">{{ '::Id' | abpLocalization }}</th>
+            <th style="width:20%">{{ '::Name' | abpLocalization }}</th>
+            <th style="width:20%">{{ '::Description' | abpLocalization }}</th>
+            <th style="width:10%">{{ '::FixedFee' | abpLocalization }}</th>
+            <th style="width:10%">{{ '::PercentageFee' | abpLocalization }}</th>
+            <th style="width:10%">{{ '::Type' | abpLocalization }}</th>
+            <th style="width:10%">{{ '::IsEnabled' | abpLocalization }}</th>
+            <th style="width:20%">{{ '::Action' | abpLocalization }}</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-gateway let-rowIndex="rowIndex" >
+        <tr>
+                <td>{{rowIndex + 1}}</td>
+                <td>
+                    {{ gateway.name }}
+                </td>
+                <td>
+                    {{ gateway.description }}
+                </td>
+                <td>
+                    ${{ gateway.fixedFee }}
+                </td>
+                <td>
+                    {{ gateway.percentageFee }}%
+                </td>
+                <td>
+                    <span class="p-column-title">Status</span>
+                    <p-tag [value]="getGatewayType(gateway)" [severity]="getType(gateway)" />
+                </td>
+                <td>
+                    <span class="p-column-title">Status</span>
+                    <p-tag [value]="gateway.isEnabled" [severity]="gateway.isEnabled ? 'info' : 'danger'" />
+                </td>
+                <td>
+                    <p-button (onClick)="openAddModal(gateway)" label="{{ '::Deposit' | abpLocalization }}" />     
+                </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="5">{{ '::NoData' | abpLocalization }}</td>
+        </tr>
+    </ng-template>
+    </p-table>
+
+    <p-table
+        *ngIf="activeItem === items[1]"
+        #dt2
+        [value]="transactions"
+        dataKey="id"
+        [loading]="loading"
+        [tableStyle]="{ 'min-width': '75rem' }"
+    >
+    <ng-template pTemplate="caption">
+        <div class="flex">
+            <p-multiSelect class="ml-auto p-0 px-1"
+                [options]="statuses" 
+                [(ngModel)]="selectedStatus" 
+                optionLabel="name" 
+                placeholder="Select Status" />
+            <p-iconField iconPosition="left">
+                <input 
+                    pInputText 
+                    type="text" 
+                    placeholder="Search keyword" />
+            </p-iconField>
+            <p-button 
+                label="Search" 
+                icon="pi pi-check" 
+                [loading]="loading" 
+                (onClick)="loadTransactions()" />
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:5%">{{ '::Id' | abpLocalization }}</th>
+            <th style="width:20%">{{ '::Amount' | abpLocalization }}</th>
+            <th style="width:20%">{{ '::Status' | abpLocalization }}</th>
+            <th style="width:10%">{{ '::ApproveAt' | abpLocalization }}</th>
+            <th style="width:10%">{{ '::Comment' | abpLocalization }}</th>
+            <th style="width:10%">{{ '::CreationTime' | abpLocalization }}</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-transaction let-rowIndex="rowIndex" >
+        <tr>
+                <td>{{rowIndex + 1}}</td>
+                <td>
+                    {{ transaction.amount }}$
+                </td>
+                <td>
+                    <span class="p-column-title">Status</span>
+                    <p-tag [value]="getTransactionStatusType(transaction.transactionStatus)" [severity]="getTransactionType(transaction)" />
+                </td>
+                <td>
+                    {{ transaction.approveAt }}
+                </td>
+                <td>
+                    {{ transaction.comment }}
+                </td>
+                <td>
+                    {{ transaction.creationTime | shortDateTime }}
+                </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="5">{{ '::NoData' | abpLocalization }}</td>
+        </tr>
+    </ng-template>
+    </p-table>
+
+    <p-table
+        *ngIf="activeItem === items[2]"
+        #dt2
+        [value]="allTransactions"
+        dataKey="id"
+        [loading]="loading"
+        [tableStyle]="{ 'min-width': '75rem' }"
+    >
+        <ng-template pTemplate="caption">
+        <div class="flex">
+            <p-multiSelect class="ml-auto p-0 px-1"
+                [options]="statuses" 
+                [(ngModel)]="selectedStatus" 
+                optionLabel="name" 
+                placeholder="Select Status" />
+            <p-iconField iconPosition="left">
+                <input 
+                    pInputText 
+                    type="text" 
+                    placeholder="Search keyword" />
+            </p-iconField>
+            <p-button 
+                label="Search" 
+                icon="pi pi-check" 
+                [loading]="loading" 
+                (onClick)="loadAllTransactions()" />
+        </div>
+        
+    </ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th style="width:5%">{{ '::Id' | abpLocalization }}</th>
+            <th style="width:20%">{{ '::Amount' | abpLocalization }}</th>
+            <th style="width:20%">{{ '::Status' | abpLocalization }}</th>
+            <th style="width:10%">{{ '::ApproveAt' | abpLocalization }}</th>
+            <th style="width:10%">{{ '::Comment' | abpLocalization }}</th>
+            <th style="width:10%">{{ '::CreationTime' | abpLocalization }}</th>
+            <th style="width:15%">{{ '::Action' | abpLocalization }}</th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-transaction let-rowIndex="rowIndex" >
+        <tr>
+                <td>{{rowIndex + 1}}</td>
+                <td>
+                    {{ transaction.amount }}$
+                </td>
+                <td>
+                    <span class="p-column-title">Status</span>
+                    <p-tag [value]="getTransactionStatusType(transaction.transactionStatus)" [severity]="getTransactionType(transaction)" />
+                </td>
+                <td>
+                    {{ transaction.approvedAt | shortDateTime}}
+                </td>
+                <td>
+                    {{ transaction.comment }}
+                </td>
+                <td>
+                    {{ transaction.creationTime | shortDateTime }}
+                </td>
+                <td>
+                    <div *ngIf="isAllowAction(transaction)">
+                        <p-toast />
+                        <p-confirmPopup />
+                        <p-button class="p-0 px-1" severity="success" (click)="approveConfirm($event, transaction.id)"  label="{{ '::Approve' | abpLocalization }}" />     
+                        <p-button severity="danger" (click)="rejectConfirm($event, transaction.id)"  label="{{ '::Reject' | abpLocalization }}" />     
+                    </div>
+                </td>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+        <tr>
+            <td colspan="5">{{ '::NoData' | abpLocalization }}</td>
+        </tr>
+    </ng-template>
+    </p-table>
 </div>
 
 
-<p-dialog header="{{ '::gateway:Addgateway' | abpLocalization }}" [modal]="true" [(visible)]="visible" [style]="{ width: '40rem' }">
-    <div class="flex align-items-center gap-3 mb-3">
-        <label for="firstname" class="font-semibold w-6rem">{{ '::Name' | abpLocalization }}</label>
-        <input pInputText id="firstname" class="flex-auto" [(ngModel)]="input" autocomplete="off" />
-    </div>
-    <div class="flex justify-content-end gap-2">
-        <p-button label="Random" />
-        <p-button label="Cancel" severity="secondary" (onClick)="visible = false" />
-        <p-button label="Save"/>
-    </div>
+<p-dialog 
+    header="Header" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '50vw' }" 
+    [draggable]="false" 
+    [resizable]="false">
+        <div *ngIf="visible" [innerHTML]="selectedGateway.guideContent"></div>
+        <div *ngIf="visible"> <p-inputNumber 
+            [(ngModel)]="inputAmount" 
+            inputId="currency-us" 
+            mode="currency" 
+            currency="USD" 
+            placeholder="{{ '::MinAmount' | abpLocalization }}: {{ selectedGateway.minAmount }}"
+            locale="en-US" /> 
+            <p-button 
+                label="Submit" 
+                class="p-button-success submit"                 (onClick)="submitDeposit()">
+            </p-button>
+            </div>
 </p-dialog>

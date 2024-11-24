@@ -36,6 +36,7 @@ public class SyncVmcardioCardWorker : HangfireBackgroundWorkerBase
 
     public override async Task DoWorkAsync(CancellationToken cancellationToken = default)
     {
+        return;
         using IUnitOfWork uow = LazyServiceProvider.LazyGetRequiredService<IUnitOfWorkManager>().Begin();
 
         var bins = await (await _binRepository.GetQueryableAsync()).AsNoTracking().ToListAsync(cancellationToken);

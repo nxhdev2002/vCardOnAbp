@@ -29,7 +29,7 @@ export class CardsService {
   
 
   fund = (id: string, input: FundCardInput, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, void>({
+    this.restService.request<any, ResponseModel>({
       method: 'POST',
       url: `/api/app/cards/${id}/fund`,
       body: input,

@@ -14,6 +14,7 @@ public class CardTransaction : CreationAuditedEntity<Guid>
     public decimal? SettleAmount { get; private set; }
     public string? Status { get; private set; }
     public string? Type { get; private set; }
+    public DateTime? AuthTime { get; private set; }
 
     private CardTransaction()
     {
@@ -27,7 +28,8 @@ public class CardTransaction : CreationAuditedEntity<Guid>
         string? merchantName,
         decimal? settleAmount,
         string? status,
-        string? supplierTranId
+        string? supplierTranId,
+        DateTime? authTime = null
     )
     {
         CardId = cardId;
@@ -38,5 +40,6 @@ public class CardTransaction : CreationAuditedEntity<Guid>
         SettleAmount = settleAmount;
         Status = status;
         SupplierTranId = supplierTranId;
+        AuthTime = authTime ?? DateTime.UtcNow;
     }
 }

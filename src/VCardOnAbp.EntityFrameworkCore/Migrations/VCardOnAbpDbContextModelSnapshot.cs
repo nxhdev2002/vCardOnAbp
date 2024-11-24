@@ -98,8 +98,15 @@ namespace VCardOnAbp.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("LastModifierId");
 
+                    b.Property<DateTime?>("LastSync")
+                        .HasColumnType("datetime2");
+
                     b.Property<DateTime?>("LastView")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("Note")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<Guid>("OwnerId")
                         .HasColumnType("uniqueidentifier");
@@ -185,6 +192,9 @@ namespace VCardOnAbp.Migrations
 
                     b.Property<decimal>("AuthAmount")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("AuthTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("CardId")
                         .HasColumnType("uniqueidentifier");
@@ -411,8 +421,15 @@ namespace VCardOnAbp.Migrations
                     b.Property<int>("GatewayType")
                         .HasColumnType("int");
 
+                    b.Property<string>("GuideContent")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsEnabled")
                         .HasColumnType("bit");
+
+                    b.Property<decimal>("MinAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -442,6 +459,9 @@ namespace VCardOnAbp.Migrations
 
                     b.Property<Guid>("RelatedEntity")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("RelatedTransactionType")
+                        .HasColumnType("int");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");

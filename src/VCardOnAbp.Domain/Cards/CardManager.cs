@@ -41,7 +41,7 @@ public class CardManager(
     /// <param name="OwnerId"></param>
     /// <returns></returns>
     /// <exception cref="BusinessException"></exception>
-    public async Task<Card?> CreateCard(string CardNo, Guid BinId, string SupplierIdentity, string CardName, CardStatus cardStatus, decimal Amount, Guid OwnerId)
+    public async Task<Card?> CreateCard(string CardNo, Guid BinId, string SupplierIdentity, string CardName, CardStatus cardStatus, decimal Amount, Guid OwnerId, string? Remark)
     {
         var cardId = GuidGenerator.Create();
         Logger.LogInformation($"{nameof(CreateCard)}: User {OwnerId} create card with Id: {cardId}, Amount: {Amount}");
@@ -59,7 +59,11 @@ public class CardManager(
         user.SetProperty(UserConsts.Balance, userBalance - requireBalance);
         await _userManager.UpdateAsync(user);
 
-        return new Card(cardId, CardNo, BinId, bin.Supplier, SupplierIdentity, cardStatus, Amount, CardName, OwnerId);
+        await _userTransRepository.InsertAsync(new UserTransaction(
+            GuidGenerator.Create(), OwnerId, cardId, "Create Card", UserTransactionType.CreateCard, requireBalance
+        ));
+
+        return new Card(cardId, CardNo, BinId, bin.Supplier, SupplierIdentity, cardStatus, Amount, CardName, OwnerId, Remark);
     }
 
     public async Task Delete(Card card)
@@ -72,9 +76,9 @@ public class CardManager(
         card.ChangeStatus(CardStatus.Lock);
     }
 
-    public async Task<Card> GetCard(Guid cardId, Guid userId, bool isNoTracking = true)
+    public async Task<Card> GetCard(Guid cardId, Guid userId)
     {
-        Card? card = await _cardsRepository.GetCard(cardId, userId, isNoTracking) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.CardNotFound);
+        Card? card = await _cardsRepository.GetCard(cardId, userId, false) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.CardNotFound);
         card.SetLastView(DateTime.UtcNow);
         return card;
     }

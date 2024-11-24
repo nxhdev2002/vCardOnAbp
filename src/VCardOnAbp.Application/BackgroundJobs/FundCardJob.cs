@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
-using System.Net;
 using System.Text.Json;
 using System.Threading.Tasks;
 using VCardOnAbp.ApiServices.Vmcardio;
@@ -8,7 +7,6 @@ using VCardOnAbp.ApiServices.Vmcardio.Dtos;
 using VCardOnAbp.BackgroundJobs.Dtos;
 using VCardOnAbp.Cards;
 using VCardOnAbp.Masters;
-using VCardOnAbp.Transactions;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
 using Volo.Abp.Domain.Repositories;

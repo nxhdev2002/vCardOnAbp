@@ -22,6 +22,16 @@ public class CardRepository(IDbContextProvider<VCardOnAbpDbContext> dbContextPro
             .ToListAsync(token);
     }
 
+    public async Task<List<Card>> GetPendingCardAsync(Supplier? supplier = null, bool isNoTracking = false, CancellationToken token = default)
+    {
+        return await (await GetQueryableAsync())
+            .AsNoTrackingIf(isNoTracking)
+            .Where(x => x.CardStatus == CardStatus.Pending)
+            .WhereIf(supplier != null, x => x.Supplier == supplier)
+            .ToListAsync(token);
+    }
+
+
     public async Task<Card?> GetCard(Guid id, Guid userId, bool isNoTracking = false, CancellationToken token = default)
     {
         return await (await GetQueryableAsync())

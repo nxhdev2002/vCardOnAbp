@@ -29,6 +29,7 @@ export interface CreateCardInput {
   amount: number;
   cardName?: string;
   binId?: string;
+  note?: string;
 }
 
 export interface FundCardInput {
