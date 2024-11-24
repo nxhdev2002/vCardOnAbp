@@ -46,10 +46,10 @@ public static class HttpHelper
             }
 
             // Add form data if the method is POST and formData is provided
-            var formContent = new MultipartFormDataContent();
+            MultipartFormDataContent formContent = new();
             if (method == HttpMethod.Post && formData != null && formData.Count > 0)
             {
-                foreach (var kvp in formData)
+                foreach (KeyValuePair<string, string> kvp in formData)
                 {
                     formContent.Add(new StringContent(kvp.Value), kvp.Key);
                 }

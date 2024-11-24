@@ -41,28 +41,26 @@ public class CreateCardJob(
     [UnitOfWork]
     private async Task ProcessAsync(CreateCardJobArgs args)
     {
-        using (var uow = _unitOfWorkManager.Begin(requiresNew: true, isTransactional: true))
+        using IUnitOfWork uow = _unitOfWorkManager.Begin(requiresNew: true, isTransactional: true);
+        Logger.LogInformation($"{nameof(CreateCardJob)}: {args.CardId}");
+        Bin? bin = await (await _binAppService.GetQueryableAsync()).AsNoTracking().FirstOrDefaultAsync(x => x.Id == args.BinId);
+        if (bin == null) return;
+
+        UserTransaction? transaction = await (await _userTransaction.GetQueryableAsync()).AsNoTracking().FirstOrDefaultAsync(x => x.RelatedEntity == args.CardId);
+
+        switch (args.Supplier)
         {
-            Logger.LogInformation($"{nameof(CreateCardJob)}: {args.CardId}");
-            var bin = await (await _binAppService.GetQueryableAsync()).AsNoTracking().FirstOrDefaultAsync(x => x.Id == args.BinId);
-            if (bin == null) return;
-
-            var transaction = await (await _userTransaction.GetQueryableAsync()).AsNoTracking().FirstOrDefaultAsync(x => x.RelatedEntity == args.CardId);
-
-            switch (args.Supplier)
-            {
-                case Supplier.Vmcardio:
-                    return;
-                case Supplier.Vcc51:
-                    await _vcc51AppService.CreateCard(new Vcc51CreateCardInput(
-                        bin.BinMapping, args.Amount, args.CardName, args.Amount + (transaction != null ? transaction.Amount : 0), args.CardId
-                    ));
-                    break;
-                default:
-                    return;
-            }
-
-            await uow.CompleteAsync();
+            case Supplier.Vmcardio:
+                return;
+            case Supplier.Vcc51:
+                await _vcc51AppService.CreateCard(new Vcc51CreateCardInput(
+                    bin.BinMapping, args.Amount, args.CardName, args.Amount + (transaction != null ? transaction.Amount : 0), args.CardId
+                ));
+                break;
+            default:
+                return;
         }
+
+        await uow.CompleteAsync();
     }
 }

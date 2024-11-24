@@ -1,13 +1,13 @@
 ﻿using Hangfire;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Threading.Tasks;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using VCardOnAbp.ApiServices.Vcc51;
 using VCardOnAbp.Cards;
 using Volo.Abp.BackgroundWorkers.Hangfire;
 using Volo.Abp.Uow;
-using System.Linq;
 
 namespace VCardOnAbp.BackgroundJobs.Vcc51;
 public class SyncVcc51PendingCardWorker : HangfireBackgroundWorkerBase
@@ -28,21 +28,21 @@ public class SyncVcc51PendingCardWorker : HangfireBackgroundWorkerBase
     }
 
     public async override Task DoWorkAsync(CancellationToken cancellationToken = default)
-        {
+    {
         Logger.LogInformation($"{nameof(SyncVcc51PendingCardWorker)}: Syncing Vcc51 card transaction begin");
         using IUnitOfWork uow = LazyServiceProvider.LazyGetRequiredService<IUnitOfWorkManager>().Begin();
-        var cards = await _cardRepository.GetPendingCardAsync(Supplier.Vcc51, token: cancellationToken);
-        foreach (var card in cards)
+        System.Collections.Generic.List<Card> cards = await _cardRepository.GetPendingCardAsync(Supplier.Vcc51, token: cancellationToken);
+        foreach (Card card in cards)
         {
             Logger.LogInformation($"{nameof(SyncVcc51PendingCardWorker)}: Syncing card {card.Id} transaction...");
 
             try
             {
-                var vcc51Cards = await _vcc51AppService.GetCards(PAGESIZE);
-                var vcc51Card = vcc51Cards.FirstOrDefault(x => x.Remark == card.SupplierIdentity && x.CardNo != null);
+                System.Collections.Generic.List<ApiServices.Vcc51.Dtos.Vcc51Card> vcc51Cards = await _vcc51AppService.GetCards(PAGESIZE);
+                ApiServices.Vcc51.Dtos.Vcc51Card? vcc51Card = vcc51Cards.FirstOrDefault(x => x.Remark == card.SupplierIdentity && x.CardNo != null);
                 if (vcc51Card == null) continue;
 
-                card.SetSyncInfo(vcc51Card.CardNo!, vcc51Card.Cvv!, vcc51Card.Exp!.Insert(2, "/")); 
+                card.SetSyncInfo(vcc51Card.CardNo!, vcc51Card.Cvv!, vcc51Card.Exp!.Insert(2, "/"));
                 card.ChangeStatus(CardStatus.Active);
                 Logger.LogInformation($"{nameof(SyncVcc51PendingCardWorker)}: Syncing card {card.Id} transaction done");
             }

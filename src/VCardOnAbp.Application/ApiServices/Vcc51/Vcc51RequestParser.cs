@@ -11,7 +11,7 @@ public class Vcc51RequestParser
 
     public static List<Vcc51CardTransactionDto> ParseHtmlContentToTransactions(string htmlContent)
     {
-        var result = new List<Vcc51CardTransactionDto>();
+        List<Vcc51CardTransactionDto> result = new();
         // regex to parse html content
         foreach (Match match in Regex.Matches(htmlContent, Vcc51Const.REGEX_GET_TRANSACTION_PATTERN, options))
         {
@@ -32,7 +32,7 @@ public class Vcc51RequestParser
 
     public static Vcc51Card ParseHtmlContentToCardInfo(string htmlContent)
     {
-        var result = new Vcc51Card();
+        Vcc51Card result = new();
         // regex to parse html content
         foreach (Match match in Regex.Matches(htmlContent, Vcc51Const.REGEX_GET_CARD_INFO_PATTERN, options))
         {
@@ -63,14 +63,14 @@ public class Vcc51RequestParser
     public static Vcc51PostDataCreateCardDto ParseHtmlContentToPostDataCreateCard(string htmlContent)
     {
         RegexOptions options = RegexOptions.Multiline;
-        var result = new Vcc51PostDataCreateCardDto();
+        Vcc51PostDataCreateCardDto result = new();
         // regex to parse html content
         foreach (Match match in Regex.Matches(htmlContent, Vcc51Const.REGEX_GET_CREATE_CARDS_PAYLOAD_PATTERN, options))
         {
             if (match.Success)
             {
-                var key = match.Groups["key"].Value;
-                var value = match.Groups["value"].Value;
+                string key = match.Groups["key"].Value;
+                string value = match.Groups["value"].Value;
                 switch (key)
                 {
                     case "__EVENTARGUMENT":
@@ -214,7 +214,7 @@ public class Vcc51RequestParser
 
     public static int? GetZhisanhuiHtmlToTotalPage(string htmlContent, int PageSize)
     {
-        var match = Regex.Match(htmlContent, Vcc51Const.REGEX_GET_TOTAL_CARD_PATTERN, options);
+        Match match = Regex.Match(htmlContent, Vcc51Const.REGEX_GET_TOTAL_CARD_PATTERN, options);
         if (match.Success)
         {
             decimal totalPage = (decimal.Parse(match.Groups["TotalCard"].Value) / PageSize); ;
@@ -226,7 +226,7 @@ public class Vcc51RequestParser
     public static Vcc51PostDataGetCardDto ParseHtmlContentToPostDataGetPage(string htmlContent, int page, int pageSize)
     {
         RegexOptions options = RegexOptions.Multiline;
-        var result = new Vcc51PostDataGetCardDto
+        Vcc51PostDataGetCardDto result = new()
         {
             start = "",
             txtName = "",
@@ -244,8 +244,8 @@ public class Vcc51RequestParser
         {
             if (match.Success)
             {
-                var key = match.Groups["key"].Value;
-                var value = match.Groups["value"].Value;
+                string key = match.Groups["key"].Value;
+                string value = match.Groups["value"].Value;
                 switch (key)
                 {
                     case "__LASTFOCUS":
@@ -275,7 +275,7 @@ public class Vcc51RequestParser
 
     public static List<Vcc51Card> ParseHtmlContentToCreditCard(string htmlContent)
     {
-        var result = new List<Vcc51Card>();
+        List<Vcc51Card> result = new();
         // regex to parse html content
         foreach (Match match in Regex.Matches(htmlContent, Vcc51Const.REGEX_GET_CREDIT_CARDS_PATTERN, options))
         {

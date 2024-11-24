@@ -2,47 +2,46 @@
 
 #nullable disable
 
-namespace VCardOnAbp.Migrations
+namespace VCardOnAbp.Migrations;
+
+/// <inheritdoc />
+public partial class renamedcurrency : Migration
 {
     /// <inheritdoc />
-    public partial class renamedcurrency : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.RenameColumn(
-                name: "CurrencySymbol",
-                table: "Currencies",
-                newName: "Symbol");
+        migrationBuilder.RenameColumn(
+            name: "CurrencySymbol",
+            table: "Currencies",
+            newName: "Symbol");
 
-            migrationBuilder.RenameColumn(
-                name: "CurrencyName",
-                table: "Currencies",
-                newName: "Name");
+        migrationBuilder.RenameColumn(
+            name: "CurrencyName",
+            table: "Currencies",
+            newName: "Name");
 
-            migrationBuilder.RenameColumn(
-                name: "CurrencyCode",
-                table: "Currencies",
-                newName: "Code");
-        }
+        migrationBuilder.RenameColumn(
+            name: "CurrencyCode",
+            table: "Currencies",
+            newName: "Code");
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.RenameColumn(
-                name: "Symbol",
-                table: "Currencies",
-                newName: "CurrencySymbol");
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.RenameColumn(
+            name: "Symbol",
+            table: "Currencies",
+            newName: "CurrencySymbol");
 
-            migrationBuilder.RenameColumn(
-                name: "Name",
-                table: "Currencies",
-                newName: "CurrencyName");
+        migrationBuilder.RenameColumn(
+            name: "Name",
+            table: "Currencies",
+            newName: "CurrencyName");
 
-            migrationBuilder.RenameColumn(
-                name: "Code",
-                table: "Currencies",
-                newName: "CurrencyCode");
-        }
+        migrationBuilder.RenameColumn(
+            name: "Code",
+            table: "Currencies",
+            newName: "CurrencyCode");
     }
 }

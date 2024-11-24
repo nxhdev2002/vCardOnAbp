@@ -43,16 +43,16 @@ public class CardManager(
     /// <exception cref="BusinessException"></exception>
     public async Task<Card?> CreateCard(string CardNo, Guid BinId, string SupplierIdentity, string CardName, CardStatus cardStatus, decimal Amount, Guid OwnerId, string? Remark)
     {
-        var cardId = GuidGenerator.Create();
+        Guid cardId = GuidGenerator.Create();
         Logger.LogInformation($"{nameof(CreateCard)}: User {OwnerId} create card with Id: {cardId}, Amount: {Amount}");
 
         if (Amount <= 0) throw new BusinessException(VCardOnAbpDomainErrorCodes.AmountMustBePositive);
-        var user = await _userManager.FindByIdAsync(OwnerId.ToString());
+        IdentityUser? user = await _userManager.FindByIdAsync(OwnerId.ToString());
         if (user == null || !user.IsActive) throw new BusinessException(VCardOnAbpDomainErrorCodes.UserNotFound);
-        var bin = await (await _binRepo.GetQueryableAsync()).FirstOrDefaultAsync(x => x.Id == BinId) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.BinNotFound);
+        Bin bin = await (await _binRepo.GetQueryableAsync()).FirstOrDefaultAsync(x => x.Id == BinId) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.BinNotFound);
 
-        var userBalance = user.GetProperty<decimal>(UserConsts.Balance);
-        var requireBalance = bin.CreationFixedFee + (bin.FundingPercentFee * Amount / 100);
+        decimal userBalance = user.GetProperty<decimal>(UserConsts.Balance);
+        decimal requireBalance = bin.CreationFixedFee + (bin.FundingPercentFee * Amount / 100);
 
         if (userBalance <= requireBalance) throw new BusinessException(VCardOnAbpDomainErrorCodes.InsufficientBalance);
         Logger.LogInformation($"{nameof(CreateCard)}: User {OwnerId} validate successfully with Id: {cardId}, Amount: {Amount}");

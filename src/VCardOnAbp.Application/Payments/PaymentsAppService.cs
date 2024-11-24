@@ -49,11 +49,11 @@ public class PaymentsAppService(
     public virtual async Task<CreateDepositTransactionDto> CreateTransaction(int id, CreateDepositTransactionInput input)
     {
         input.SanitizeInput();
-        var gateway = await (await _paymentMethodRepository.GetQueryableAsync()).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id) 
+        PaymentMethod gateway = await (await _paymentMethodRepository.GetQueryableAsync()).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id)
             ?? throw new UserFriendlyException(L["NotFound", L["Gateway"]]);
 
-        return gateway.GatewayType == GatewayType.MANUAL ? 
-            await CreateManualTransaction(input, gateway) : 
+        return gateway.GatewayType == GatewayType.MANUAL ?
+            await CreateManualTransaction(input, gateway) :
             await CreateAutoTransaction(input, gateway);
     }
 
@@ -62,14 +62,14 @@ public class PaymentsAppService(
     public async Task<PagedResultDto<DepositTransactionDto>> GetDepositTransactions(GetDepositTransactionInput input)
     {
         input.SanitizeInput();
-        var query = (await _depositTransactionRepository.GetQueryableAsync()).AsNoTracking()
+        IQueryable<DepositTransaction> query = (await _depositTransactionRepository.GetQueryableAsync()).AsNoTracking()
             .Where(x => x.Requester == CurrentUser.Id)
             .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(input.Filter, $"%{input.Filter}%"))
             .WhereIf(input.StartDate.HasValue, x => x.CreationTime >= input.StartDate)
             .WhereIf(input.EndDate.HasValue, x => x.CreationTime <= input.EndDate)
             .WhereIf(input.Status != null, x => input.Status!.Any(y => y == x.TransactionStatus));
 
-        var data = await query
+        List<DepositTransaction> data = await query
             .OrderByDescending(x => x.CreationTime)
             .PageBy(input)
             .ToListAsync();
@@ -83,20 +83,20 @@ public class PaymentsAppService(
     [Authorize(VCardOnAbpPermissions.ApproveTransaction)]
     public async Task<ResponseModel> ApproveTransaction(Guid id)
     {
-        var transaction = await (await _depositTransactionRepository.GetQueryableAsync())
+        DepositTransaction transaction = await (await _depositTransactionRepository.GetQueryableAsync())
             .FirstOrDefaultAsync(x => x.Id == id) ?? throw new UserFriendlyException(L["NotFound", L["Transaction"]]);
 
         if (transaction.TransactionStatus != DepositTransactionStatus.Pending) throw new UserFriendlyException(L["TransactionAlreadyProcessed"]);
 
-        var user = await _identityUserManager.GetByIdAsync(transaction.Requester);
+        IdentityUser user = await _identityUserManager.GetByIdAsync(transaction.Requester);
 
         // calculate balance by percenage fee and fixed fee by payment gateway
-        var gateway = await (await _paymentMethodRepository.GetQueryableAsync())
+        PaymentMethod gateway = await (await _paymentMethodRepository.GetQueryableAsync())
             .AsNoTracking()
             .FirstOrDefaultAsync(x => x.Id == transaction.PaymentMethodId)
             ?? throw new UserFriendlyException(L["NotFound", L["Gateway"]]);
 
-        var fee = transaction.Amount * gateway.PercentageFee / 100 + gateway.FixedFee;
+        decimal fee = transaction.Amount * gateway.PercentageFee / 100 + gateway.FixedFee;
 
         user.ExtraProperties["Balance"] = Convert.ToDecimal(user.ExtraProperties.GetOrDefault("Balance")) + transaction.Amount - fee;
         transaction.FinishTransaction();
@@ -108,7 +108,7 @@ public class PaymentsAppService(
     [Authorize(VCardOnAbpPermissions.ApproveTransaction)]
     public async Task<ResponseModel> RejectTransaction(Guid id)
     {
-        var transaction = await(await _depositTransactionRepository.GetQueryableAsync())
+        DepositTransaction transaction = await (await _depositTransactionRepository.GetQueryableAsync())
             .FirstOrDefaultAsync(x => x.Id == id) ?? throw new UserFriendlyException(L["NotFound", L["Transaction"]]);
 
         if (transaction.TransactionStatus != DepositTransactionStatus.Pending) throw new UserFriendlyException(L["TransactionAlreadyProcessed"]);
@@ -124,13 +124,13 @@ public class PaymentsAppService(
     public async Task<PagedResultDto<DepositTransactionDto>> GetPendingTransactions(GetDepositTransactionInput input)
     {
         input.SanitizeInput();
-        var query = (await _depositTransactionRepository.GetQueryableAsync()).AsNoTracking()
+        IQueryable<DepositTransaction> query = (await _depositTransactionRepository.GetQueryableAsync()).AsNoTracking()
             .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(input.Filter, $"%{input.Filter}%"))
             .WhereIf(input.StartDate.HasValue, x => x.CreationTime >= input.StartDate)
             .WhereIf(input.EndDate.HasValue, x => x.CreationTime <= input.EndDate)
             .WhereIf(input.Status != null, x => input.Status!.Any(y => y == x.TransactionStatus));
 
-        var data = await query
+        List<DepositTransaction> data = await query
             .OrderByDescending(x => x.CreationTime)
             .PageBy(input)
             .ToListAsync();
@@ -146,7 +146,7 @@ public class PaymentsAppService(
     private async Task<CreateDepositTransactionDto> CreateManualTransaction(CreateDepositTransactionInput input, PaymentMethod gateway)
     {
         // Create a manual transaction
-        var transaction = new DepositTransaction(GuidGenerator.Create(), gateway.Id, input.Amount, CurrentUser.Id!.Value);
+        DepositTransaction transaction = new(GuidGenerator.Create(), gateway.Id, input.Amount, CurrentUser.Id!.Value);
         await _depositTransactionRepository.InsertAsync(transaction);
 
         return ObjectMapper.Map<DepositTransaction, CreateDepositTransactionDto>(transaction);
@@ -154,7 +154,7 @@ public class PaymentsAppService(
     private async Task<CreateDepositTransactionDto> CreateAutoTransaction(CreateDepositTransactionInput input, PaymentMethod gateway)
     {
         // Create a manual transaction
-        var transaction = new DepositTransaction(GuidGenerator.Create(), gateway.Id, input.Amount, CurrentUser.Id!.Value);
+        DepositTransaction transaction = new(GuidGenerator.Create(), gateway.Id, input.Amount, CurrentUser.Id!.Value);
         await _depositTransactionRepository.InsertAsync(transaction);
 
         return ObjectMapper.Map<DepositTransaction, CreateDepositTransactionDto>(transaction);

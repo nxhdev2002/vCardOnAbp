@@ -8,10 +8,10 @@ using Volo.Abp.AspNetCore.Mvc;
 namespace VCardOnAbp.Controllers;
 
 public class AccountsController(
-    IAccountsAppService accountsAppService    
+    IAccountsAppService accountsAppService
 ) : AbpController
 {
-    private readonly IAccountsAppService _accountsAppService = accountsAppService;  
+    private readonly IAccountsAppService _accountsAppService = accountsAppService;
 
     [HttpGet]
     [Route("/api/app/accounts/transactions")]

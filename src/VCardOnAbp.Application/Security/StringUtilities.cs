@@ -9,14 +9,14 @@ public static class StringUtilities
         if (userInput == null) return null;
 
         // Duyệt qua tất cả các property của class
-        var properties = userInput.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+        PropertyInfo[] properties = userInput.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
 
-        foreach (var property in properties)
+        foreach (PropertyInfo property in properties)
         {
             // Kiểm tra nếu property là string và có setter
             if (property.PropertyType == typeof(string) && property.CanWrite)
             {
-                var value = property.GetValue(userInput) as string;
+                string? value = property.GetValue(userInput) as string;
 
                 // Chỉ sanitize nếu value không null
                 if (!string.IsNullOrEmpty(value))

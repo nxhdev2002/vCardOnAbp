@@ -16,7 +16,7 @@ public class UserTransaction : Entity<Guid>
     public UserTransactionType Type { get; private set; }
     private UserTransaction() { }
 
-    public UserTransaction(Guid id, Guid userId, Guid relatedEntity, string? description, UserTransactionType type, decimal amount = 0, RelatedTransactionType relatedTransactionType  = RelatedTransactionType.Card) : base(id)
+    public UserTransaction(Guid id, Guid userId, Guid relatedEntity, string? description, UserTransactionType type, decimal amount = 0, RelatedTransactionType relatedTransactionType = RelatedTransactionType.Card) : base(id)
     {
         UserId = userId;
         Description = description;

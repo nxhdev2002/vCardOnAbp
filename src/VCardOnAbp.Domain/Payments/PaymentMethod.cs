@@ -13,7 +13,7 @@ public class PaymentMethod : Entity<int>
 
     public decimal MinAmount { get; private set; }
     public GatewayType GatewayType { get; private set; }
-    public string GuideContent { get; private set; } 
+    public string GuideContent { get; private set; }
     private PaymentMethod()
     {
     }

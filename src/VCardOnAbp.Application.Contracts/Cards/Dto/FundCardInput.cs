@@ -1,7 +1,4 @@
-﻿using System;
-using Volo.Abp.Application.Dtos;
-
-namespace VCardOnAbp.Cards.Dto;
+﻿namespace VCardOnAbp.Cards.Dto;
 
 public class FundCardInput
 {

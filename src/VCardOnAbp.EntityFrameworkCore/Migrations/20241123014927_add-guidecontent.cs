@@ -2,28 +2,27 @@
 
 #nullable disable
 
-namespace VCardOnAbp.Migrations
+namespace VCardOnAbp.Migrations;
+
+/// <inheritdoc />
+public partial class addguidecontent : Migration
 {
     /// <inheritdoc />
-    public partial class addguidecontent : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<string>(
-                name: "GuideContent",
-                table: "PaymentMethods",
-                type: "nvarchar(max)",
-                nullable: false,
-                defaultValue: "");
-        }
+        migrationBuilder.AddColumn<string>(
+            name: "GuideContent",
+            table: "PaymentMethods",
+            type: "nvarchar(max)",
+            nullable: false,
+            defaultValue: "");
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "GuideContent",
-                table: "PaymentMethods");
-        }
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropColumn(
+            name: "GuideContent",
+            table: "PaymentMethods");
     }
 }

@@ -40,12 +40,12 @@ public class SyncVcc51CardTransactionWorker : HangfireBackgroundWorkerBase
     {
         Logger.LogInformation($"{nameof(SyncVcc51CardTransactionWorker)}: Syncing Vcc51 card transaction begin");
         using IUnitOfWork uow = LazyServiceProvider.LazyGetRequiredService<IUnitOfWorkManager>().Begin();
-        var cards = await _cardRepository.GetActiveCardAsync(Supplier.Vcc51, token: cancellationToken);
-        foreach (var card in cards)
+        System.Collections.Generic.List<Card> cards = await _cardRepository.GetActiveCardAsync(Supplier.Vcc51, token: cancellationToken);
+        foreach (Card card in cards)
         {
             try
             {
-                var vcc51Card = await _vcc51AppService.GetCardInfo(card.CardNo);
+                ApiServices.Vcc51.Dtos.Vcc51Card vcc51Card = await _vcc51AppService.GetCardInfo(card.CardNo);
                 if (string.IsNullOrEmpty(vcc51Card.CardNo)) throw new Exception();
                 card.SetBalance(decimal.Parse(vcc51Card.Amount!.Replace(".", ",")) - card.Balance);
                 card.SetSecret(null, vcc51Card.Cvv, vcc51Card.Exp?.Insert(2, "/"));
@@ -71,10 +71,10 @@ public class SyncVcc51CardTransactionWorker : HangfireBackgroundWorkerBase
     {
         Logger.LogInformation($"{nameof(SyncVcc51CardTransactionWorker)}: Syncing card {card.Id} transaction...");
 
-        var transactions = await _vcc51AppService.GetTransaction(card.CardNo);
-        var dbTrans = transactions.Select(t =>
+        System.Collections.Generic.List<ApiServices.Vcc51.Dtos.Vcc51CardTransactionDto> transactions = await _vcc51AppService.GetTransaction(card.CardNo);
+        System.Collections.Generic.List<CardTransaction> dbTrans = transactions.Select(t =>
         {
-            var amount = t.Amount.Split(' ');
+            string[] amount = t.Amount.Split(' ');
             DateTime parsed;
             DateTime.TryParseExact(t.TransactionTime, "yyyy/MM/dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None, out parsed);
 
@@ -92,14 +92,14 @@ public class SyncVcc51CardTransactionWorker : HangfireBackgroundWorkerBase
         }
         ).ToList();
 
-        var transaction = await _cardTransRepo.GetListAsync(t => t.CardId == card.Id, cancellationToken: cancellationToken);
+        System.Collections.Generic.List<CardTransaction> transaction = await _cardTransRepo.GetListAsync(t => t.CardId == card.Id, cancellationToken: cancellationToken);
 
-        var result = from vcc51 in dbTrans
-                     join db in transaction
-                     on vcc51.SupplierTranId equals db.SupplierTranId into res
-                     from r in res.DefaultIfEmpty()
-                     where r == null
-                     select vcc51;
+        System.Collections.Generic.IEnumerable<CardTransaction> result = from vcc51 in dbTrans
+                                                                         join db in transaction
+                                                                         on vcc51.SupplierTranId equals db.SupplierTranId into res
+                                                                         from r in res.DefaultIfEmpty()
+                                                                         where r == null
+                                                                         select vcc51;
 
         await _cardTransRepo.InsertManyAsync(result, true, cancellationToken);
         Logger.LogInformation($"{nameof(SyncVcc51CardTransactionWorker)}: Syncing card {card.Id} transaction done");

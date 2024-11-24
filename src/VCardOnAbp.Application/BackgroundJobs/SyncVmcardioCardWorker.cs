@@ -18,7 +18,7 @@ public class SyncVmcardioCardWorker : HangfireBackgroundWorkerBase
 {
     private readonly ICardRepository _cardRepository;
     private readonly IVmcardioAppService _vmcardioAppService;
-    private readonly IRepository<Bin, Guid> _binRepository; 
+    private readonly IRepository<Bin, Guid> _binRepository;
 
     public SyncVmcardioCardWorker(
         ICardRepository cardRepository,
@@ -39,8 +39,8 @@ public class SyncVmcardioCardWorker : HangfireBackgroundWorkerBase
         return;
         using IUnitOfWork uow = LazyServiceProvider.LazyGetRequiredService<IUnitOfWorkManager>().Begin();
 
-        var bins = await (await _binRepository.GetQueryableAsync()).AsNoTracking().ToListAsync(cancellationToken);
-        var cards = await _cardRepository.GetActiveCardAsync(Supplier.Vmcardio, token: cancellationToken);
+        System.Collections.Generic.List<Bin> bins = await (await _binRepository.GetQueryableAsync()).AsNoTracking().ToListAsync(cancellationToken);
+        System.Collections.Generic.List<Card> cards = await _cardRepository.GetActiveCardAsync(Supplier.Vmcardio, token: cancellationToken);
         var result = cards.Join(
             bins,
             card => card.BinId,
@@ -54,8 +54,8 @@ public class SyncVmcardioCardWorker : HangfireBackgroundWorkerBase
 
         foreach (var item in result)
         {
-            var supplierKey = JsonSerializer.Deserialize<VmcardioIdentifyDto>(item.card.SupplierIdentity);
-            var vmCard = await _vmcardioAppService.GetCard(new GetVmcardioCardInput(item.bin.BinMapping, supplierKey!.card_id, supplierKey.uid));
+            VmcardioIdentifyDto supplierKey = JsonSerializer.Deserialize<VmcardioIdentifyDto>(item.card.SupplierIdentity);
+            VmCardDto vmCard = await _vmcardioAppService.GetCard(new GetVmcardioCardInput(item.bin.BinMapping, supplierKey!.card_id, supplierKey.uid));
             item.card.SetBalance(vmCard.available_amount.GetValueOrDefault(0) - item.card.Balance);
         }
     }

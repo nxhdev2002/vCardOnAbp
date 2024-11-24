@@ -22,7 +22,7 @@ public class AccountsAppService : ProfileAppService, IAccountsAppService
     private readonly IRepository<UserTransaction, Guid> _userTransactionRepository;
 
     public AccountsAppService(
-        IdentityUserManager userManager, 
+        IdentityUserManager userManager,
         IOptions<IdentityOptions> identityOptions,
         IRepository<UserTransaction, Guid> userTransactionRepository
     ) : base(userManager, identityOptions)
@@ -39,11 +39,11 @@ public class AccountsAppService : ProfileAppService, IAccountsAppService
     [RemoteService(false)]
     public async Task<PagedResultDto<UserTransactionDto>> GetTransactionsAsync(GetUserTransactionInput input)
     {
-        var query = (await _userTransactionRepository.GetQueryableAsync())
+        IOrderedQueryable<UserTransaction> query = (await _userTransactionRepository.GetQueryableAsync())
             .Where(x => x.UserId == CurrentUser.Id!.Value)
             .OrderByDescending(x => x.CreationTime);
 
-        var data = await query
+        List<UserTransaction> data = await query
             .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(x.Description, $"%{input.Filter}%"))
             .PageBy(input)
             .ToListAsync();
