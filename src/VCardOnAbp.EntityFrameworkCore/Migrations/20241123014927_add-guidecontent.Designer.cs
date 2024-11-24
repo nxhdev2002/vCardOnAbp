@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using VCardOnAbp.EntityFrameworkCore;
 using Volo.Abp.EntityFrameworkCore;
@@ -12,9 +13,11 @@ using Volo.Abp.EntityFrameworkCore;
 namespace VCardOnAbp.Migrations
 {
     [DbContext(typeof(VCardOnAbpDbContext))]
-    partial class VCardOnAbpDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241123014927_add-guidecontent")]
+    partial class addguidecontent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -64,6 +67,7 @@ namespace VCardOnAbp.Migrations
                         .HasColumnName("CreatorId");
 
                     b.Property<string>("Cvv")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -76,6 +80,7 @@ namespace VCardOnAbp.Migrations
                         .HasColumnName("DeletionTime");
 
                     b.Property<string>("ExpirationTime")
+                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
@@ -98,20 +103,11 @@ namespace VCardOnAbp.Migrations
                         .HasColumnType("uniqueidentifier")
                         .HasColumnName("LastModifierId");
 
-                    b.Property<DateTime?>("LastSync")
-                        .HasColumnType("datetime2");
-
                     b.Property<DateTime?>("LastView")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Note")
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<Guid>("OwnerId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("PublicKey")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Supplier")
@@ -119,8 +115,8 @@ namespace VCardOnAbp.Migrations
 
                     b.Property<string>("SupplierIdentity")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -192,9 +188,6 @@ namespace VCardOnAbp.Migrations
 
                     b.Property<decimal>("AuthAmount")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime?>("AuthTime")
-                        .HasColumnType("datetime2");
 
                     b.Property<Guid>("CardId")
                         .HasColumnType("uniqueidentifier");
@@ -455,13 +448,10 @@ namespace VCardOnAbp.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("RelatedEntity")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("RelatedTransactionType")
-                        .HasColumnType("int");
 
                     b.Property<int>("Type")
                         .HasColumnType("int");
@@ -470,8 +460,6 @@ namespace VCardOnAbp.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
-
-                    b.HasIndex(new[] { "Description" }, "IX_UserTransaction_Description");
 
                     b.ToTable("UserTransactions");
                 });

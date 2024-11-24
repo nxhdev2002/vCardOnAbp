@@ -7,5 +7,7 @@ public record PaymentMethodDto
     bool IsEnabled,
     decimal FixedFee,
     decimal PercentageFee,
-    GatewayType GatewayType
+    GatewayType GatewayType,
+    string GuideContent,
+    decimal MinAmount
 );
