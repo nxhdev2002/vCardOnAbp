@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using VCardOnAbp.BackgroundJobs;
 using VCardOnAbp.BackgroundJobs.Vcc51;
 using Volo.Abp;
 using Volo.Abp.Account;
