@@ -37,6 +37,7 @@ using Volo.Abp.OpenIddict;
 using Volo.Abp.Security.Claims;
 using Volo.Abp.Studio.Client.AspNetCore;
 using Volo.Abp.Swashbuckle;
+using Volo.Abp.Timing;
 using Volo.Abp.UI.Navigation.Urls;
 using Volo.Abp.VirtualFileSystem;
 
@@ -85,7 +86,11 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
             builder.AddEncryptionCertificate(GetSigningCertificate(hostingEnvironment));
             builder.SetIssuer(new Uri(configuration["AuthServer:Authority"]));
         });
-        //}
+
+        Configure<AbpClockOptions>(options =>
+        {
+            options.Kind = DateTimeKind.Utc;
+        });
     }
 
     public override void ConfigureServices(ServiceConfigurationContext context)
@@ -105,6 +110,11 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
                 options.DisableTransportSecurityRequirement = true;
             });
         }
+
+        Configure<AbpClockOptions>(options =>
+        {
+            options.Kind = DateTimeKind.Utc;
+        });
 
         ConfigureAuthentication(context);
         ConfigureUrls(configuration);

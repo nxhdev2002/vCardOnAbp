@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using VCardOnAbp.Models;
 using VCardOnAbp.Payments.Dtos;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
@@ -9,6 +10,8 @@ public interface IPaymentsAppService : IApplicationService
 {
     Task<PagedResultDto<PaymentMethodDto>> GetPaymentMethodsAsync(GetPaymentMethodsInput input);
     Task<CreateDepositTransactionDto> CreateTransaction(int id, CreateDepositTransactionInput input);
-    Task UpdateTransaction(int id, Guid transId, ProcessTransactionInput input);
     Task<PagedResultDto<DepositTransactionDto>> GetDepositTransactions(GetDepositTransactionInput input);
+    Task<ResponseModel> ApproveTransaction(Guid id);
+    Task<ResponseModel> RejectTransaction(Guid id);
+    Task<PagedResultDto<DepositTransactionDto>> GetPendingTransactions(GetDepositTransactionInput input);
 }

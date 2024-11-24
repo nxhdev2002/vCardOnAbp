@@ -73,6 +73,11 @@
     "ApproveAt": "Thời gian duyệt",
     "DepositTransactionStatusType_0": "Chờ phê duyệt",
     "DepositTransactionStatusType_1": "Hoàn thành",
-    "DepositTransactionStatusType_2": "Thất bại"
+    "DepositTransactionStatusType_2": "Thất bại",
+    "TransactionApproved": "Giao dịch đã được duyệt",
+    "TransactionRejected": "Giao dịch đã bị từ chối",
+    "Approve": "Phê duyệt",
+    "Reject": "Loại bỏ",
+    "PendingApproval": "Chờ phê duyệt"
   }
 }

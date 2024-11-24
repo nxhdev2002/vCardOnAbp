@@ -4,8 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VCardOnAbp.Models;
 using VCardOnAbp.Payments.Dtos;
 using VCardOnAbp.Permissions;
+using VCardOnAbp.Security;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
@@ -27,6 +29,7 @@ public class PaymentsAppService(
     [Authorize(VCardOnAbpPermissions.ViewPayment)]
     public virtual async Task<PagedResultDto<PaymentMethodDto>> GetPaymentMethodsAsync(GetPaymentMethodsInput input)
     {
+        input.SanitizeInput();
         IQueryable<PaymentMethod> payments = (await _paymentMethodRepository.GetQueryableAsync()).AsNoTracking()
             .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(input.Filter, $"%{input.Filter}%"));
 
@@ -45,6 +48,7 @@ public class PaymentsAppService(
     [Authorize(VCardOnAbpPermissions.Deposit)]
     public virtual async Task<CreateDepositTransactionDto> CreateTransaction(int id, CreateDepositTransactionInput input)
     {
+        input.SanitizeInput();
         var gateway = await (await _paymentMethodRepository.GetQueryableAsync()).AsNoTracking().FirstOrDefaultAsync(x => x.Id == id) 
             ?? throw new UserFriendlyException(L["NotFound", L["Gateway"]]);
 
@@ -53,39 +57,17 @@ public class PaymentsAppService(
             await CreateAutoTransaction(input, gateway);
     }
 
-    [Authorize(VCardOnAbpPermissions.ProcessDeposit)]
-    public virtual async Task UpdateTransaction(int id, Guid transId, ProcessTransactionInput input)
-    {
-        var transaction = await (await _depositTransactionRepository.GetQueryableAsync())
-            .FirstOrDefaultAsync(x => x.Id == transId && x.PaymentMethodId == id) ?? throw new UserFriendlyException(L["NotFound", L["Transaction"]]);
-        
-        transaction.ConcurrencyStamp = input.ConcurrencyStamp;
-        if (transaction.TransactionStatus != DepositTransactionStatus.Pending) throw new UserFriendlyException(L["TransactionAlreadyProcessed"]);
- 
-        if (!string.IsNullOrEmpty(input.Comment)) transaction.SetComment(input.Comment);
-
-        if (input.Status == DepositTransactionStatus.Completed)
-        {
-            var user = await _identityUserManager.GetByIdAsync(transaction.Requester);
-            user.ExtraProperties["Balance"] = Convert.ToDecimal(user.ExtraProperties.GetOrDefault("Balance")) + transaction.Amount;
-            transaction.FinishTransaction();
-
-
-        }
-        else if (input.Status == DepositTransactionStatus.Failed) transaction.CancelTransaction();
-        else throw new UserFriendlyException(L["InvalidStatus"]);
-
-        await _depositTransactionRepository.UpdateAsync(transaction, autoSave: true);
-    }
-
 
     [Authorize(VCardOnAbpPermissions.ViewDepositTransaction)]
     public async Task<PagedResultDto<DepositTransactionDto>> GetDepositTransactions(GetDepositTransactionInput input)
     {
+        input.SanitizeInput();
         var query = (await _depositTransactionRepository.GetQueryableAsync()).AsNoTracking()
+            .Where(x => x.Requester == CurrentUser.Id)
             .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(input.Filter, $"%{input.Filter}%"))
             .WhereIf(input.StartDate.HasValue, x => x.CreationTime >= input.StartDate)
-            .WhereIf(input.EndDate.HasValue, x => x.CreationTime <= input.EndDate);
+            .WhereIf(input.EndDate.HasValue, x => x.CreationTime <= input.EndDate)
+            .WhereIf(input.Status != null, x => input.Status!.Any(y => y == x.TransactionStatus));
 
         var data = await query
             .OrderByDescending(x => x.CreationTime)
@@ -98,6 +80,66 @@ public class PaymentsAppService(
         );
     }
 
+    [Authorize(VCardOnAbpPermissions.ApproveTransaction)]
+    public async Task<ResponseModel> ApproveTransaction(Guid id)
+    {
+        var transaction = await (await _depositTransactionRepository.GetQueryableAsync())
+            .FirstOrDefaultAsync(x => x.Id == id) ?? throw new UserFriendlyException(L["NotFound", L["Transaction"]]);
+
+        if (transaction.TransactionStatus != DepositTransactionStatus.Pending) throw new UserFriendlyException(L["TransactionAlreadyProcessed"]);
+
+        var user = await _identityUserManager.GetByIdAsync(transaction.Requester);
+
+        // calculate balance by percenage fee and fixed fee by payment gateway
+        var gateway = await (await _paymentMethodRepository.GetQueryableAsync())
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == transaction.PaymentMethodId)
+            ?? throw new UserFriendlyException(L["NotFound", L["Gateway"]]);
+
+        var fee = transaction.Amount * gateway.PercentageFee / 100 + gateway.FixedFee;
+
+        user.ExtraProperties["Balance"] = Convert.ToDecimal(user.ExtraProperties.GetOrDefault("Balance")) + transaction.Amount - fee;
+        transaction.FinishTransaction();
+        // TODO: Send email to user
+
+        return ResponseModel.SuccessResponse(L["SuccessToast", L["TransactionApproved"]]);
+    }
+
+    [Authorize(VCardOnAbpPermissions.ApproveTransaction)]
+    public async Task<ResponseModel> RejectTransaction(Guid id)
+    {
+        var transaction = await(await _depositTransactionRepository.GetQueryableAsync())
+            .FirstOrDefaultAsync(x => x.Id == id) ?? throw new UserFriendlyException(L["NotFound", L["Transaction"]]);
+
+        if (transaction.TransactionStatus != DepositTransactionStatus.Pending) throw new UserFriendlyException(L["TransactionAlreadyProcessed"]);
+
+        transaction.CancelTransaction();
+
+        // TODO: Send email to user
+
+        return ResponseModel.SuccessResponse(L["SuccessToast", L["TransactionRejected"]]);
+    }
+
+    [Authorize(VCardOnAbpPermissions.ApproveTransaction)]
+    public async Task<PagedResultDto<DepositTransactionDto>> GetPendingTransactions(GetDepositTransactionInput input)
+    {
+        input.SanitizeInput();
+        var query = (await _depositTransactionRepository.GetQueryableAsync()).AsNoTracking()
+            .WhereIf(!string.IsNullOrEmpty(input.Filter), x => EF.Functions.Like(input.Filter, $"%{input.Filter}%"))
+            .WhereIf(input.StartDate.HasValue, x => x.CreationTime >= input.StartDate)
+            .WhereIf(input.EndDate.HasValue, x => x.CreationTime <= input.EndDate)
+            .WhereIf(input.Status != null, x => input.Status!.Any(y => y == x.TransactionStatus));
+
+        var data = await query
+            .OrderByDescending(x => x.CreationTime)
+            .PageBy(input)
+            .ToListAsync();
+
+        return new PagedResultDto<DepositTransactionDto>(
+            await query.CountAsync(),
+            ObjectMapper.Map<List<DepositTransaction>, List<DepositTransactionDto>>(data)
+        );
+    }
 
     #region Private Methods
 
@@ -117,6 +159,9 @@ public class PaymentsAppService(
 
         return ObjectMapper.Map<DepositTransaction, CreateDepositTransactionDto>(transaction);
     }
+
+
+
 
     #endregion
 }
