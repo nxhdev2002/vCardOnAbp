@@ -1,11 +1,11 @@
 import { Environment } from '@abp/ng.core';
 
-const baseUrl = 'https://fe.hoangnx.info';
+const baseUrl = 'https://vccus.net';
 
 const oAuthConfig = {
-  issuer: 'https://vcard.hoangnx.info/',
+  issuer: 'https://api.vccus.net/',
   redirectUri: baseUrl,
-  clientId: 'VCard_Angular',
+  clientId: 'VCCUS_CLIENT',
   responseType: 'code',
   scope: 'offline_access VCardOnAbp',
   requireHttps: true,
@@ -20,7 +20,7 @@ export const environment = {
   oAuthConfig,
   apis: {
     default: {
-      url: 'https://vcard.hoangnx.info',
+      url: 'https://api.vccus.net',
       rootNamespace: 'VCardOnAbp',
     },
     AbpAccountPublic: {

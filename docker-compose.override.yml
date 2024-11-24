@@ -7,6 +7,11 @@ services:
       - ConnectionStrings__Default=Server=db;User=sa;Password=Caube_2k2@;Database=VCardOnAbp;Trusted_Connection=false;TrustServerCertificate=true
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - ASPNETCORE_Kestrel__Certificates__Default__Password=Caube_2k2
+      - AuthServer__Authority=your_website
+      - AuthServer__RequireHttpsMetadata=true
+      - AuthServer__SwaggerClientId=VCCUS
+      - ThirdParty__Vcc51__Url=url
+      - ThirdParty__Vcc51__Cookie=cookie
     ports:
       - "8080"
       - "8081"

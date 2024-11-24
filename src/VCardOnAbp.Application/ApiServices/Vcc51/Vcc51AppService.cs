@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,19 +13,22 @@ namespace VCardOnAbp.ApiServices.Vcc51;
 
 [RemoteService(false)]
 public class Vcc51AppService(
-    ICardRepository cardRepository
+    ICardRepository cardRepository,
+    IConfiguration configuration
 ) : VCardOnAbpAppService, IVcc51AppService
 {
     private readonly ICardRepository _cardRepository = cardRepository;
+    private readonly IConfiguration _configuration = configuration;
+    private readonly string WebUrl = configuration["ThirdParty:Vcc51:Url"] ?? string.Empty;
 
     public async Task<List<Vcc51CardTransactionDto>> GetTransaction(string cardNo)
     {
-        string response = await GetAsync($"{Vcc51Const.SERVICE_URL}?kano={cardNo}");
+        string response = await GetAsync($"{WebUrl}{Vcc51Const.SERVICE_URL}?kano={cardNo}");
         return Vcc51RequestParser.ParseHtmlContentToTransactions(response);
     }
     public async Task<Vcc51Card> GetCardInfo(string cardNo)
     {
-        string response = await GetAsync($"{Vcc51Const.SERVICE_URL}?kano={cardNo}");
+        string response = await GetAsync($"{WebUrl}{Vcc51Const.SERVICE_URL}?kano={cardNo}");
         return Vcc51RequestParser.ParseHtmlContentToCardInfo(response);
     }
 
@@ -36,14 +40,14 @@ public class Vcc51AppService(
         decimal Amount = Math.Round(input.Amount);
 
         // step 1: Get to get input fields
-        string response = await GetAsync($"{Vcc51Const.CREATEEDIT_URL}");
+        string response = await GetAsync($"{WebUrl}{Vcc51Const.CREATEEDIT_URL}");
         Vcc51PostDataCreateCardDto dtoInput = Vcc51RequestParser.ParseHtmlContentToPostDataCreateCard(response);
         dtoInput.__EVENTTARGET = "ddlqd";
         dtoInput.ddlqd = input.bin;
 
         // step 2: Post to get bin info
         FormUrlEncodedContent content = Vcc51RequestParser.GetFormUrlEncodedContentToChangeBinCreateCardPayload(dtoInput);
-        string createResponse = await PostAsync($"{Vcc51Const.CREATEEDIT_URL}", content);
+        string createResponse = await PostAsync($"{WebUrl}{Vcc51Const.CREATEEDIT_URL}", content);
 
 
         // step 3: Post to create card
@@ -65,7 +69,7 @@ public class Vcc51AppService(
         dtoInput.isallfei = (Amount + fee).ToString().Replace(',', '.');
 
         FormUrlEncodedContent payload = Vcc51RequestParser.GetFormUrlEncodedContentToCreateCardPayload(dtoInput);
-        string responseStr = await PostAsync($"{Vcc51Const.CREATEEDIT_URL}", payload);
+        string responseStr = await PostAsync($"{WebUrl}{Vcc51Const.CREATEEDIT_URL}", payload);
 
 
         cardDb.SetIdentifyKey(dtoInput.txtbz);
@@ -75,7 +79,7 @@ public class Vcc51AppService(
 
     public async Task<List<Vcc51Card>> GetCards(int pageSize)
     {
-        string response = await GetAsync($"{Vcc51Const.CLIENT_URL}");
+        string response = await GetAsync($"{WebUrl}{Vcc51Const.CLIENT_URL}");
         int? totalPage = Vcc51RequestParser.GetZhisanhuiHtmlToTotalPage(response, pageSize);
         List<Vcc51Card> data = new();
 
@@ -97,14 +101,14 @@ public class Vcc51AppService(
     {
         Vcc51PostDataGetCardDto postData = Vcc51RequestParser.ParseHtmlContentToPostDataGetPage(htmlContent, pageNumber, pageSize);
         FormUrlEncodedContent content = Vcc51RequestParser.GetFormUrlEncodedContentToGetCardByPage(postData);
-        string response = await PostAsync($"{Vcc51Const.CLIENT_URL}", content);
+        string response = await PostAsync($"{WebUrl}{Vcc51Const.CLIENT_URL}", content);
 
         return Vcc51RequestParser.ParseHtmlContentToCreditCard(response);
     }
 
     private Dictionary<string, string> GetZhisanhuiHeaders()
     {
-        string cookie = "YOUR COOKIE";
+        string cookie = _configuration["ThirdParty:Vcc51:Cookie"] ?? "";
         return new Dictionary<string, string>()
         {
             { "User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36 Edg/108.0.1462.76" },

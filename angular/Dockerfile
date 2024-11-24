@@ -6,6 +6,7 @@ COPY package*.json /app/
 RUN yarn
 COPY . /app
 
+RUN yarn
 RUN yarn build:prod
 
 FROM nginx:alpine

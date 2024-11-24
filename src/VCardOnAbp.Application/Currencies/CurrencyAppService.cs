@@ -10,7 +10,7 @@ namespace VCardOnAbp.Currencies;
 
 [Authorize(VCardOnAbpPermissions.CurrencyGroup)]
 public class CurrencyAppService(
-    IRepository<Currency, Guid> currencyRepository    
+    IRepository<Currency, Guid> currencyRepository
 ) : VCardOnAbpAppService, ICurrencyAppService
 {
     private readonly IRepository<Currency, Guid> _currencyRepository = currencyRepository;
@@ -18,7 +18,7 @@ public class CurrencyAppService(
     [Authorize(VCardOnAbpPermissions.AddCurrency)]
     public async Task CreateAsync(CreateCurrencyDto input)
     {
-        var currency = new Currency(
+        Currency currency = new(
             GuidGenerator.Create(),
             input.Name,
             input.Code,
@@ -43,14 +43,14 @@ public class CurrencyAppService(
     [Authorize(VCardOnAbpPermissions.ViewCurrency)]
     public async Task<List<CurrencyDto>> GetListAsync()
     {
-        var currencies = await _currencyRepository.GetListAsync();
+        List<Currency> currencies = await _currencyRepository.GetListAsync();
         return ObjectMapper.Map<List<Currency>, List<CurrencyDto>>(currencies);
     }
 
     [Authorize(VCardOnAbpPermissions.EditCurrency)]
     public Task UpdateAsync(Guid id, UpdateCurrencyDto input)
     {
-        var currency = new Currency(
+        Currency currency = new(
             id,
             input.Name,
             input.Code,
