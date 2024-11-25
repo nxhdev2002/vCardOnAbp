@@ -69,7 +69,7 @@ public class CardsAppService(
     [Authorize(VCardOnAbpPermissions.ViewCardTransaction)]
     public virtual async Task<PagedResultDto<CardTransactionDto>> GetTransactionAsync(Guid id, GetCardTransactionInput input)
     {
-        Card card = await _cardManager.GetCard(id, CurrentUser.Id!.Value);
+        Card card = await _cardManager.GetCard(id, CurrentUser.Id!.Value, true);
 
         IQueryable<CardTransaction> transaction = (await _cardTransactionRepository.GetQueryableAsync())
             .AsNoTracking()

@@ -61,7 +61,7 @@
             <td>{{ transaction.authAmount }}</td>
             <td>{{ transaction.currency }}</td>
             <td>{{ transaction.status }}</td>
-            <td>{{ transaction.creationTime }}</td>
+            <td>{{ transaction.creationTime | shortDateTime }}</td>
         </tr>
     </ng-template>
 </p-table>

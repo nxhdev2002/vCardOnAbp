@@ -76,10 +76,10 @@ public class CardManager(
         card.ChangeStatus(CardStatus.Lock);
     }
 
-    public async Task<Card> GetCard(Guid cardId, Guid userId)
+    public async Task<Card> GetCard(Guid cardId, Guid userId, bool isNoTracking = false)
     {
-        Card? card = await _cardsRepository.GetCard(cardId, userId, false) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.CardNotFound);
-        card.SetLastView(DateTime.UtcNow);
+        Card? card = await _cardsRepository.GetCard(cardId, userId, isNoTracking) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.CardNotFound);
+        if (!isNoTracking) card.SetLastView(DateTime.UtcNow);
         return card;
     }
 
