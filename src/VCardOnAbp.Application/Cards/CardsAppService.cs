@@ -33,7 +33,9 @@ public class CardsAppService(
     private readonly IRepository<CardTransaction, Guid> _cardTransactionRepository = cardTransactionRepository;
     private readonly IBackgroundJobManager _backgroundJobManager = backgroundJobManager;
     private readonly IRepository<UserTransaction, Guid> _userTransaction = userTransactionRepository;
-    private readonly IDistributedCache<string> _distributedCache = distributedCache; 
+    private readonly IDistributedCache<string> _distributedCache = distributedCache;
+
+    private const string DistributedLockValue = "1";
 
     [Authorize(VCardOnAbpPermissions.ViewCard)]
     public virtual async Task<PagedResultDto<CardDto>> GetListAsync(GetCardInput input)
@@ -100,10 +102,10 @@ public class CardsAppService(
         Card card;
         try
         {
-            await _distributedCache.SetAsync($"{CurrentUser.Id}:CreateCard", "1",
+            await _distributedCache.SetAsync(distributedLockKey, DistributedLockValue,
                 new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
                 {
-                    AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(1000)
+                    AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(10)
                 }
             );
             card = await _cardManager.CreateCard("_", input.BinId, string.Empty, input.CardName, CardStatus.Pending, input.Amount, CurrentUser.Id!.Value, input.Note)
@@ -143,10 +145,10 @@ public class CardsAppService(
         Card card;
         try
         {
-            await _distributedCache.SetAsync($"{CurrentUser.Id}:CreateCard", "1",
+            await _distributedCache.SetAsync(distributedLockKey, DistributedLockValue,
                 new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
                 {
-                    AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(1000)
+                    AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(10)
                 }
             );
             card = await _cardManager.GetCard(id, CurrentUser.Id!.Value)
@@ -159,7 +161,7 @@ public class CardsAppService(
             await _distributedCache.RemoveAsync(distributedLockKey);
         }
 
-        // publish event
+        // enqueue fund job
         await _backgroundJobManager.EnqueueAsync(new FundCardJobArgs
         {
             Supplier = card.Supplier,
