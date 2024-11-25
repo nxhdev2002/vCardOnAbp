@@ -1,4 +1,4 @@
-import { AuthService, LocalizationService } from '@abp/ng.core';
+import { AuthService, LocalizationService, PermissionService } from '@abp/ng.core';
 import { ToasterService } from '@abp/ng.theme.shared';
 import { Component, OnInit } from '@angular/core';
 import { GetCardInput } from '@proxy/cards/dto';
@@ -28,7 +28,8 @@ export class CurrencyComponent implements OnInit {
     private authService: AuthService, 
     private currencyService: CurrencyService,
     private _toasterService: ToasterService,
-    private _localizationService: LocalizationService
+    private _localizationService: LocalizationService,
+    private _permissionService: PermissionService
   ) {}
 
   ngOnInit() {
@@ -101,5 +102,9 @@ export class CurrencyComponent implements OnInit {
   openAddModal() {
     this.clear();
     this.visible = true;
+  }
+
+  isAllowCreateCurrency() {
+    return this._permissionService.getGrantedPolicy('Currency.Add');
   }
 }

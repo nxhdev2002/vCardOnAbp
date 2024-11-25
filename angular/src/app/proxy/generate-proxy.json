@@ -2145,7 +2145,7 @@
                 "type": "System.Void",
                 "typeSimple": "System.Void"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Currencies.ICurrencyAppService"
             },
             "DeleteAsyncById": {
@@ -2182,7 +2182,7 @@
                 "type": "System.Void",
                 "typeSimple": "System.Void"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Currencies.ICurrencyAppService"
             },
             "GetAsyncById": {
@@ -2219,7 +2219,7 @@
                 "type": "VCardOnAbp.Currencies.Dto.CurrencyDto",
                 "typeSimple": "VCardOnAbp.Currencies.Dto.CurrencyDto"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Currencies.ICurrencyAppService"
             },
             "GetListAsync": {
@@ -2234,7 +2234,7 @@
                 "type": "System.Collections.Generic.List<VCardOnAbp.Currencies.Dto.CurrencyDto>",
                 "typeSimple": "[VCardOnAbp.Currencies.Dto.CurrencyDto]"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Currencies.ICurrencyAppService"
             },
             "UpdateAsyncByIdAndInput": {
@@ -2291,7 +2291,7 @@
                 "type": "System.Void",
                 "typeSimple": "System.Void"
               },
-              "allowAnonymous": null,
+              "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Currencies.ICurrencyAppService"
             }
           }

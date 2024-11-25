@@ -1,7 +1,7 @@
 ﻿{
   "Culture": "vi",
   "Texts": {
-    "AppName": "VCardOnAbp",
+    "AppName": "VccUS",
     "Menu:Home": "Home",
     "Card": "Thẻ tín dụng",
     "Card:CreateCard": "Tạo thẻ",
@@ -78,6 +78,8 @@
     "TransactionRejected": "Giao dịch đã bị từ chối",
     "Approve": "Phê duyệt",
     "Reject": "Loại bỏ",
-    "PendingApproval": "Chờ phê duyệt"
+    "PendingApproval": "Chờ phê duyệt",
+    "CardFundingInProgress": "Nạp tiền vào thẻ tín dụng đang được xử lý",
+    "CardCreationInProgress": "Tạo thẻ tín dụng đang được xử lý"
   }
 }
