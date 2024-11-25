@@ -8,6 +8,7 @@ using VCardOnAbp.Models;
 using VCardOnAbp.Payments.Dtos;
 using VCardOnAbp.Permissions;
 using VCardOnAbp.Security;
+using VCardOnAbp.Transactions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.Domain.Repositories;
@@ -19,11 +20,13 @@ namespace VCardOnAbp.Payments;
 public class PaymentsAppService(
     IRepository<PaymentMethod, int> paymentMethodRepository,
     IRepository<DepositTransaction, Guid> depositTransactionRepository,
+    IRepository<UserTransaction, Guid> userTransactionRepository,
     IdentityUserManager identityUserManager
 ) : VCardOnAbpAppService, IPaymentsAppService
 {
     private readonly IRepository<PaymentMethod, int> _paymentMethodRepository = paymentMethodRepository;
     private readonly IRepository<DepositTransaction, Guid> _depositTransactionRepository = depositTransactionRepository;
+    private readonly IRepository<UserTransaction, Guid> _userTransactionRepository = userTransactionRepository;
     private readonly IdentityUserManager _identityUserManager = identityUserManager;
 
     [Authorize(VCardOnAbpPermissions.ViewPayment)]
@@ -100,6 +103,12 @@ public class PaymentsAppService(
 
         user.ExtraProperties["Balance"] = Convert.ToDecimal(user.ExtraProperties.GetOrDefault("Balance")) + transaction.Amount - fee;
         transaction.FinishTransaction();
+
+        // Add user transaction
+        await _userTransactionRepository.InsertAsync(
+            new UserTransaction(GuidGenerator.Create(), transaction.Requester, id, L["TransactionApproved"], UserTransactionType.Deposit, transaction.Amount - fee, RelatedTransactionType.Payment)
+        );
+
         // TODO: Send email to user
 
         return ResponseModel.SuccessResponse(L["SuccessToast", L["TransactionApproved"]]);
@@ -114,7 +123,6 @@ public class PaymentsAppService(
         if (transaction.TransactionStatus != DepositTransactionStatus.Pending) throw new UserFriendlyException(L["TransactionAlreadyProcessed"]);
 
         transaction.CancelTransaction();
-
         // TODO: Send email to user
 
         return ResponseModel.SuccessResponse(L["SuccessToast", L["TransactionRejected"]]);

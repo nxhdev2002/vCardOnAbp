@@ -3,5 +3,6 @@
 public enum UserTransactionType
 {
     CreateCard,
-    FundCard
+    FundCard,
+    Deposit,
 }

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { GetCardInput } from '@proxy/cards/dto';
-import { AccountsService } from '@proxy/accounts';
+import { AccountsService } from '@proxy/controllers';
 import { DatePipe } from '@angular/common';
+import { UserTransactionType } from '@proxy/transactions';
+import { GetUserTransactionInput, UserTransactionDto } from '@proxy/accounts/dtos';
 
 @Component({
   selector: 'app-transaction',
