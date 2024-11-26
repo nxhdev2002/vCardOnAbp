@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { GetUserTransactionInput, UserTransactionDto } from '@proxy/accounts/dtos';
 import { GetCardInput } from '@proxy/cards/dto';
+import { AccountsService } from '@proxy/controllers';
 import { DatePipe } from '@angular/common';
 import { UserTransactionType } from '@proxy/transactions';
-import { AccountsService } from '@proxy/controllers';
+import { GetUserTransactionInput, UserTransactionDto } from '@proxy/accounts/dtos';
 
 @Component({
   selector: 'app-transaction',
@@ -45,6 +45,8 @@ export class TransactionComponent implements OnInit {
         return 'Fund Card';
       case UserTransactionType.CreateCard:
         return 'Create Card';
+      case UserTransactionType.Deposit:
+        return 'Deposit';
       default:
         return 'Unknown';
     }
