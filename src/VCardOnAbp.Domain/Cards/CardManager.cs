@@ -39,6 +39,7 @@ public class CardManager(
     /// <param name="cardStatus"></param>
     /// <param name="Amount"></param>
     /// <param name="OwnerId"></param>
+    /// <param name="Remark"></param>
     /// <returns></returns>
     /// <exception cref="BusinessException"></exception>
     public async Task<Card?> CreateCard(string CardNo, Guid BinId, string SupplierIdentity, string CardName, CardStatus cardStatus, decimal Amount, Guid OwnerId, string? Remark)
@@ -51,10 +52,13 @@ public class CardManager(
         if (user == null || !user.IsActive) throw new BusinessException(VCardOnAbpDomainErrorCodes.UserNotFound);
         Bin bin = await (await _binRepo.GetQueryableAsync()).FirstOrDefaultAsync(x => x.Id == BinId) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.BinNotFound);
 
-        decimal userBalance = user.GetProperty<decimal>(UserConsts.Balance);
-        decimal requireBalance = bin.CreationFixedFee + (bin.FundingPercentFee * Amount / 100);
+        Currency currency = await (await _currencyRepo.GetQueryableAsync()).AsNoTracking().FirstOrDefaultAsync(x => x.Id == bin.CurrencyId) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.CurrencyNotFound);
+        decimal usdRate = Amount * currency.UsdRate;
 
-        if (userBalance <= requireBalance) throw new BusinessException(VCardOnAbpDomainErrorCodes.InsufficientBalance);
+        var userBalance = user.GetProperty<decimal>(UserConsts.Balance);
+        var requireBalance = bin.CreationFixedFee + (bin.CreationPercentFee * usdRate / 100);
+
+        if (userBalance <= requireBalance + VCardOnAbpConsts.FronzeBalance) throw new BusinessException(VCardOnAbpDomainErrorCodes.InsufficientBalance);
         Logger.LogInformation($"{nameof(CreateCard)}: User {OwnerId} validate successfully with Id: {cardId}, Amount: {Amount}");
         user.SetProperty(UserConsts.Balance, userBalance - requireBalance);
         await _userManager.UpdateAsync(user);
@@ -92,10 +96,19 @@ public class CardManager(
         Bin bin = await (await _binRepo.GetQueryableAsync()).AsNoTracking().FirstOrDefaultAsync(x => x.Id == card.BinId) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.BinNotFound);
         if (!bin.IsActive) throw new BusinessException(VCardOnAbpDomainErrorCodes.BinNotActive);
 
+        IdentityUser? user = await _userManager.FindByIdAsync(card.CreatorId.ToString()!);
+        if (user == null || !user.IsActive) throw new BusinessException(VCardOnAbpDomainErrorCodes.UserNotFound);
+
         Currency currency = await (await _currencyRepo.GetQueryableAsync()).AsNoTracking().FirstOrDefaultAsync(x => x.Id == bin.CurrencyId) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.CurrencyNotFound);
         decimal usdRate = amount * currency.UsdRate;
 
-        IdentityUser? user = await _userManager.FindByIdAsync(card.CreatorId.ToString()!);
+        var userBalance = user.GetProperty<decimal>(UserConsts.Balance);
+        var requireBalance = bin.FundingFixedFee + (bin.FundingPercentFee * usdRate / 100);
+
+        if (userBalance <= requireBalance + VCardOnAbpConsts.FronzeBalance) throw new BusinessException(VCardOnAbpDomainErrorCodes.InsufficientBalance);
+        user.SetProperty(UserConsts.Balance, userBalance - requireBalance);
+        await _userManager.UpdateAsync(user);
+
         user!.SetProperty(nameof(UserConsts.Balance), user!.GetProperty<decimal>(nameof(UserConsts.Balance)) - usdRate);
         card.SetLastView(DateTime.UtcNow);
         card.SetBalance(amount);
