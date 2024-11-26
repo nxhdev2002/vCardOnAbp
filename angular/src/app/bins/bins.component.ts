@@ -146,4 +146,16 @@ export class BinsComponent implements OnInit {
       this._toasterService.success(this._localizationService.instant('::SuccessToast', this._localizationService.instant('::Bin:DeleteBin'))));
       this.loadBinList();
   }
+
+  isAllowDeleteBin() {
+    return this._permissionService.getGrantedPolicy('Bin.Edit');
+  }
+
+  isAllowCreateBin() {
+    return this._permissionService.getGrantedPolicy('Bin.Add');
+  }
+
+  isAllowCreateCard() {
+    return this._permissionService.getGrantedPolicy('Card.Create');
+  }
 }

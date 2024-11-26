@@ -3,6 +3,7 @@
 <p-dataView #dv [value]="bins" [layout]="layout">
     <ng-template pTemplate="header" *ngIf="canCreate">
         <button 
+            *ngIf="isAllowCreateBin()"
             pButton 
             pRipple 
             label="{{ '::Add' | abpLocalization }}" 
@@ -35,8 +36,8 @@
                         <div class="flex flex-column gap-4 mt-4">
                             <span class="text-2xl font-semibold">BIN - {{ product.name }}</span>
                             <div class="flex gap-2">
-                                <p-button icon="pi pi-shopping-cart" class="flex-auto md:flex-initial white-space-nowrap" label="{{ '::Card:CreateCard' | abpLocalization }}" (onClick)="onCreateCardClicked($event, product.id)" />
-                                <p-button icon="pi pi-trash" class="flex-auto md:flex-initial white-space-nowrap" severity="danger" (onClick)="deleteBin(product.id)" />
+                                <p-button icon="pi pi-shopping-cart" class="flex-auto md:flex-initial white-space-nowrap" label="{{ '::Card:CreateCard' | abpLocalization }}" (onClick)="onCreateCardClicked($event, product.id)" *ngIf="isAllowCreateCard()" />
+                                <p-button icon="pi pi-trash" class="flex-auto md:flex-initial white-space-nowrap" severity="danger" (onClick)="deleteBin(product.id)" *ngIf="isAllowDeleteBin()" />
                             </div>
                         </div>
                     </div>
@@ -55,10 +56,6 @@
     </div>
     <div class="flex align-items-center gap-3 mb-3">
         <label for="lastname" class="font-semibold w-6rem">{{ '::LastName' | abpLocalization }}</label>
-        <input pInputText id="lastname" class="flex-auto" [(ngModel)]="lastName" autocomplete="off" />
-    </div>
-    <div class="flex align-items-center gap-3 mb-3">
-        <label for="lastname" class="font-semibold w-6rem">{{ '::Merchant' | abpLocalization }}</label>
         <input pInputText id="lastname" class="flex-auto" [(ngModel)]="lastName" autocomplete="off" />
     </div>
     <div class="flex align-items-center gap-3 mb-3">

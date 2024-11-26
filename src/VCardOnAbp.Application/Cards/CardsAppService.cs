@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using VCardOnAbp.BackgroundJobs.Dtos;
 using VCardOnAbp.Cards.Dto;
@@ -14,6 +13,7 @@ using VCardOnAbp.Transactions;
 using Volo.Abp;
 using Volo.Abp.Application.Dtos;
 using Volo.Abp.BackgroundJobs;
+using Volo.Abp.Caching;
 using Volo.Abp.Domain.Repositories;
 
 namespace VCardOnAbp.Cards;
@@ -24,7 +24,8 @@ public class CardsAppService(
     IBackgroundJobManager backgroundJobManager,
     ICardRepository cardRepository,
     IRepository<CardTransaction, Guid> cardTransactionRepository,
-    IRepository<UserTransaction, Guid> userTransactionRepository
+    IRepository<UserTransaction, Guid> userTransactionRepository,
+    IDistributedCache<string> distributedCache
 ) : VCardOnAbpAppService, ICardsAppService
 {
     private readonly CardManager _cardManager = cardManager;
@@ -32,7 +33,9 @@ public class CardsAppService(
     private readonly IRepository<CardTransaction, Guid> _cardTransactionRepository = cardTransactionRepository;
     private readonly IBackgroundJobManager _backgroundJobManager = backgroundJobManager;
     private readonly IRepository<UserTransaction, Guid> _userTransaction = userTransactionRepository;
-    private static readonly SemaphoreSlim _semaphore = new(1, 1);
+    private readonly IDistributedCache<string> _distributedCache = distributedCache;
+
+    private const string DistributedLockValue = "1";
 
     [Authorize(VCardOnAbpPermissions.ViewCard)]
     public virtual async Task<PagedResultDto<CardDto>> GetListAsync(GetCardInput input)
@@ -66,7 +69,7 @@ public class CardsAppService(
     [Authorize(VCardOnAbpPermissions.ViewCardTransaction)]
     public virtual async Task<PagedResultDto<CardTransactionDto>> GetTransactionAsync(Guid id, GetCardTransactionInput input)
     {
-        Card card = await _cardManager.GetCard(id, CurrentUser.Id!.Value);
+        Card card = await _cardManager.GetCard(id, CurrentUser.Id!.Value, true);
 
         IQueryable<CardTransaction> transaction = (await _cardTransactionRepository.GetQueryableAsync())
             .AsNoTracking()
@@ -88,12 +91,23 @@ public class CardsAppService(
     [Authorize(VCardOnAbpPermissions.CreateCard)]
     public virtual async Task<ResponseModel> CreateAsync(CreateCardInput input)
     {
-        await _semaphore.WaitAsync();
+        var distributedLockKey = $"{CurrentUser.Id}:CreateCard";
+        if (await _distributedCache.GetAsync(distributedLockKey) != null)
+        {
+            return ResponseModel.ErrorResponse(L["CardCreationInProgress"]);
+        }
+
         input.SanitizeInput();
 
         Card card;
         try
         {
+            await _distributedCache.SetAsync(distributedLockKey, DistributedLockValue,
+                new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(10)
+                }
+            );
             card = await _cardManager.CreateCard("_", input.BinId, string.Empty, input.CardName, CardStatus.Pending, input.Amount, CurrentUser.Id!.Value, input.Note)
             ?? throw new UserFriendlyException(L["CardCreationFailed"]);
 
@@ -101,7 +115,8 @@ public class CardsAppService(
         }
         finally
         {
-            _semaphore.Release();
+            // remove lock
+            await _distributedCache.RemoveAsync(distributedLockKey);
         }
 
         await _backgroundJobManager.EnqueueAsync(new CreateCardJobArgs
@@ -121,10 +136,21 @@ public class CardsAppService(
     [Authorize(VCardOnAbpPermissions.FundCard)]
     public virtual async Task<ResponseModel> FundAsync(Guid id, FundCardInput input)
     {
+        var distributedLockKey = $"{CurrentUser.Id}:FundCard";
+        if (await _distributedCache.GetAsync(distributedLockKey) != null)
+        {
+            return ResponseModel.ErrorResponse(L["CardFundingInProgress"]);
+        }
+
         Card card;
         try
         {
-            await _semaphore.WaitAsync();
+            await _distributedCache.SetAsync(distributedLockKey, DistributedLockValue,
+                new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
+                {
+                    AbsoluteExpiration = DateTimeOffset.Now.AddSeconds(10)
+                }
+            );
             card = await _cardManager.GetCard(id, CurrentUser.Id!.Value)
             ?? throw new UserFriendlyException(L["CardNotFound"]);
 
@@ -132,10 +158,10 @@ public class CardsAppService(
         }
         finally
         {
-            _semaphore.Release();
+            await _distributedCache.RemoveAsync(distributedLockKey);
         }
 
-        // publish event
+        // enqueue fund job
         await _backgroundJobManager.EnqueueAsync(new FundCardJobArgs
         {
             Supplier = card.Supplier,

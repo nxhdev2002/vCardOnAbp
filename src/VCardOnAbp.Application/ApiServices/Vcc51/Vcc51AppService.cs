@@ -26,6 +26,7 @@ public class Vcc51AppService(
         string response = await GetAsync($"{WebUrl}{Vcc51Const.SERVICE_URL}?kano={cardNo}");
         return Vcc51RequestParser.ParseHtmlContentToTransactions(response);
     }
+
     public async Task<Vcc51Card> GetCardInfo(string cardNo)
     {
         string response = await GetAsync($"{WebUrl}{Vcc51Const.SERVICE_URL}?kano={cardNo}");
