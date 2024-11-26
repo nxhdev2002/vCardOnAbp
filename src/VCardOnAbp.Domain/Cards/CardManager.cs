@@ -39,6 +39,7 @@ public class CardManager(
     /// <param name="cardStatus"></param>
     /// <param name="Amount"></param>
     /// <param name="OwnerId"></param>
+    /// <param name="Remark"></param>
     /// <returns></returns>
     /// <exception cref="BusinessException"></exception>
     public async Task<Card?> CreateCard(string CardNo, Guid BinId, string SupplierIdentity, string CardName, CardStatus cardStatus, decimal Amount, Guid OwnerId, string? Remark)
@@ -54,7 +55,7 @@ public class CardManager(
         var userBalance = user.GetProperty<decimal>(UserConsts.Balance);
         var requireBalance = bin.CreationFixedFee + (bin.FundingPercentFee * Amount / 100);
 
-        if (userBalance <= requireBalance) throw new BusinessException(VCardOnAbpDomainErrorCodes.InsufficientBalance);
+        if (userBalance <= requireBalance + VCardOnAbpConsts.FronzeBalance) throw new BusinessException(VCardOnAbpDomainErrorCodes.InsufficientBalance);
         Logger.LogInformation($"{nameof(CreateCard)}: User {OwnerId} validate successfully with Id: {cardId}, Amount: {Amount}");
         user.SetProperty(UserConsts.Balance, userBalance - requireBalance);
         await _userManager.UpdateAsync(user);

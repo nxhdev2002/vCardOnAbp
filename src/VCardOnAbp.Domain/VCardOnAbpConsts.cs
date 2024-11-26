@@ -13,4 +13,6 @@ public static class VCardOnAbpConsts
 
     public const int MaxNameLength = 50;
     public const int MaxDescriptionLength = 500;
+
+    public const decimal FronzeBalance = 50;
 }
