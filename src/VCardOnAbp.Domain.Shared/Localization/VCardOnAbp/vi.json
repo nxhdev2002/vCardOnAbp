@@ -80,6 +80,7 @@
     "Reject": "Loại bỏ",
     "PendingApproval": "Chờ phê duyệt",
     "CardFundingInProgress": "Nạp tiền vào thẻ tín dụng đang được xử lý",
-    "CardCreationInProgress": "Tạo thẻ tín dụng đang được xử lý"
+    "CardCreationInProgress": "Tạo thẻ tín dụng đang được xử lý",
+    "Setting": "Thiết lập"
   }
 }
