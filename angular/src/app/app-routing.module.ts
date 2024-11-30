@@ -57,6 +57,15 @@ const routes: Routes = [
     path: 'transactions',
     pathMatch: 'full',
     loadChildren: () => import('./transactions/transaction.module').then(m => m.TransactionModule),
+    canActivate: [permissionGuard],
+    data: {
+      requiredPolicy: 'Payment.ViewDepositTransaction'
+    }
+  },
+  {
+    path: 'settings',
+    pathMatch: 'full',
+    loadChildren: () => import('./settings/setting.module').then(m => m.SettingModule),
   },
   {
     path: 'account',

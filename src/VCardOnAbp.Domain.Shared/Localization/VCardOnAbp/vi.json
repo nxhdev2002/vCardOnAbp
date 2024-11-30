@@ -81,6 +81,12 @@
     "PendingApproval": "Chờ phê duyệt",
     "CardFundingInProgress": "Nạp tiền vào thẻ tín dụng đang được xử lý",
     "CardCreationInProgress": "Tạo thẻ tín dụng đang được xử lý",
-    "Setting": "Thiết lập"
+    "Setting": "Thiết lập",
+    "UnverifiedEmailMessage": "Tài khoản chưa xác minh địa chỉ Email",
+    "Unset2FAMessage": "Tài khoản chưa được thiết lập xác thực 2 yếu tố (2FA)",
+    "Verification": "Xác minh",
+    "Verified": "Đã xác minh",
+    "Unverified": "Chưa xác minh",
+    "User": "Người dùng"
   }
 }

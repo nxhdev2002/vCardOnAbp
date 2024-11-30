@@ -20,14 +20,17 @@ namespace VCardOnAbp.Accounts;
 public class AccountsAppService : ProfileAppService, IAccountsAppService
 {
     private readonly IRepository<UserTransaction, Guid> _userTransactionRepository;
+    private readonly IRepository<Volo.Abp.Identity.IdentityRole, Guid> _identityRepo;
 
     public AccountsAppService(
         IdentityUserManager userManager,
         IOptions<IdentityOptions> identityOptions,
-        IRepository<UserTransaction, Guid> userTransactionRepository
+        IRepository<UserTransaction, Guid> userTransactionRepository,
+        IRepository<Volo.Abp.Identity.IdentityRole, Guid> identityRepo
     ) : base(userManager, identityOptions)
     {
         _userTransactionRepository = userTransactionRepository;
+        _identityRepo = identityRepo;
     }
 
     public override Task<ProfileDto> UpdateAsync(UpdateProfileDto input)
@@ -51,6 +54,26 @@ public class AccountsAppService : ProfileAppService, IAccountsAppService
         return new PagedResultDto<UserTransactionDto>(
             await query.CountAsync(),
             ObjectMapper.Map<List<UserTransaction>, List<UserTransactionDto>>(data)
+        );
+    }
+
+    [RemoteService(false)]
+    public async Task<ProfileInfoDto> GetProfileAsync()
+    {
+        var user = await UserManager.FindByIdAsync(CurrentUser.Id!.Value.ToString());
+
+        if (user == null) throw new UserFriendlyException(L["NotFound", L["User"]]);
+
+        var userRole = user.Roles.Select(x => x.RoleId);
+        var role = await (await _identityRepo.GetQueryableAsync()).Where(x => userRole.Any(y => y == x.Id)).Select(x => x.Name).ToListAsync();
+
+        return new ProfileInfoDto(
+            user.UserName,
+            user.Email,
+            !user.EmailConfirmed,
+            true,
+            (decimal)(user.ExtraProperties[UserConsts.Balance] ?? 0),
+            string.Join(',', role)
         );
     }
 }

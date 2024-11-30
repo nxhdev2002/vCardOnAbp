@@ -38,8 +38,8 @@ public class VCardOnAbpPermissionDefinitionProvider : PermissionDefinitionProvid
         // Payment
         PermissionGroupDefinition paymentGroup = context.AddGroup(VCardOnAbpPermissions.PaymentGroup);
         paymentGroup.AddPermission(VCardOnAbpPermissions.PaymentGroup, L("PaymentPermission:Payment"));
-        paymentGroup.AddPermission(VCardOnAbpPermissions.AddPayment, L("PaymentPermission:View"));
-        paymentGroup.AddPermission(VCardOnAbpPermissions.ViewPayment, L("PaymentPermission:Add"));
+        paymentGroup.AddPermission(VCardOnAbpPermissions.ViewPayment, L("PaymentPermission:View"));
+        paymentGroup.AddPermission(VCardOnAbpPermissions.AddPayment, L("PaymentPermission:Add"));
         paymentGroup.AddPermission(VCardOnAbpPermissions.Deposit, L("PaymentPermission:Deposit"));
         paymentGroup.AddPermission(VCardOnAbpPermissions.ViewDepositTransaction, L("PaymentPermission:ViewDepositTransaction"));
         paymentGroup.AddPermission(VCardOnAbpPermissions.ApproveTransaction, L("PaymentPermission:ApproveTransaction"));

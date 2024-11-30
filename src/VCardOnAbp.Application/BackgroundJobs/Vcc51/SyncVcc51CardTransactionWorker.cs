@@ -47,7 +47,7 @@ public class SyncVcc51CardTransactionWorker : HangfireBackgroundWorkerBase
             {
                 ApiServices.Vcc51.Dtos.Vcc51Card vcc51Card = await _vcc51AppService.GetCardInfo(card.CardNo);
                 if (string.IsNullOrEmpty(vcc51Card.CardNo)) throw new Exception();
-                card.SetBalance(decimal.Parse(vcc51Card.Amount!) - card.Balance);
+                card.SetBalance(decimal.Parse(vcc51Card.Amount!.Replace(".", ",")) - card.Balance);
                 card.SetSecret(null, vcc51Card.Cvv, vcc51Card.Exp?.Insert(2, "/"));
                 if (vcc51Card.Status != Vcc51Const.CardActiveStatus) card.ChangeStatus(CardStatus.Lock);
                 card.ChangeStatus(CardStatus.Active);

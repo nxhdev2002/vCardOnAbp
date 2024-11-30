@@ -55,6 +55,13 @@ function configureRoutes(routes: RoutesService) {
         requiredPolicy: 'Card.View',
         layout: eLayoutType.application,
       },
+      {
+        path: '/settings',
+        name: '::Setting',
+        iconClass: 'fa fa-wrench',
+        order: 4,
+        layout: eLayoutType.application,
+      },
     ]);
   };
 }

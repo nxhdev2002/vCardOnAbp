@@ -1,13 +1,21 @@
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
-import type { GetUserTransactionInput, UserTransactionDto } from '../accounts/dtos/models';
+import type { GetUserTransactionInput, ProfileInfoDto, UserTransactionDto } from '../accounts/dtos/models';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AccountsService {
   apiName = 'Default';
+  
+
+  getProfile = (config?: Partial<Rest.Config>) =>
+    this.restService.request<any, ProfileInfoDto>({
+      method: 'GET',
+      url: '/api/app/account/profile',
+    },
+    { apiName: this.apiName,...config });
   
 
   getTransactionsByInput = (input: GetUserTransactionInput, config?: Partial<Rest.Config>) =>

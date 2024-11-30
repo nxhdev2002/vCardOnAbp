@@ -19,4 +19,11 @@ public class AccountsController(
     {
         return _accountsAppService.GetTransactionsAsync(input);
     }
+
+    [HttpGet]
+    [Route("/api/app/account/profile")]
+    public Task<ProfileInfoDto> GetProfile()
+    {
+        return _accountsAppService.GetProfileAsync();
+    }
 }

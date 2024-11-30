@@ -99,8 +99,9 @@ export class BinsComponent implements OnInit {
       cardName: `${this.firstName} ${this.lastName}`
     };
 
-    this._cardService.create(payload).subscribe(() => {
-      console.log("OK");
+    this._cardService.create(payload).subscribe((res) => {
+      if (res.success) this._toasterService.success(res.message);
+      else this._toasterService.error(res.message);
     });
   }
 

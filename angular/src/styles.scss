@@ -17,6 +17,10 @@
   --lpx-theme-dark-bg: url('/assets/images/login/login-bg-img-dark.svg');
 }
 
+:root {
+  --sidebar-bg: #313A46;
+}
+
 button {
   border-radius: 6px;
 }
@@ -53,3 +57,12 @@ button {
 .p-tabmenu-nav a { text-decoration: none !important; }
 
 .p-component-overlay { background-color: rgb(255 255 255 / 40%) }
+
+.lpx-breadcrumb li, .lpx-nav-menu li { padding: 5px 10px }
+.lpx-nav-menu .lpx-menu-item-link.selected, .lpx-nav-menu .lpx-menu-item-link.expanded { background-color: unset; }
+.lpx-sidebar { background-color: var(--sidebar-bg); }
+.lpx-sidebar .lpx-logo-container { background-color: var(--sidebar-bg); }
+.lpx-sidebar-container .lpx-sidebar .lpx-nav .lpx-nav-menu { background-color: var(--sidebar-bg); }
+.lpx-sidebar-container { overflow: hidden; }
+.lpx-topbar-container .lpx-topbar { padding: 15px; border-radius: unset; }
+.lpx-content { min-height: unset; }

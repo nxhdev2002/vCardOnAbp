@@ -951,6 +951,14 @@
                   }
                 },
                 {
+                  "name": "GetProfileAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "VCardOnAbp.Accounts.Dtos.ProfileInfoDto",
+                    "typeSimple": "VCardOnAbp.Accounts.Dtos.ProfileInfoDto"
+                  }
+                },
+                {
                   "name": "GetAsync",
                   "parametersOnMethod": [],
                   "returnValue": {
@@ -2005,6 +2013,21 @@
               "returnValue": {
                 "type": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Accounts.Dtos.UserTransactionDto>",
                 "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Accounts.Dtos.UserTransactionDto>"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "VCardOnAbp.Controllers.AccountsController"
+            },
+            "GetProfile": {
+              "uniqueName": "GetProfile",
+              "name": "GetProfile",
+              "httpMethod": "GET",
+              "url": "api/app/account/profile",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "VCardOnAbp.Accounts.Dtos.ProfileInfoDto",
+                "typeSimple": "VCardOnAbp.Accounts.Dtos.ProfileInfoDto"
               },
               "allowAnonymous": null,
               "implementFrom": "VCardOnAbp.Controllers.AccountsController"
@@ -5500,6 +5523,87 @@
       "properties": [
         {
           "name": "Filter",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "VCardOnAbp.Accounts.Dtos.ProfileInfoDto": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Username",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Email",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "IsUnverifiedEmail",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "IsUnset2FA",
+          "jsonName": null,
+          "type": "System.Boolean",
+          "typeSimple": "boolean",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Balance",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "RoleName",
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",

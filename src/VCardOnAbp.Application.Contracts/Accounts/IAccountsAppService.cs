@@ -8,4 +8,5 @@ namespace VCardOnAbp.Accounts;
 public interface IAccountsAppService : IProfileAppService, ITransientDependency
 {
     public Task<PagedResultDto<UserTransactionDto>> GetTransactionsAsync(GetUserTransactionInput input);
+    public Task<ProfileInfoDto> GetProfileAsync();
 }
