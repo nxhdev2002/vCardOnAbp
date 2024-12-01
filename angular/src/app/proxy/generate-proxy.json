@@ -6093,13 +6093,15 @@
         "Pending",
         "Active",
         "Inactive",
-        "Lock"
+        "Lock",
+        "PendingDelete"
       ],
       "enumValues": [
         0,
         1,
         2,
-        3
+        3,
+        4
       ],
       "genericArguments": null,
       "properties": null

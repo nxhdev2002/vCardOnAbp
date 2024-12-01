@@ -1,24 +1,17 @@
 <p-splitter 
     *ngIf="!loading"
     [style]="{ height: '300px' }" 
-    [panelSizes]="[20, 80]" 
-    [minSizes]="[10, 0]" 
     styleClass="mb-5">
-        <ng-template pTemplate>
-            <div class="col flex align-items-center justify-content-center">
-
-            </div>
-        </ng-template>
         <ng-template pTemplate>
             <div class="col flex align-items-center justify-content-center">
                 <p-card header="{{ '::CardNumber' | abpLocalization }}" style="width: 50%;">
                     <p class="m-0">
                         {{ card.cardNo }}
                     </p>
-                    <p class="m-0">
-                        ** / **
+                    <p class="m-0" id="exp">
+                        **/**
                     </p>
-                    <p class="m-0">
+                    <p class="m-0" id="cvv">
                         ***
                     </p>
                     <ng-template pTemplate="footer">
@@ -31,7 +24,11 @@
         </ng-template>
         <ng-template pTemplate>
             <div class="col flex align-items-center justify-content-center">
-                
+                <p-button label="{{'::Show' | abpLocalization}}" class="p-1" severity="info" (onClick)="viewCardSecret()" *ngIf="!isViewing" />
+                <p-button label="{{'::Hide' | abpLocalization}}" class="p-1" severity="info" (onClick)="hideCardSecret()" *ngIf="isViewing" />
+                <p-button label="{{'::Fund' | abpLocalization}}" class="p-1" severity="success" />
+                <p-button label="{{'::Delete' | abpLocalization}}" class="p-1" severity="danger" (onClick)="deleteCard($event)" />
+                <p-button label="{{'::Note' | abpLocalization}}" class="p-1" />
             </div>
         </ng-template>
 </p-splitter>
@@ -65,3 +62,6 @@
         </tr>
     </ng-template>
 </p-table>
+
+<p-toast />
+<p-confirmDialog />

@@ -116,7 +116,9 @@ public class CardManager(
 
     public async Task DeleteAsync(Card card)
     {
-        await _cardsRepository.DeleteAsync(card);
+        card.ChangeStatus(CardStatus.PendingDelete);
+
+        // TODO: Add pending delete transaction
     }
 
     public async Task<(string, string)> ViewCardSecret(Guid cardId, Guid userId)

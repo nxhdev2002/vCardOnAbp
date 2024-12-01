@@ -7,9 +7,12 @@ import { CommonModule } from '@angular/common';
 import { SplitterModule } from 'primeng/splitter';
 import { TableModule } from 'primeng/table';
 import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 
 @NgModule({
   declarations: [CardDetailsComponent],
-  imports: [SharedModule, CardDetailsRoutingModule, PageModule, SplitterModule, CommonModule, TableModule, CardModule],
+  imports: [SharedModule, CardDetailsRoutingModule, PageModule, SplitterModule, CommonModule, TableModule, CardModule, ButtonModule, ConfirmDialogModule, ToastModule],
 })
 export class CardDetailsModule {}

@@ -5,6 +5,7 @@ export enum CardStatus {
   Active = 1,
   Inactive = 2,
   Lock = 3,
+  PendingDelete = 4,
 }
 
 export const cardStatusOptions = mapEnumToOptions(CardStatus);

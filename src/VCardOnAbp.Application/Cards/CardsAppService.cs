@@ -181,7 +181,7 @@ public class CardsAppService(
     [Authorize(VCardOnAbpPermissions.DeleteCard)]
     public virtual async Task DeleteAsync(Guid id)
     {
-        Card card = await _cardManager.GetCard(id, CurrentUser.Id!.Value);
+        Card card = await _cardManager.GetCard(id, CurrentUser.Id!.Value) ?? throw new UserFriendlyException(L["CardNotFound"]);
         await _cardManager.DeleteAsync(card!);
     }
 

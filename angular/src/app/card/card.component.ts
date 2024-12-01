@@ -99,6 +99,8 @@ export class CardComponent implements OnInit {
         return ['Pending', 'info'];
       case CardStatus.Lock:
         return ['Lock', 'warning'];
+      case CardStatus.PendingDelete:
+        return ['Pending Delete', 'warning'];
       default:
         return ['Unknown', 'contrast'];
     }
