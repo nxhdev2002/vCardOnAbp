@@ -959,6 +959,31 @@
                   }
                 },
                 {
+                  "name": "CreateTwoFactorKeyAsync",
+                  "parametersOnMethod": [],
+                  "returnValue": {
+                    "type": "VCardOnAbp.Models.ResponseModel",
+                    "typeSimple": "VCardOnAbp.Models.ResponseModel"
+                  }
+                },
+                {
+                  "name": "Verify2FA",
+                  "parametersOnMethod": [
+                    {
+                      "name": "otp",
+                      "typeAsString": "System.String, System.Private.CoreLib",
+                      "type": "System.String",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "VCardOnAbp.Models.ResponseModel",
+                    "typeSimple": "VCardOnAbp.Models.ResponseModel"
+                  }
+                },
+                {
                   "name": "GetAsync",
                   "parametersOnMethod": [],
                   "returnValue": {
@@ -2028,6 +2053,58 @@
               "returnValue": {
                 "type": "VCardOnAbp.Accounts.Dtos.ProfileInfoDto",
                 "typeSimple": "VCardOnAbp.Accounts.Dtos.ProfileInfoDto"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "VCardOnAbp.Controllers.AccountsController"
+            },
+            "Generate2Fa": {
+              "uniqueName": "Generate2Fa",
+              "name": "Generate2Fa",
+              "httpMethod": "POST",
+              "url": "api/app/account/2fa",
+              "supportedVersions": [],
+              "parametersOnMethod": [],
+              "parameters": [],
+              "returnValue": {
+                "type": "VCardOnAbp.Models.ResponseModel",
+                "typeSimple": "VCardOnAbp.Models.ResponseModel"
+              },
+              "allowAnonymous": null,
+              "implementFrom": "VCardOnAbp.Controllers.AccountsController"
+            },
+            "Verify2FAByOtp": {
+              "uniqueName": "Verify2FAByOtp",
+              "name": "Verify2FA",
+              "httpMethod": "POST",
+              "url": "api/app/account/2fa/verify",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "otp",
+                  "typeAsString": "System.String, System.Private.CoreLib",
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "otp",
+                  "name": "otp",
+                  "jsonName": null,
+                  "type": "System.String",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "ModelBinding",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "VCardOnAbp.Models.ResponseModel",
+                "typeSimple": "VCardOnAbp.Models.ResponseModel"
               },
               "allowAnonymous": null,
               "implementFrom": "VCardOnAbp.Controllers.AccountsController"

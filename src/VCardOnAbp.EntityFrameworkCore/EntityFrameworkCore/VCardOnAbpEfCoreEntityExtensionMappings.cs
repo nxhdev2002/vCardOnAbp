@@ -47,6 +47,13 @@ public static class VCardOnAbpEfCoreEntityExtensionMappings
                     {
                         propertyBuilder.HasDefaultValue(0);
                     }
+                )
+                .MapEfCoreProperty<IdentityUser, string?>(
+                    UserConsts.TwoFactorSecret,
+                    (_, propertyBuilder) =>
+                    {
+                        propertyBuilder.HasMaxLength(500);
+                    }
                 );
         });
     }

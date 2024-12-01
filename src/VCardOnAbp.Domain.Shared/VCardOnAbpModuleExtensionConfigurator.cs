@@ -81,6 +81,13 @@ public static class VCardOnAbpModuleExtensionConfigurator
                         );
                     }
                 );
+                user.AddOrUpdateProperty<string?>(
+                    UserConsts.TwoFactorSecret,
+                    options =>
+                    {
+                        options.DefaultValue = null;
+                    }
+                );
             });
         });
     }

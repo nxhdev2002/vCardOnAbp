@@ -18,6 +18,8 @@
     <PackageReference Include="BouncyCastle.Cryptography" Version="2.4.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.9.2" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.8" />
+    <PackageReference Include="Otp.NET" Version="1.4.0" />
+    <PackageReference Include="QRCoder" Version="1.6.0" />
     <PackageReference Include="Volo.Abp.BackgroundWorkers.Hangfire" Version="8.3.1" />
     <PackageReference Include="Volo.Abp.Caching.StackExchangeRedis" Version="8.3.1" />
     <PackageReference Include="Volo.Abp.FluentValidation" Version="8.3.1" />

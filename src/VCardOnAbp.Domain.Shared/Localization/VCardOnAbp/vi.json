@@ -56,6 +56,7 @@
     "FundingPercentageFee": "Phí phần trăm nạp tiền",
     "UsdRate": "Tỷ giá USD",
     "SuccessToast": "{0} thành công",
+    "FailToast": "{0} thất bại",
     "TransactionAlreadyProcessed": "Giao dịch đã được xử lý",
     "NoData": "Không có dữ liệu",
     "IsEnabled": "Đã kích hoạt",
@@ -87,6 +88,17 @@
     "Verification": "Xác minh",
     "Verified": "Đã xác minh",
     "Unverified": "Chưa xác minh",
-    "User": "Người dùng"
+    "Setup": "Thiết lập",
+    "Unset": "Chưa thiết lập",
+    "HasSetup": "Đã thiết lập",
+    "User": "Người dùng",
+    "Confirm": "Xác thực",
+    "Finish": "Hoàn tất",
+    "CreateSecretKey": "Tạo khoá bí mật",
+    "TwoFactorHasSetup": "Xác thực 2 yếu tố đã được thiết lập",
+    "Fund": "Nạp tiền",
+    "Show": "Xem",
+    "Hide": "Ẩn",
+    "QRCodeSetupTutorial": "Vui lòng sử dụng một ứng dụng xác thực 2 yếu tố (Google Authenticator, Authy, ...) và quét mã QR trên. Hoặc copy đoạn văn bản phía dưới."
   }
 }

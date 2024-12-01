@@ -1,0 +1,62 @@
+<p-dialog 
+  *ngIf="visible"
+  #twofactor
+    header="Header" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [style]="{ width: '50rem' }">
+    <p-stepper [(activeStep)]="activeStep">
+      <p-stepperPanel header="{{ '::Setup' | abpLocalization }}">
+          <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+              <div class="flex flex-column">
+                <p-skeleton width="100%" height="150px" *ngIf="loading" />
+                <img [src]="qrCode" style="max-height: 100%; max-width: 100%;">
+                <p style="text-align: center;">{{ "::QRCodeSetupTutorial" | abpLocalization }}</p>
+                <p-inputGroup>
+                  <input type="text" pInputText [(ngModel)]="setupCode" disabled />
+                  <button type="button" pButton icon="pi pi-copy" class="p-button-warning"></button>
+                </p-inputGroup>
+              </div>
+              <div class="flex pt-4 justify-content-end">
+                  <p-button 
+                      label="Next" 
+                      icon="pi pi-arrow-right" 
+                      iconPos="right" 
+                      (onClick)="onActiveStepChange(1)" />
+              </div>
+          </ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="{{ '::Confirm' | abpLocalization }}">
+          <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback" let-index="index">
+              <div class="flex flex-column h-12rem">
+                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                    <p-inputOtp [(ngModel)]="otpInput" [length]="6" [integerOnly]="true" />
+                  </div>
+              </div>
+              <div class="flex pt-4 justify-content-between">
+                  <p-button 
+                      label="Back" 
+                      icon="pi pi-arrow-left" 
+                      (onClick)="onActiveStepChange(0)" />
+                  <p-button 
+                      label="Next" 
+                      icon="pi pi-arrow-right" 
+                      iconPos="right" 
+                      (onClick)="onActiveStepChange(2)" />
+              </div>
+          </ng-template>
+      </p-stepperPanel>
+      <p-stepperPanel header="{{ '::Finish' | abpLocalization }}">
+          <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+              <div class="flex flex-column h-12rem">
+                  <div class="border-2 border-dashed surface-border border-round surface-ground flex-auto flex justify-content-center align-items-center font-medium">
+                      Finish
+                  </div>
+              </div>
+              <div class="flex pt-4 justify-content-end">
+                  <p-button label="Next" icon="pi pi-arrow-right" (onClick)="close()" />
+              </div>
+          </ng-template>
+      </p-stepperPanel>
+  </p-stepper>
+</p-dialog>

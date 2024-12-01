@@ -60,6 +60,7 @@ function configureRoutes(routes: RoutesService) {
         name: '::Setting',
         iconClass: 'fa fa-wrench',
         order: 4,
+        requiredPolicy: 'Payment.View',
         layout: eLayoutType.application,
       },
     ]);

@@ -36,10 +36,10 @@
       <p-inputGroupAddon>
           <i class="pi pi-lock"></i>
       </p-inputGroupAddon>
-      <input pInputText placeholder="2FA" value="{{ (!profileInfo.isUnset2FA ? '::Verified' : '::Unverified') | abpLocalization}}" disabled />
-      <p-button *ngIf="profileInfo.isUnset2FA" label="{{ '::Verification' | abpLocalization }}" />
+      <input pInputText placeholder="2FA" value="{{ (profileInfo.isUnset2FA ? '::Unset' : '::HasSetup') | abpLocalization}}" disabled />
+      <p-button *ngIf="profileInfo.isUnset2FA" label="{{ '::Setup' | abpLocalization }}" (click)="twofactor.show()" />
     </p-inputGroup>
-    
+    <p-button *ngIf="profileInfo.isUnverifiedEmail" label="{{ '::Save' | abpLocalization }}" class="p-inputgroup" />
   </p-card>
 
   
@@ -61,3 +61,5 @@
       <p-skeleton width="4rem" height="2rem" />
   </div>
 </div>
+
+<two-fa-setup-modal #twofactor></two-fa-setup-modal>

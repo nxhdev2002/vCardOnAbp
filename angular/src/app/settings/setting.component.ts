@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { LocalizationService } from '@abp/ng.core';
 import { Message } from 'primeng/api';
 import { AccountsService } from '@proxy/controllers';
 import { ProfileInfoDto } from '@proxy/accounts/dtos';
+import { TwoFactorSetupModalComponent } from './2fa/two-factor.component';
 
 @Component({
   selector: 'app-setting',
@@ -12,6 +13,8 @@ import { ProfileInfoDto } from '@proxy/accounts/dtos';
   providers: [DatePipe],
 })
 export class SettingComponent implements OnInit {
+  @ViewChild('twofactor', { static: true }) twofactor: | TwoFactorSetupModalComponent | undefined;
+  
   profileInfo: ProfileInfoDto | undefined;
 
   unverifiedEmailMessage: Message[];
