@@ -1,11 +1,10 @@
-﻿using System;
-
-namespace VCardOnAbp.ApiServices.Vcc51;
+﻿namespace VCardOnAbp.ApiServices.Vcc51;
 public class Vcc51Const
 {
     public const string SERVICE_URL = "/websystem/jcsj/ka_Manage.aspx";
     public const string CREATEEDIT_URL = "/websystem/jcsj/Kaoci_AddEdit.aspx?id=0";
     public const string CLIENT_URL = "/websystem/jcsj/Kaoci_Manage.aspx";
+    public const string FUNDING_URL = "/websystem/jcsj/appleCard.ashx";
 
     public const string REGEX_GET_TRANSACTION_PATTERN = @"<td>\s+(?<Time>[0-9]{4}\/[0-9]{1,2}\/[0-9]{1,2} [0-9]{1,2}:[0-9]{1,2}:[0-9]{1,2})\s+<\/td>\s+<td>\s+(?<TransNo>[A-Za-z0-9]+)\s+<\/td>\s+<td>\s+(?<CardNo>[A-Za-z0-9]+)\s+<\/td>\s+<td>\s+(?<User>.*?)\s+<\/td>\s+<td>\s+(?<Merchant>.*?)\s+<\/td>\s+<td>\s+(?<Status>.*?)\s+<\/td>\s+<td>\s+(?<Amount>[-0-9A-Z,\. ]+)\s+<\/td>\s+<td>\s+(?<AuthorizationAmount>[-0-9A-Z,\. ]+)\s+<\/td>\s+<td>\s+(?<RefundAmount>[-0-9A-Z,\. ]+)\s+<\/td>\s+<td>\s+(?<Description>.*?)\s+<\/td>";
     public const string REGEX_GET_CARD_INFO_PATTERN = @"<span id=""lbl([a-z]+)"">(.*?)<\/span>";

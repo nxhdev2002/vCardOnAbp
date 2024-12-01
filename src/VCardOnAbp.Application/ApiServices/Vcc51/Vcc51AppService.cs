@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using VCardOnAbp.ApiServices.Vcc51.Dtos;
 using VCardOnAbp.Cards;
@@ -31,6 +32,20 @@ public class Vcc51AppService(
     {
         string response = await GetAsync($"{WebUrl}{Vcc51Const.SERVICE_URL}?kano={cardNo}");
         return Vcc51RequestParser.ParseHtmlContentToCardInfo(response);
+    }
+
+    public async Task<bool> FundingCard(Vcc51FundCardInput input)
+    {
+        Card? cardDb = await (await _cardRepository.GetQueryableAsync()).FirstOrDefaultAsync(x => x.Id == input.cardId);
+        if (cardDb == null) return false;
+
+        decimal Amount = Math.Round(input.Amount);
+        var payload = Vcc51RequestParser.GetFormUrlEncodedContentToFundingCardPayload(cardDb.CardNo, Amount);
+        var httpResponseMessage = await PostAsync($"{WebUrl}{Vcc51Const.FUNDING_URL}", payload);
+        var response = JsonSerializer.Deserialize<Vcc51CardFundingResponse>(httpResponseMessage);
+
+        if (response is null) return false;
+        return response.Status == "success";
     }
 
     public async Task<bool> CreateCard(Vcc51CreateCardInput input)

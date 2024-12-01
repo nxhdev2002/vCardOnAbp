@@ -191,6 +191,17 @@ public class Vcc51RequestParser
         });
     }
 
+    public static FormUrlEncodedContent GetFormUrlEncodedContentToFundingCardPayload(string CardNumber, decimal? Amount)
+    {
+        return new FormUrlEncodedContent(new[]
+        {
+                new KeyValuePair<string, string>("cardNumber", CardNumber),
+                new KeyValuePair<string, string>("amount", Amount?.ToString()),
+                new KeyValuePair<string, string>("cardb", "USD"),
+                new KeyValuePair<string, string>("remark", "funding = web moi"),
+        });
+    }
+
     public static FormUrlEncodedContent GetFormUrlEncodedContentToGetCardByPage(Vcc51PostDataGetCardDto postData)
     {
         return new FormUrlEncodedContent(new[]

@@ -1,31 +1,27 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.Extensions.Logging;
 using System;
-using System.Text.Json;
 using System.Threading.Tasks;
-using VCardOnAbp.ApiServices.Vmcardio;
-using VCardOnAbp.ApiServices.Vmcardio.Dtos;
+using VCardOnAbp.ApiServices.Vcc51;
+using VCardOnAbp.ApiServices.Vcc51.Dtos;
 using VCardOnAbp.BackgroundJobs.Dtos;
 using VCardOnAbp.Cards;
-using VCardOnAbp.Masters;
 using Volo.Abp.BackgroundJobs;
 using Volo.Abp.DependencyInjection;
-using Volo.Abp.Domain.Repositories;
 using Volo.Abp.Threading;
+using Volo.Abp.Uow;
 
 namespace VCardOnAbp.BackgroundJobs;
 
 public class FundCardJob(
     ICancellationTokenProvider cancellationTokenProvider,
-    IVmcardioAppService vmcardioAppService,
-    ICardRepository cardRepository,
-    IRepository<Bin, Guid> binRepository
+    IVcc51AppService vcc51AppService,
+    IUnitOfWorkManager unitOfWorkManager
 )
     : AsyncBackgroundJob<FundCardJobArgs>, ITransientDependency
 {
     private readonly ICancellationTokenProvider _cancellationTokenProvider = cancellationTokenProvider;
-    private readonly IVmcardioAppService _vmcardioAppService = vmcardioAppService;
-    private readonly ICardRepository _cardRepository = cardRepository;
-    private readonly IRepository<Bin, Guid> _binRepository = binRepository;
+    private readonly IVcc51AppService _vcc51AppService = vcc51AppService;
+    private readonly IUnitOfWorkManager _unitOfWorkManager = unitOfWorkManager;
 
     public override async Task ExecuteAsync(FundCardJobArgs args)
     {
@@ -35,28 +31,21 @@ public class FundCardJob(
 
     private async Task ProcessAsync(FundCardJobArgs args)
     {
-        using IDisposable repo = _cardRepository.DisableTracking();
-        Card card = await _cardRepository.GetAsync(args.CardId);
-        VmcardioIdentifyDto? supplierKey = JsonSerializer.Deserialize<VmcardioIdentifyDto>(card.SupplierIdentity);
-        Bin bin = await _binRepository.GetAsync(card.BinId);
-
-        bool isSuccess = false;
+        using IUnitOfWork uow = _unitOfWorkManager.Begin(requiresNew: true, isTransactional: true);
+        Logger.LogInformation($"{nameof(FundCardJob)}: {args.CardId}");
         switch (args.Supplier)
         {
             case Supplier.Vmcardio:
-                VmcardioResponseModel<object> result = await _vmcardioAppService.FundCardAsync(new VmcardioFundCardDto()
-                {
-                    amount = args.Amount.ToString(),
-                    card_id = supplierKey?.card_id!,
-                    card_number = card.CardNo,
-                    uid = supplierKey?.uid!,
-                    bin = bin.BinMapping!
-                });
-
-                isSuccess = result.code == StatusCodes.Status200OK;
+                return;
+            case Supplier.Vcc51:
+                var result = await _vcc51AppService.FundingCard(new Vcc51FundCardInput(
+                    args.CardId, args.Amount
+                ));
+                if (!result) throw new Exception();
                 break;
             default:
                 return;
         }
+        await uow.CompleteAsync();
     }
 }
