@@ -43,7 +43,8 @@ public class AccountsAppService : ProfileAppService, IAccountsAppService
 
     public override Task<ProfileDto> UpdateAsync(UpdateProfileDto input)
     {
-        input.ExtraProperties.Remove("Balance");
+        input.ExtraProperties.Remove(UserConsts.Balance);
+        input.ExtraProperties.Remove(UserConsts.TwoFactorSecret);
         return base.UpdateAsync(input);
     }
 

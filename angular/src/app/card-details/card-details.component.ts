@@ -1,7 +1,10 @@
+import { ToasterService } from '@abp/ng.theme.shared';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BinCardService } from '@proxy/bins';
+import { BinDto } from '@proxy/bins/dtos';
 import { CardsService } from '@proxy/cards';
-import { CardDto, CardSecretDto, CardTransactionDto, GetCardTransactionInput } from '@proxy/cards/dto';
+import { CardDto, CardSecretDto, CardTransactionDto, FundCardInput, GetCardTransactionInput } from '@proxy/cards/dto';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { forkJoin } from 'rxjs';
 
@@ -20,7 +23,19 @@ export class CardDetailsComponent implements OnInit {
   card: CardDto;
   secret: CardSecretDto;
   isViewing: boolean = false;
-  constructor(private cardService: CardsService, private route: ActivatedRoute, private confirmationService: ConfirmationService) {}
+
+  fundDialogVisible: boolean = false;
+  fundingFee: number = 0;
+  fundingAmount: number;
+  fundingBin: BinDto;
+
+  constructor(
+    private cardService: CardsService, 
+    private route: ActivatedRoute, 
+    private confirmationService: ConfirmationService,
+    private binService: BinCardService,
+    private toasterService: ToasterService
+  ) {}
 
   ngOnInit() {
     this.loading = true;
@@ -84,5 +99,37 @@ export class CardDetailsComponent implements OnInit {
             });
           }
       });
+  }
+
+  openFundCard() {
+    this.fundDialogVisible = true;
+    if (!this.fundingBin) {
+      this.loading = true;
+      this.binService.get(this.card.binId).subscribe((res) => {
+        if (res) this.fundingBin = res;
+        this.loading = false;
+      });
+    }
+      
+  }
+
+  calculateFee() {
+    this.fundingFee = this.fundingAmount + (this.fundingAmount * this.fundingBin?.fundingPercentFee / 100 + this.fundingBin?.fundingFixedFee);
+  }
+  
+  fundCard() {
+    this.loading = true;
+    let payload: FundCardInput = {
+      amount: this.fundingAmount,
+    }
+    this.cardService.fund(this.cardId, payload).subscribe((res) => {
+      this.loading = false;
+      if (res) {
+        this.fundDialogVisible = false;
+        this.toasterService.success(res.message);
+      } else {
+        this.toasterService.error(res.message);
+      }
+    });
   }
 }

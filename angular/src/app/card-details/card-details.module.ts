@@ -10,9 +10,11 @@ import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { DialogModule } from 'primeng/dialog';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @NgModule({
   declarations: [CardDetailsComponent],
-  imports: [SharedModule, CardDetailsRoutingModule, PageModule, SplitterModule, CommonModule, TableModule, CardModule, ButtonModule, ConfirmDialogModule, ToastModule],
+  imports: [SharedModule, InputNumberModule, CardDetailsRoutingModule, DialogModule, PageModule, SplitterModule, CommonModule, TableModule, CardModule, ButtonModule, ConfirmDialogModule, ToastModule],
 })
 export class CardDetailsModule {}

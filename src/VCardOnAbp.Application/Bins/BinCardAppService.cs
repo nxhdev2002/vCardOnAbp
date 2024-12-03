@@ -8,6 +8,7 @@ using VCardOnAbp.Bins.Dtos;
 using VCardOnAbp.Currencies;
 using VCardOnAbp.Masters;
 using VCardOnAbp.Permissions;
+using Volo.Abp;
 using Volo.Abp.Caching;
 using Volo.Abp.Domain.Repositories;
 
@@ -15,12 +16,12 @@ namespace VCardOnAbp.Bins;
 
 [Authorize(VCardOnAbpPermissions.BinGroup)]
 public class BinCardAppService(
-    IDistributedCache<Bin> distributedCache,
+    IDistributedCache<BinDto> distributedCache,
     IRepository<Bin, Guid> binRepository,
     IRepository<Currency, Guid> currencyRepository
 ) : VCardOnAbpAppService, IBinCardAppService
 {
-    private readonly IDistributedCache<Bin> _distributedCache = distributedCache;
+    private readonly IDistributedCache<BinDto> _distributedCache = distributedCache;
     private readonly IRepository<Bin, Guid> _binRepository = binRepository;
     private readonly IRepository<Currency, Guid> _currencyRepository = currencyRepository;
 
@@ -51,9 +52,11 @@ public class BinCardAppService(
     [Authorize(VCardOnAbpPermissions.ViewBin)]
     public virtual async Task<BinDto> GetAsync(Guid id)
     {
-        Bin? bin = await _distributedCache
-            .GetOrAddAsync(id.ToString(), async () => await _binRepository.GetAsync(id));
-        return ObjectMapper.Map<Bin, BinDto>(bin);
+        BinDto? bin = await _distributedCache
+            .GetOrAddAsync(id.ToString(), async () => ObjectMapper.Map<Bin, BinDto>(
+                await _binRepository.GetAsync(id))
+            );
+        return bin == null ? throw new UserFriendlyException(L["NotFound", L["Bin"]]) : bin;
     }
 
     [Authorize(VCardOnAbpPermissions.ViewBin)]
@@ -100,11 +103,12 @@ public class BinCardAppService(
         bin.If(input.CreationFixedFee > 0, b => b.UpdateFee(creationFixedFee: input.CreationFixedFee));
         bin.If(input.CreationPercentFee > 0, b => b.UpdateFee(creationPercentFee: input.CreationPercentFee));
 
-        await _distributedCache.SetAsync(bin.Id.ToString(), bin, new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
+        var binDto = ObjectMapper.Map<Bin, BinDto>(bin);
+        await _distributedCache.SetAsync(bin.Id.ToString(), binDto, new Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions
         {
             SlidingExpiration = System.TimeSpan.FromMinutes(30)
         });
-        return ObjectMapper.Map<Bin, BinDto>(bin);
+        return binDto;
     }
 
     [Authorize(VCardOnAbpPermissions.EditBin)]

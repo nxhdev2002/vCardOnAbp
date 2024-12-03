@@ -15,4 +15,6 @@ public static class VCardOnAbpConsts
     public const int MaxDescriptionLength = 500;
 
     public const decimal FronzeBalance = 50;
+    public const decimal MinCreationBalance = 10;
+    public const decimal MinFundingBalance = 10;
 }

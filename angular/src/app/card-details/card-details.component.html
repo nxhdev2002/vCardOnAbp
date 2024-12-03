@@ -26,7 +26,7 @@
             <div class="col flex align-items-center justify-content-center">
                 <p-button label="{{'::Show' | abpLocalization}}" class="p-1" severity="info" (onClick)="viewCardSecret()" *ngIf="!isViewing" />
                 <p-button label="{{'::Hide' | abpLocalization}}" class="p-1" severity="info" (onClick)="hideCardSecret()" *ngIf="isViewing" />
-                <p-button label="{{'::Fund' | abpLocalization}}" class="p-1" severity="success" />
+                <p-button label="{{'::Fund' | abpLocalization}}" class="p-1" severity="success" (onClick)="openFundCard()" />
                 <p-button label="{{'::Delete' | abpLocalization}}" class="p-1" severity="danger" (onClick)="deleteCard($event)" />
                 <p-button label="{{'::Note' | abpLocalization}}" class="p-1" />
             </div>
@@ -65,3 +65,22 @@
 
 <p-toast />
 <p-confirmDialog />
+
+<p-dialog header="{{'::Fund' | abpLocalization}}" [modal]="true" [(visible)]="fundDialogVisible" [style]="{ width: '25rem' }">
+    <div class="card flex flex-wrap gap-3 p-fluid">
+        <div class="flex-auto">
+            <label for="minmaxfraction">{{'::Amount' | abpLocalization}}</label>
+            <p-inputNumber 
+                inputId="minmaxfraction" 
+                mode="decimal" 
+                [minFractionDigits]="2" 
+                [maxFractionDigits]="5"
+                (onInput)="calculateFee()"
+                [(ngModel)]="fundingAmount" /> 
+            <label for="fee">{{'::Fee' | abpLocalization}}: </label>
+            <span> {{ fundingFee }} </span>
+        </div> 
+        <p-button label="{{'::Fund' | abpLocalization}}" class="p-1" severity="success" (onClick)="fundCard()" />
+
+    </div>
+</p-dialog>

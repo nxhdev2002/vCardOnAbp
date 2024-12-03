@@ -6,6 +6,7 @@ export interface CardDto extends EntityDto<string> {
   balance: number;
   cardStatus: CardStatus;
   cardName?: string;
+  binId?: string;
 }
 
 export interface CardSecretDto {

@@ -9,4 +9,5 @@ public class CardDto : EntityDto<Guid>
     public decimal Balance { get; private set; }
     public CardStatus CardStatus { get; private set; }
     public string? CardName { get; private set; }
+    public Guid? BinId { get; private set; }
 }

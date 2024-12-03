@@ -7,6 +7,6 @@ public class CreateCardInputValidator : AbstractValidator<CreateCardInput>
 {
     public CreateCardInputValidator()
     {
-        RuleFor(x => x.Amount).GreaterThanOrEqualTo(0);
+        RuleFor(x => x.Amount).GreaterThanOrEqualTo(VCardOnAbpConsts.MinCreationBalance);
     }
 }

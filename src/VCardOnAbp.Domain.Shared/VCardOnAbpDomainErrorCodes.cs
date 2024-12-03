@@ -8,7 +8,7 @@ public static class VCardOnAbpDomainErrorCodes
     public const string BinNotFound = CardNameSpace + ":10002";
     public const string BinNotActive = CardNameSpace + ":10003";
     public const string CurrencyNotFound = CardNameSpace + ":20004";
-    public const string AmountMustBePositive = CardNameSpace + ":30005";
+    public const string InvalidAmount = CardNameSpace + ":30005";
     public const string InsufficientBalance = CardNameSpace + ":30006";
     public const string InvalidGatewayType = CardNameSpace + ":40001";
     public const string UserNotFound = CardNameSpace + ":50003";

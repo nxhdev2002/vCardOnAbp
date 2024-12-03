@@ -47,7 +47,7 @@ public class CardManager(
         Guid cardId = GuidGenerator.Create();
         Logger.LogInformation($"{nameof(CreateCard)}: User {OwnerId} create card with Id: {cardId}, Amount: {Amount}");
 
-        if (Amount <= 0) throw new BusinessException(VCardOnAbpDomainErrorCodes.AmountMustBePositive);
+        if (Amount <= VCardOnAbpConsts.MinCreationBalance) throw new BusinessException(VCardOnAbpDomainErrorCodes.InvalidAmount);
         IdentityUser? user = await _userManager.FindByIdAsync(OwnerId.ToString());
         if (user == null || !user.IsActive) throw new BusinessException(VCardOnAbpDomainErrorCodes.UserNotFound);
         Bin bin = await (await _binRepo.GetQueryableAsync()).FirstOrDefaultAsync(x => x.Id == BinId) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.BinNotFound);
@@ -90,7 +90,7 @@ public class CardManager(
     public async Task FundCard(Card card, decimal amount)
     {
         if (card == null) throw new BusinessException(VCardOnAbpDomainErrorCodes.CardNotFound);
-        if (amount < 0) throw new BusinessException(VCardOnAbpDomainErrorCodes.AmountMustBePositive)
+        if (amount < VCardOnAbpConsts.MinFundingBalance) throw new BusinessException(VCardOnAbpDomainErrorCodes.InvalidAmount)
                 .WithData(nameof(amount), amount);
 
         Bin bin = await (await _binRepo.GetQueryableAsync()).AsNoTracking().FirstOrDefaultAsync(x => x.Id == card.BinId) ?? throw new BusinessException(VCardOnAbpDomainErrorCodes.BinNotFound);

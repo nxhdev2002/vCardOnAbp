@@ -54,6 +54,7 @@
     "CreationPercentageFee": "Phí phần trăm tạo",
     "FundingFixedFee": "Phí cố định nạp tiền",
     "FundingPercentageFee": "Phí phần trăm nạp tiền",
+    "Fee": "Chi phí",
     "UsdRate": "Tỷ giá USD",
     "SuccessToast": "{0} thành công",
     "FailToast": "{0} thất bại",

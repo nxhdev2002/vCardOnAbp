@@ -38,10 +38,9 @@ public class FundCardJob(
             case Supplier.Vmcardio:
                 return;
             case Supplier.Vcc51:
-                var result = await _vcc51AppService.FundingCard(new Vcc51FundCardInput(
+                await _vcc51AppService.FundingCard(new Vcc51FundCardInput(
                     args.CardId, args.Amount
                 ));
-                if (!result) throw new Exception();
                 break;
             default:
                 return;

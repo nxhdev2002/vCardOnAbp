@@ -29,9 +29,9 @@ public class PaymentMethod : Entity<int>
         decimal minAmount = 0
     )
     {
-        if (fixedFee < 0) throw new BusinessException(VCardOnAbpDomainErrorCodes.AmountMustBePositive).WithData(nameof(fixedFee), fixedFee);
-        if (percentageFee < 0) throw new BusinessException(VCardOnAbpDomainErrorCodes.AmountMustBePositive).WithData(nameof(percentageFee), percentageFee);
-        if (minAmount < 0) throw new BusinessException(VCardOnAbpDomainErrorCodes.AmountMustBePositive).WithData(nameof(minAmount), minAmount);
+        if (fixedFee < 0) throw new BusinessException(VCardOnAbpDomainErrorCodes.InvalidAmount).WithData(nameof(fixedFee), fixedFee);
+        if (percentageFee < 0) throw new BusinessException(VCardOnAbpDomainErrorCodes.InvalidAmount).WithData(nameof(percentageFee), percentageFee);
+        if (minAmount < 0) throw new BusinessException(VCardOnAbpDomainErrorCodes.InvalidAmount).WithData(nameof(minAmount), minAmount);
         if (Enum.IsDefined(typeof(GatewayType), gatewayType) == false) throw new BusinessException(VCardOnAbpDomainErrorCodes.InvalidGatewayType).WithData(nameof(gatewayType), gatewayType);
 
 
