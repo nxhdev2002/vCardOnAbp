@@ -1,4 +1,4 @@
-import { CoreModule, LocalizationModule } from '@abp/ng.core';
+import { CoreModule, provideAbpCore, withOptions } from '@abp/ng.core';
 import { SettingManagementConfigModule } from '@abp/ng.setting-management/config';
 import { ThemeSharedModule } from '@abp/ng.theme.shared';
 import { NgModule } from '@angular/core';
@@ -17,12 +17,18 @@ import { ThemeLeptonXModule } from '@abp/ng.theme.lepton-x';
 import { SideMenuLayoutModule } from '@abp/ng.theme.lepton-x/layouts';
 import { AbpOAuthModule } from '@abp/ng.oauth';
 import localeVi from '@angular/common/locales/vi';
-import { registerLocaleData } from '@angular/common';
+import { CommonModule, registerLocaleData } from '@angular/common';
+import { myDynamicLayouts } from './shared/customlayout';
+import { SharedModule } from './shared/shared.module';
+import { NavItemModule } from './shared/navitem/nav-item/nav-item.module';
 
 registerLocaleData(localeVi, 'vi');
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    SharedModule,
+    CommonModule,
+    NavItemModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -40,7 +46,13 @@ registerLocaleData(localeVi, 'vi');
     SideMenuLayoutModule.forRoot(),
     FeatureManagementModule.forRoot(),
   ],
-  providers: [APP_ROUTE_PROVIDER],
+  providers: [APP_ROUTE_PROVIDER, provideAbpCore(
+    withOptions({
+      dynamicLayouts: myDynamicLayouts,
+      environment,
+      registerLocaleFn: registerLocale(),
+    }),
+  ),],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

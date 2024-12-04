@@ -1,5 +1,6 @@
 import { RoutesService, eLayoutType } from '@abp/ng.core';
 import { APP_INITIALIZER } from '@angular/core';
+import { eCustomLayout } from './shared/customlayout';
 
 export const APP_ROUTE_PROVIDER = [
   { provide: APP_INITIALIZER, useFactory: configureRoutes, deps: [RoutesService], multi: true },
