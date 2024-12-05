@@ -7,7 +7,6 @@ using VCardOnAbp.Statistics.Dtos;
 using Volo.Abp.Domain.Repositories;
 using System.Linq;
 using VCardOnAbp.ApiServices.Vcc51;
-using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
 namespace VCardOnAbp.Statistics;
