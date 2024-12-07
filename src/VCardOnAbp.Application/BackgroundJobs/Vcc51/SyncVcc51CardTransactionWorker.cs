@@ -1,15 +1,18 @@
 ﻿using Hangfire;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using VCardOnAbp.ApiServices.Vcc51;
+using VCardOnAbp.ApiServices.Vcc51.Dtos;
 using VCardOnAbp.Cards;
 using VCardOnAbp.Masters;
 using Volo.Abp.BackgroundWorkers.Hangfire;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.Guids;
 using Volo.Abp.Uow;
 
 namespace VCardOnAbp.BackgroundJobs.Vcc51;
@@ -19,12 +22,13 @@ public class SyncVcc51CardTransactionWorker : HangfireBackgroundWorkerBase
     private readonly IVcc51AppService _vcc51AppService;
     private readonly IRepository<Bin, Guid> _binRepository;
     private readonly IRepository<CardTransaction, Guid> _cardTransRepo;
-
+    private readonly IGuidGenerator _guidGenerator;
     public SyncVcc51CardTransactionWorker(
         ICardRepository cardRepository,
         IVcc51AppService vcc51AppService,
         IRepository<Bin, Guid> binRepository,
-        IRepository<CardTransaction, Guid> cardTransRepo
+        IRepository<CardTransaction, Guid> cardTransRepo,
+        IGuidGenerator guidGenerator
     )
     {
         RecurringJobId = nameof(SyncVcc51CardTransactionWorker);
@@ -34,6 +38,7 @@ public class SyncVcc51CardTransactionWorker : HangfireBackgroundWorkerBase
         _vcc51AppService = vcc51AppService;
         _binRepository = binRepository;
         _cardTransRepo = cardTransRepo;
+        _guidGenerator = guidGenerator;
     }
 
     public async override Task DoWorkAsync(CancellationToken cancellationToken = default)
@@ -71,35 +76,36 @@ public class SyncVcc51CardTransactionWorker : HangfireBackgroundWorkerBase
     {
         Logger.LogInformation($"{nameof(SyncVcc51CardTransactionWorker)}: Syncing card {card.Id} transaction...");
 
-        System.Collections.Generic.List<ApiServices.Vcc51.Dtos.Vcc51CardTransactionDto> transactions = await _vcc51AppService.GetTransaction(card.CardNo);
-        System.Collections.Generic.List<CardTransaction> dbTrans = transactions.Select(t =>
+        List<Vcc51CardTransactionDto> transactions = await _vcc51AppService.GetTransaction(card.CardNo);
+        List<CardTransaction> dbTrans = transactions.Select(t =>
         {
             string[] amount = t.Amount.Split(' ');
             DateTime parsed;
             DateTime.TryParseExact(t.TransactionTime, "yyyy/MM/dd HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None, out parsed);
 
             return new CardTransaction(
+                _guidGenerator.Create(),
                 card.Id,
                 decimal.Parse(amount[0].Replace('.', ',')),
                 amount[1],
                 t.Description,
                 t.Merchant,
                 decimal.Parse(t.AuthorizationAmt.Replace('.', ',')),
-                t.Type == Vcc51Const.TransactionAuthSuccessStatus ? "Authorized" : t.Type,
+                Vcc51Const.TransactionStatuses.GetValueOrDefault(t.Type, t.Type),
                 t.TransactionTime,
                 parsed
             );
         }
         ).ToList();
 
-        System.Collections.Generic.List<CardTransaction> transaction = await _cardTransRepo.GetListAsync(t => t.CardId == card.Id, cancellationToken: cancellationToken);
+        List<CardTransaction> transaction = await _cardTransRepo.GetListAsync(t => t.CardId == card.Id, cancellationToken: cancellationToken);
 
-        System.Collections.Generic.IEnumerable<CardTransaction> result = from vcc51 in dbTrans
-                                                                         join db in transaction
-                                                                         on vcc51.SupplierTranId equals db.SupplierTranId into res
-                                                                         from r in res.DefaultIfEmpty()
-                                                                         where r == null
-                                                                         select vcc51;
+        IEnumerable<CardTransaction> result = from vcc51 in dbTrans
+                                            join db in transaction
+                                            on vcc51.SupplierTranId equals db.SupplierTranId into res
+                                            from r in res.DefaultIfEmpty()
+                                            where r == null
+                                            select vcc51;
 
         await _cardTransRepo.InsertManyAsync(result, true, cancellationToken);
         Logger.LogInformation($"{nameof(SyncVcc51CardTransactionWorker)}: Syncing card {card.Id} transaction done");

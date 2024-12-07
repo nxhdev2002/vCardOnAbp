@@ -21,6 +21,7 @@ public class CardTransaction : CreationAuditedEntity<Guid>
     }
 
     public CardTransaction(
+        Guid id,
         Guid cardId,
         decimal authAmount,
         string? currency,
@@ -30,7 +31,7 @@ public class CardTransaction : CreationAuditedEntity<Guid>
         string? status,
         string? supplierTranId,
         DateTime? authTime = null
-    )
+    ) : base(id)
     {
         CardId = cardId;
         AuthAmount = authAmount;

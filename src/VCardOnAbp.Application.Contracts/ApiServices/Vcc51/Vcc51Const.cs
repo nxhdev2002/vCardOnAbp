@@ -1,4 +1,6 @@
-﻿namespace VCardOnAbp.ApiServices.Vcc51;
+﻿using System.Collections.Generic;
+
+namespace VCardOnAbp.ApiServices.Vcc51;
 public class Vcc51Const
 {
     public const string SERVICE_URL = "/websystem/jcsj/ka_Manage.aspx";
@@ -22,5 +24,11 @@ public class Vcc51Const
     public const string UsedAmountKey = "usedamt";
 
     public const string CardActiveStatus = "已激活";
-    public const string TransactionAuthSuccessStatus = "已授权";
+    public readonly static List<string> FailTransactionStatuses = ["Authorization failed"];
+    public readonly static Dictionary<string, string> TransactionStatuses = new()
+    {
+        { "已授权", "Authorized" },
+        { "已结算", "Settled" },
+        { "授权失败", "Authorization failed" },
+    };
 }
