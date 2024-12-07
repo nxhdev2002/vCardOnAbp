@@ -27,6 +27,8 @@
     "CardPermission:Fund": "Nạp tiền vào thẻ tín dụng",
     "CardNotFound": "Không tìm thấy thẻ tín dụng",
     "Transaction:View": "Xem lịch sử giao dịch",
+    "CardDeletionApprove": "Xác nhận xoá thẻ tín dụng",
+    "CardDeletionReject": "Từ chối xoá thẻ tín dụng",
     "NotFound": "Không tìm thấy {0}",
     "UserFundedTransaction": "Nạp tiền vào thẻ tín dụng {1}",
     "Welcome": "Welcome",

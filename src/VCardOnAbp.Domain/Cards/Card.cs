@@ -32,7 +32,7 @@ public class Card : FullAuditedAggregateRoot<Guid>
     #endregion
 
     private Card() { }
-    public Card(Guid id, string cardNo, Guid binId, Supplier supplierId, string supplierIdentity, CardStatus cardStatus, decimal balance, string cardName, Guid ownerId, string? note) : base(id)
+    public Card(Guid id, string cardNo, Guid binId, Supplier supplierId, string supplierIdentity, CardStatus cardStatus, decimal balance, string cardName, Guid ownerId, string? note = null) : base(id)
     {
         CardNo = cardNo;
         BinId = binId;
@@ -89,6 +89,12 @@ public class Card : FullAuditedAggregateRoot<Guid>
         Cvv = cvv;
         ExpirationTime = exp;
         LastSync = DateTime.UtcNow;
+        return this;
+    }
+
+    public Card ChangeOwner(Guid ownerId)
+    {
+        OwnerId = ownerId;
         return this;
     }
 }

@@ -6,6 +6,7 @@ using VCardOnAbp.Cards;
 using VCardOnAbp.Cards.Dto;
 using VCardOnAbp.Currencies;
 using VCardOnAbp.Currencies.Dto;
+using VCardOnAbp.Management.Cards.Dto;
 using VCardOnAbp.Masters;
 using VCardOnAbp.Payments;
 using VCardOnAbp.Payments.Dtos;
@@ -21,6 +22,7 @@ public class VCardOnAbpApplicationAutoMapperProfile : Profile
          * Alternatively, you can split your mapping configurations
          * into multiple profile classes for a better organization. */
         CreateMap<Card, CardDto>().ReverseMap();
+        CreateMap<Card, CardManagementOutputDto>().ReverseMap();
         CreateMap<Card, AddCardInput>().ReverseMap();
         CreateMap<Bin, BinDto>().ReverseMap();
         CreateMap<Currency, CurrencyDto>().ReverseMap();
