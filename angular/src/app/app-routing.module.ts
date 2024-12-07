@@ -63,6 +63,15 @@ const routes: Routes = [
     }
   },
   {
+    path: 'admin/cards',
+    pathMatch: 'full',
+    loadChildren: () => import('./admin/card/card-management.module').then(m => m.CardManagementModule),
+    canActivate: [permissionGuard],
+    data: {
+      requiredPolicy: 'Manager.Manage'
+    }
+  },
+  {
     path: 'settings',
     pathMatch: 'full',
     loadChildren: () => import('./settings/setting.module').then(m => m.SettingModule),

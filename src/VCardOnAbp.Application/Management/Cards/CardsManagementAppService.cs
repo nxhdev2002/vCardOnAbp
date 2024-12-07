@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,7 @@ using VCardOnAbp.Cards;
 using VCardOnAbp.Cards.Dto;
 using VCardOnAbp.Management.Cards.Dto;
 using VCardOnAbp.Models;
+using VCardOnAbp.Permissions;
 using VCardOnAbp.Security;
 using VCardOnAbp.Transactions;
 using Volo.Abp;
@@ -16,6 +18,7 @@ using Volo.Abp.Identity;
 
 namespace VCardOnAbp.Management.Cards;
 
+[Authorize(VCardOnAbpPermissions.Manager)]
 public class CardsManagementAppService(
   ICardRepository cardRepository,
   IRepository<IdentityUser> userRepository,
@@ -26,7 +29,7 @@ public class CardsManagementAppService(
     private readonly IRepository<IdentityUser> _userRepository = userRepository;
     private readonly IRepository<UserTransaction> _transRepository = transRepository;
 
-    public async Task<PagedResultDto<CardManagementOutputDto>> GetListAsync(GetCardInput input)
+    public async Task<PagedResultDto<CardManagementOutputDto>> GetListAsync(GetCardManagementInput input)
     {
         input.SanitizeInput();
 

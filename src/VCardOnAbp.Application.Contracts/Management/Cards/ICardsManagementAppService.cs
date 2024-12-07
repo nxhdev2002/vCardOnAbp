@@ -9,7 +9,7 @@ using Volo.Abp.Application.Services;
 namespace VCardOnAbp.Management.Cards;
 public interface ICardsManagementAppService : IApplicationService
 {
-    Task<PagedResultDto<CardManagementOutputDto>> GetListAsync(GetCardInput input);
+    Task<PagedResultDto<CardManagementOutputDto>> GetListAsync(GetCardManagementInput input);
     Task<ResponseModel> AddCardAsync(AddCardInput input);
     Task<ResponseModel> CardDeletionApproval(Guid id, CardDeletionApprovalInput input);
 }

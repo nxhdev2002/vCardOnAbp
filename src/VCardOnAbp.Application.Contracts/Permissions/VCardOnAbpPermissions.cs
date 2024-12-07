@@ -40,4 +40,8 @@ public static class VCardOnAbpPermissions
     public const string Deposit = PaymentGroup + ".Deposit";
     public const string ViewDepositTransaction = PaymentGroup + ".ViewDepositTransaction";
     public const string ApproveTransaction = PaymentGroup + ".ApproveTransaction";
+
+    // Manager
+    public const string ManagerGroup = "Manager";
+    public const string Manager = ManagerGroup + ".Manage";
 }

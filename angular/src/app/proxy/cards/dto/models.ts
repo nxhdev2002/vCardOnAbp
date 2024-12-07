@@ -1,5 +1,6 @@
 import type { EntityDto, PagedResultRequestDto } from '@abp/ng.core';
 import type { CardStatus } from '../card-status.enum';
+import type { Supplier } from '../supplier.enum';
 
 export interface CardDto extends EntityDto<string> {
   cardNo?: string;
@@ -39,8 +40,24 @@ export interface FundCardInput {
 
 export interface GetCardInput extends PagedResultRequestDto {
   filter?: string;
+  suppliers: Supplier[];
+  binIds: string[];
+  statuses: CardStatus[];
+  balanceFrom?: number;
+  balanceTo?: number;
 }
 
 export interface GetCardTransactionInput extends PagedResultRequestDto {
   filter?: string;
+}
+
+export interface AddCardInput {
+  userId?: string;
+  binId?: string;
+  cardNo?: string;
+  cardName?: string;
+  supplierIdentity?: string;
+  status: CardStatus;
+  balance: number;
+  supplier: Supplier;
 }

@@ -3,13 +3,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CardsService, CardStatus } from '@proxy/cards';
 import { CardDto, GetCardInput } from '@proxy/cards/dto';
+import { CardsManagementService } from '@proxy/management/cards';
+import { GetCardManagementInput } from '@proxy/management/cards/dto';
 
 @Component({
-  selector: 'app-card',
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.scss'],
+  selector: 'app-card-management',
+  templateUrl: './card-management.component.html',
+  styleUrls: ['./card-management.component.scss'],
 })
-export class CardComponent implements OnInit {
+export class CardManagementComponent implements OnInit {
   input: GetCardInput;
   loading: boolean = true;
   cards!: CardDto[];
@@ -21,6 +23,7 @@ export class CardComponent implements OnInit {
   constructor(
     private authService: AuthService, 
     private cardService: CardsService,
+    private cardManagementService: CardsManagementService,
     private router: Router
   ) {}
 
@@ -67,16 +70,17 @@ export class CardComponent implements OnInit {
 
   loadCardData(skip: number, take: number) {
     this.loading = true;
-    let payload: GetCardInput = {
+    let payload: GetCardManagementInput = {
       filter: this.filter,
       skipCount: skip,
       maxResultCount: take,
       suppliers: null,
       binIds: null,
       statuses: null,
+      ownerIds: null
     };
 
-    this.cardService.getList(payload).subscribe((res) => {
+    this.cardManagementService.getList(payload).subscribe((res) => {
       this.loading = false;
       this.cards = res.items;
       this.totalRecords = res.totalCount;

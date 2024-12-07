@@ -49,7 +49,7 @@ export class CardsService {
     this.restService.request<any, PagedResultDto<CardDto>>({
       method: 'GET',
       url: '/api/app/cards',
-      params: { filter: input.filter, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
+      params: { filter: input.filter, suppliers: input.suppliers, binIds: input.binIds, statuses: input.statuses, balanceFrom: input.balanceFrom, balanceTo: input.balanceTo, skipCount: input.skipCount, maxResultCount: input.maxResultCount },
     },
     { apiName: this.apiName,...config });
   

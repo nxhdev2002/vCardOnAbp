@@ -1,6 +1,6 @@
-import { RoutesService, eLayoutType } from '@abp/ng.core';
+import { ABP, RoutesService, eLayoutType } from '@abp/ng.core';
+import { eThemeSharedRouteNames } from '@abp/ng.theme.shared';
 import { APP_INITIALIZER } from '@angular/core';
-import { eCustomLayout } from './shared/customlayout';
 
 export const APP_ROUTE_PROVIDER = [
   { provide: APP_INITIALIZER, useFactory: configureRoutes, deps: [RoutesService], multi: true },
@@ -62,6 +62,16 @@ function configureRoutes(routes: RoutesService) {
         iconClass: 'fa fa-wrench',
         order: 4,
         requiredPolicy: 'Payment.View',
+        layout: eLayoutType.application,
+      },
+      // Admin
+      {
+        path: '/admin/cards',
+        name: '::Card',
+        iconClass: 'pi pi-credit-card',
+        order: 0,
+        requiredPolicy: 'Card.View',
+        parentName: eThemeSharedRouteNames.Administration,
         layout: eLayoutType.application,
       },
     ]);
