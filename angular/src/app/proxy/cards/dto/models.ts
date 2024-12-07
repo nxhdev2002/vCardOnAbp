@@ -1,5 +1,6 @@
 import type { EntityDto, PagedResultRequestDto } from '@abp/ng.core';
 import type { CardStatus } from '../card-status.enum';
+import type { CardRowAction } from './card-row-action.enum';
 import type { Supplier } from '../supplier.enum';
 
 export interface CardDto extends EntityDto<string> {
@@ -8,6 +9,7 @@ export interface CardDto extends EntityDto<string> {
   cardStatus: CardStatus;
   cardName?: string;
   binId?: string;
+  rowActions: CardRowAction[];
 }
 
 export interface CardSecretDto {

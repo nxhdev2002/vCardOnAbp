@@ -54,7 +54,8 @@ button {
 
 .confirmation { z-index: 9999!important; }
 
-.p-tabmenu-nav a { text-decoration: none !important; }
+a { text-decoration: none !important; }
+ul { padding-left: unset;}
 
 .p-component-overlay { background-color: rgb(255 255 255 / 40%) }
 

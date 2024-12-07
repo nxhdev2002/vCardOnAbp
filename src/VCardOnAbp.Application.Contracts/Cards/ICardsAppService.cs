@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using VCardOnAbp.Cards.Dto;
 using VCardOnAbp.Models;
@@ -16,4 +17,5 @@ public interface ICardsAppService : IApplicationService
     Task<ResponseModel> FundAsync(Guid id, FundCardInput input);
     Task DeleteAsync(Guid id);
     Task<CardSecretDto> GetSecretAsync(Guid id);
+    Task BuildCardRowActions(CardDto card);
 }

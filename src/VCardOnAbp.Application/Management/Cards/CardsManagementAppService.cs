@@ -22,12 +22,14 @@ namespace VCardOnAbp.Management.Cards;
 public class CardsManagementAppService(
   ICardRepository cardRepository,
   IRepository<IdentityUser> userRepository,
-  IRepository<UserTransaction> transRepository
+  IRepository<UserTransaction> transRepository,
+  ICardsAppService cardsAppService
 ) : VCardOnAbpAppService, ICardsManagementAppService
 {
     private readonly ICardRepository _cardRepository = cardRepository;
     private readonly IRepository<IdentityUser> _userRepository = userRepository;
     private readonly IRepository<UserTransaction> _transRepository = transRepository;
+    private readonly ICardsAppService _cardsAppService = cardsAppService;
 
     public async Task<PagedResultDto<CardManagementOutputDto>> GetListAsync(GetCardManagementInput input)
     {
@@ -56,7 +58,10 @@ public class CardsManagementAppService(
             .Select(x => new { x.Id, x.Name })
             .ToDictionary(x => x.Id, x => x.Name);
 
-        result.ForEach(x => x.OwnerName = ownerNames[x.OwnerId]);
+        result.ForEach(x => {
+            x.OwnerName = ownerNames[x.OwnerId];
+            _cardsAppService.BuildCardRowActions(x);
+        });
 
         return new PagedResultDto<CardManagementOutputDto>(
             await query.CountAsync(),

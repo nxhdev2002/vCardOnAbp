@@ -1,33 +1,38 @@
-import { AuthService } from '@abp/ng.core';
-import { Component, OnInit } from '@angular/core';
+import { AuthService, LocalizationService } from '@abp/ng.core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { CardsService, CardStatus } from '@proxy/cards';
-import { CardDto, GetCardInput } from '@proxy/cards/dto';
+import { CardStatus } from '@proxy/cards';
+import { CardDto, CardRowAction, GetCardInput } from '@proxy/cards/dto';
 import { CardsManagementService } from '@proxy/management/cards';
 import { GetCardManagementInput } from '@proxy/management/cards/dto';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-card-management',
   templateUrl: './card-management.component.html',
-  styleUrls: ['./card-management.component.scss'],
+  styleUrls: ['./card-management.component.css'],
 })
 export class CardManagementComponent implements OnInit {
+  @ViewChild('menu1') menu1: any;
+
   input: GetCardInput;
   loading: boolean = true;
   cards!: CardDto[];
   totalRecords: number = 10;
+  rowActionEnum = CardRowAction;
 
   filter: string;
-  
+  items: MenuItem[] | undefined;
   dataViewIdName: string = 'data-view';
   constructor(
     private authService: AuthService, 
-    private cardService: CardsService,
     private cardManagementService: CardsManagementService,
+    private localizeService: LocalizationService,
     private router: Router
   ) {}
 
   ngOnInit() {
+
   }
 
   login() {
@@ -36,28 +41,6 @@ export class CardManagementComponent implements OnInit {
 
   clear(table: any) {
     table.clear();
-  }
-
-  viewCardSecret(card: CardDto) {
-    let exp = document.getElementById(`${card.id}-exp`);
-    let cvv = document.getElementById(`${card.id}-cvv`);
-
-    if (exp.getAttribute(this.dataViewIdName) === 'false') {
-        this.cardService.getSecret(card.id).subscribe((res) => {
-        
-            exp.innerText = res.expirationTime;
-            cvv.innerText = res.cvv;
-    
-            exp.setAttribute(this.dataViewIdName, 'true');
-            cvv.setAttribute(this.dataViewIdName, 'true');
-        });
-    } else {
-        exp.innerText = "** / **";
-        cvv.innerText = "***";
-
-        exp.setAttribute(this.dataViewIdName, 'false');
-        cvv.setAttribute(this.dataViewIdName, 'false');
-    }
   }
 
   viewCardDetails(card: CardDto) {
@@ -87,28 +70,57 @@ export class CardManagementComponent implements OnInit {
     });
   }
   
-  isAllowViewDetail(card: CardDto) {
-    return card.cardStatus == CardStatus.Active;
-  }
-
-  isAllowViewSecret(card: CardDto) {
-    return card.cardStatus == CardStatus.Active;
-  }
 
   getCardStatus(cardStatus: CardStatus) {
     switch (cardStatus) {
       case CardStatus.Active:
-        return ['Active', 'success'];
+        return [this.localizeService.instant('::CardStatus:Active'), 'success'];
       case CardStatus.Inactive:
-        return ['Inactive', 'danger'];
+        return [this.localizeService.instant('::CardStatus:Inactive'), 'danger'];
       case CardStatus.Pending:
-        return ['Pending', 'info'];
+        return [this.localizeService.instant('::CardStatus:Pending'), 'info'];
       case CardStatus.Lock:
-        return ['Lock', 'warning'];
+        return [this.localizeService.instant('::CardStatus:Lock'), 'warning'];
       case CardStatus.PendingDelete:
-        return ['Pending Delete', 'warning'];
+        return [this.localizeService.instant('::CardStatus:PendingDelete'), 'warning'];
       default:
-        return ['Unknown', 'contrast'];
+        return [this.localizeService.instant('::CardStatus:Unknown'), 'contrast'];
     }
   }
+
+  renderRowActions(card: CardDto, event) {
+    // check if rowAction include 
+    this.items = [];
+    let rowActions = [];
+    let rowManageActions = [];
+
+    if (card.rowActions.includes(this.rowActionEnum.View)) rowActions.push({ label: this.localizeService.instant('::View'), icon: 'pi pi-eye' });
+    if (card.rowActions.includes(this.rowActionEnum.Fund)) rowActions.push({ label: this.localizeService.instant('::Fund'), icon: 'pi pi-wallet' });
+    if (card.rowActions.includes(this.rowActionEnum.Delete)) rowActions.push({ label: this.localizeService.instant('::Delete'), icon: 'pi pi-trash' });
+    if (card.rowActions.includes(this.rowActionEnum.Refresh)) rowActions.push({ label: this.localizeService.instant('::Refresh'), icon: 'pi pi-sync' });
+    if (card.rowActions.includes(this.rowActionEnum.Note)) rowActions.push({ label: this.localizeService.instant('::Note'), icon: 'pi pi-pen-to-square' });
+
+    if (card.rowActions.includes(this.rowActionEnum.ApproveDelete)) rowManageActions.push({ label: this.localizeService.instant('::CardDeletionApprove'), icon: 'pi pi-check' });
+    if (card.rowActions.includes(this.rowActionEnum.RejectDelete)) rowManageActions.push({ label: this.localizeService.instant('::CardDeletionReject'), icon: 'pi pi-times' });
+
+
+    if (rowActions.length > 0)
+      this.items.push({
+        label: 'Menu',
+        items: rowActions
+      });
+    
+    if (rowManageActions.length > 0)
+      this.items.push({
+        label: 'Manage',
+        items: rowManageActions
+    });
+    
+    this.menu1.show(event);
+  }
+
+  isDisableMenu(card: CardDto) {
+    return card.rowActions.length === 0;
+  }
 }
+ 

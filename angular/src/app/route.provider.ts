@@ -67,7 +67,7 @@ function configureRoutes(routes: RoutesService) {
       // Admin
       {
         path: '/admin/cards',
-        name: '::Card',
+        name: '::AdminCard',
         iconClass: 'pi pi-credit-card',
         order: 0,
         requiredPolicy: 'Card.View',

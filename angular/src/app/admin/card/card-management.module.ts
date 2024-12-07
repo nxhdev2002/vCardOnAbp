@@ -9,9 +9,10 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   declarations: [CardManagementComponent],
-  imports: [SharedModule, CardManagementRoutingModule, PageModule, TableModule, InputTextModule, InputIconModule, CommonModule, ButtonModule, TagModule],
+  imports: [SharedModule, CardManagementRoutingModule, PageModule, TableModule, InputTextModule, InputIconModule, CommonModule, ButtonModule, TagModule, MenuModule],
 })
 export class CardManagementModule {}

@@ -25,7 +25,8 @@ public class CardsAppService(
     ICardRepository cardRepository,
     IRepository<CardTransaction, Guid> cardTransactionRepository,
     IRepository<UserTransaction, Guid> userTransactionRepository,
-    IDistributedCache<string> distributedCache
+    IDistributedCache<string> distributedCache,
+    IAuthorizationService authorizationService
 ) : VCardOnAbpAppService, ICardsAppService
 {
     private readonly CardManager _cardManager = cardManager;
@@ -34,6 +35,7 @@ public class CardsAppService(
     private readonly IBackgroundJobManager _backgroundJobManager = backgroundJobManager;
     private readonly IRepository<UserTransaction, Guid> _userTransaction = userTransactionRepository;
     private readonly IDistributedCache<string> _distributedCache = distributedCache;
+    private readonly IAuthorizationService _authorizationService = authorizationService;
 
     private const string DistributedLockValue = "1";
 
@@ -191,6 +193,30 @@ public class CardsAppService(
     {
         (string cvv, string exp) = await _cardManager.ViewCardSecret(id, CurrentUser.Id!.Value);
         return new CardSecretDto(cvv, exp);
+    }
+
+
+
+    [RemoteService(false)]
+    public async Task BuildCardRowActions(CardDto card)
+    {
+        card.RowActions.Add(CardRowAction.Note);
+        if (await _authorizationService.IsGrantedAsync(VCardOnAbpPermissions.Manager))
+        {
+            if (card.CardStatus == CardStatus.PendingDelete)
+            {
+                card.RowActions.Add(CardRowAction.ApproveDelete);
+                card.RowActions.Add(CardRowAction.RejectDelete);
+            }
+        }
+
+        if (card.CardStatus == CardStatus.Active)
+        {
+            card.RowActions.Add(CardRowAction.Refresh);
+            card.RowActions.Add(CardRowAction.Fund);
+            card.RowActions.Add(CardRowAction.Delete);
+            card.RowActions.Add(CardRowAction.View);
+        }
     }
 
 }

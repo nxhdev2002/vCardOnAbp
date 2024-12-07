@@ -29,6 +29,7 @@
   <ng-template pTemplate="header">
       <tr>
           <th style="width:5%">{{ '::Id' | abpLocalization }}</th>
+          <th style="width:10%">{{ '::Action' | abpLocalization }}</th>
           <th style="width:15%">{{ '::Owner' | abpLocalization }}</th>
           <th style="width:15%">{{ '::CardNumber' | abpLocalization }}</th>
           <th style="width:10%">{{ '::ExpirationTime' | abpLocalization }}</th>
@@ -36,12 +37,14 @@
           <th style="width:10%">{{ '::Balance' | abpLocalization }}</th>
           <th style="width:10%">{{ '::Status' | abpLocalization }}</th>
           <th style="width:15%">{{ '::Note' | abpLocalization }}</th>
-          <th style="width:20%">{{ '::Action' | abpLocalization }}</th>
       </tr>
   </ng-template>
   <ng-template pTemplate="body" let-card let-rowIndex="rowIndex" >
       <tr>
             <td>{{rowIndex + 1}}</td>
+            <td>
+                <p-button (onClick)="renderRowActions(card, $event);" icon="pi pi-ellipsis-v" [text]="true" [disabled]="isDisableMenu(card)" />
+            </td>
             <td data-view="false">
                 {{ card.cardName }}
             </td>
@@ -63,23 +66,7 @@
             </td>
             <td>
                 {{ card.note }} 
-            </td>
-            <td>
-                <p-button *ngIf="isAllowViewSecret(card)"
-                    icon="pi pi-eye" 
-                    class="mr-2" 
-                    severity="warning" 
-                    [rounded]="true" 
-                    [outlined]="true" 
-                    (onClick)="viewCardSecret(card)" />            
-                <p-button *ngIf="isAllowViewDetail(card)"
-                    icon="pi pi-info-circle" 
-                    severity="information" 
-                    [rounded]="true" 
-                    [outlined]="true" 
-                    (onClick)="viewCardDetails(card)" />
-            </td>
-            
+            </td> 
       </tr>
   </ng-template>
   <ng-template pTemplate="emptymessage">
@@ -89,3 +76,5 @@
   </ng-template>
   </p-table>
 </div>
+
+<p-menu #menu1 [model]="items" [popup]="true" styleClass="w-full md:w-15rem" />

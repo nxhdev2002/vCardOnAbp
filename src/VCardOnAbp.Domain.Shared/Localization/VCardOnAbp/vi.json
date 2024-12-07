@@ -4,6 +4,7 @@
     "AppName": "VccUS",
     "Menu:Home": "Home",
     "Card": "Thẻ tín dụng",
+    "AdminCard": "Thẻ tín dụng",
     "Card:CreateCard": "Tạo thẻ",
     "Card:00001": "Không tìm thấy thẻ tín dụng",
     "CardNumber": "Số thẻ",
@@ -103,6 +104,15 @@
     "Fund": "Nạp tiền",
     "Show": "Xem",
     "Hide": "Ẩn",
+    "View": "Xem",
+    "Delete": "Xoá",
+    "Refresh": "Làm mới",
+    "CardStatus:Pending": "Đang chờ",
+    "CardStatus:Active": "Hoạt động",
+    "CardStatus:Inactive": "Ngừng hoạt động",
+    "CardStatus:Lock": "Khoá",
+    "CardStatus:PendingDelete": "Chờ xoá",
+    "CardStatus:Unknown": "Không rõ",
     "QRCodeSetupTutorial": "Vui lòng sử dụng một ứng dụng xác thực 2 yếu tố (Google Authenticator, Authy, ...) và quét mã QR trên. Hoặc copy đoạn văn bản phía dưới."
   }
 }

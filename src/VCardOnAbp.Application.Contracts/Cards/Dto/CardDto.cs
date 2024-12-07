@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Volo.Abp.Application.Dtos;
 
 namespace VCardOnAbp.Cards.Dto;
@@ -10,4 +11,5 @@ public class CardDto : EntityDto<Guid>
     public CardStatus CardStatus { get; private set; }
     public string? CardName { get; private set; }
     public Guid? BinId { get; private set; }
+    public List<CardRowAction> RowActions { get; set; } = [];
 }
