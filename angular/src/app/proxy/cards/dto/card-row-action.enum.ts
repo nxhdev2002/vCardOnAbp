@@ -8,6 +8,7 @@ export enum CardRowAction {
   RejectDelete = 4,
   Refresh = 5,
   Note = 6,
+  CancelDelete = 7,
 }
 
 export const cardRowActionOptions = mapEnumToOptions(CardRowAction);

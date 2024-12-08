@@ -16,6 +16,7 @@ public class Card : FullAuditedAggregateRoot<Guid>
     [MaxLength(500)]
     public string SupplierIdentity { get; private set; }
     public CardStatus CardStatus { get; private set; } = CardStatus.Active;
+    public CardStatus? CardOldStatus { get; private set; }
     public DateTime? LastView { get; private set; }
     [MaxLength(50)]
     public string CardName { get; private set; }
@@ -47,9 +48,9 @@ public class Card : FullAuditedAggregateRoot<Guid>
 
     public Card ChangeStatus(CardStatus cardStatus)
     {
-        CardStatus previous = CardStatus;
+        CardOldStatus = CardStatus;
         CardStatus = cardStatus;
-        AddLocalEvent(new CardStatusChangedEvent(this, previous, cardStatus));
+        AddLocalEvent(new CardStatusChangedEvent(this, CardOldStatus.Value, cardStatus));
         return this;
     }
 
@@ -95,6 +96,12 @@ public class Card : FullAuditedAggregateRoot<Guid>
     public Card ChangeOwner(Guid ownerId)
     {
         OwnerId = ownerId;
+        return this;
+    }
+
+    public Card SetNote(string note)
+    {
+        Note = note;
         return this;
     }
 }

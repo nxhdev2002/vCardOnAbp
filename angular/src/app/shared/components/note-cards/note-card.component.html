@@ -1,0 +1,18 @@
+<p-dialog 
+  *ngIf="visible"
+  #notecard
+    header="{{'::Note' | abpLocalization}}" 
+    [(visible)]="visible" 
+    [modal]="true" 
+    [style]="{ width: '50rem' }">
+    <div class="card flex flex-wrap gap-3 p-fluid">
+      <textarea 
+        rows="5"
+        cols="30" 
+        pInputTextarea 
+        [(ngModel)]="noteValue">
+      </textarea>
+      <p-button label="{{'::Save' | abpLocalization}}" class="p-1" severity="success" (onClick)="save()" />
+
+    </div>
+</p-dialog>

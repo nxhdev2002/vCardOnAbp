@@ -124,7 +124,7 @@ export class CardDetailsComponent implements OnInit {
     }
     this.cardService.fund(this.cardId, payload).subscribe((res) => {
       this.loading = false;
-      if (res) {
+      if (res.success) {
         this.fundDialogVisible = false;
         this.toasterService.success(res.message);
       } else {

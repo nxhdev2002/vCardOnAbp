@@ -10,9 +10,32 @@ import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { MenuModule } from 'primeng/menu';
+import { DialogModule } from 'primeng/dialog';
+import { FundCardModalComponent } from 'src/app/shared/components/fund-cards/fund-card.component';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { NoteCardModalComponent } from 'src/app/shared/components/note-cards/note-card.component';
 
 @NgModule({
-  declarations: [CardManagementComponent],
-  imports: [SharedModule, CardManagementRoutingModule, PageModule, TableModule, InputTextModule, InputIconModule, CommonModule, ButtonModule, TagModule, MenuModule],
+  declarations: [
+    CardManagementComponent,
+    FundCardModalComponent,
+    NoteCardModalComponent
+  ],
+  imports: [
+    SharedModule,
+    InputTextareaModule,
+    InputNumberModule,
+    DialogModule,
+    CardManagementRoutingModule,
+    PageModule,
+    TableModule,
+    InputTextModule,
+    InputIconModule,
+    CommonModule,
+    ButtonModule,
+    TagModule,
+    MenuModule
+  ],
 })
 export class CardManagementModule {}

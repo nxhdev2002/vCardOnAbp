@@ -53,6 +53,10 @@ export interface GetCardTransactionInput extends PagedResultRequestDto {
   filter?: string;
 }
 
+export interface NoteCardInput {
+  value?: string;
+}
+
 export interface AddCardInput {
   userId?: string;
   binId?: string;

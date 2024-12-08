@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VCardOnAbp.ApiServices.Vcc51;
 using VCardOnAbp.BackgroundJobs.Dtos;
 using VCardOnAbp.Cards.Dto;
 using VCardOnAbp.Models;
@@ -26,7 +27,8 @@ public class CardsAppService(
     IRepository<CardTransaction, Guid> cardTransactionRepository,
     IRepository<UserTransaction, Guid> userTransactionRepository,
     IDistributedCache<string> distributedCache,
-    IAuthorizationService authorizationService
+    IAuthorizationService authorizationService,
+    IVcc51AppService vcc51AppService
 ) : VCardOnAbpAppService, ICardsAppService
 {
     private readonly CardManager _cardManager = cardManager;
@@ -36,6 +38,7 @@ public class CardsAppService(
     private readonly IRepository<UserTransaction, Guid> _userTransaction = userTransactionRepository;
     private readonly IDistributedCache<string> _distributedCache = distributedCache;
     private readonly IAuthorizationService _authorizationService = authorizationService;
+    private readonly IVcc51AppService _vcc51AppService = vcc51AppService;
 
     private const string DistributedLockValue = "1";
 
@@ -196,17 +199,17 @@ public class CardsAppService(
     }
 
 
-
     [RemoteService(false)]
     public async Task BuildCardRowActions(CardDto card)
     {
-        card.RowActions.Add(CardRowAction.Note);
+        if (card.CardStatus != CardStatus.Pending) card.RowActions.Add(CardRowAction.Note);
         if (await _authorizationService.IsGrantedAsync(VCardOnAbpPermissions.Manager))
         {
             if (card.CardStatus == CardStatus.PendingDelete)
             {
                 card.RowActions.Add(CardRowAction.ApproveDelete);
                 card.RowActions.Add(CardRowAction.RejectDelete);
+                card.RowActions.Add(CardRowAction.CancelDelete);
             }
         }
 
@@ -219,4 +222,40 @@ public class CardsAppService(
         }
     }
 
+    [Authorize(VCardOnAbpPermissions.ViewCard)]
+    public async Task<ResponseModel> RefreshCard(Guid id)
+    {
+        var card = await _cardManager.GetCard(id, CurrentUser.Id!.Value);
+        card.SetLastView(DateTime.UtcNow);
+
+        return ResponseModel.SuccessResponse(L["RefreshCardSuccess_PleaseWait5MinutesToApply"]);
+    }
+
+    [Authorize(VCardOnAbpPermissions.DeleteCard)]
+    public async Task<ResponseModel> CancelDelete(Guid id)
+    {
+        var card = await (await _cardRepository.GetQueryableAsync())
+            .Where(x => x.OwnerId == CurrentUser.Id!.Value)
+            .Where(x => x.CardStatus == CardStatus.PendingDelete)
+            .FirstOrDefaultAsync() ?? throw new UserFriendlyException(L["CardNotFound"]);
+
+        card.ChangeStatus(card.CardOldStatus.GetValueOrDefault(CardStatus.Active));
+        return ResponseModel.SuccessResponse(L["SuccessToast", L["CancelDelete"]]);
+    }
+
+    [Authorize(VCardOnAbpPermissions.ViewCard)]
+    public async Task<ResponseModel> Note(Guid id, NoteCardInput input)
+    {
+        input.SanitizeInput();
+
+        if (string.IsNullOrEmpty(input.Value)) return ResponseModel.ErrorResponse(L["PleaseFillValue", L["Note"]]);
+
+        var card = await (await _cardRepository.GetQueryableAsync())
+            .Where(x => x.OwnerId == CurrentUser.Id!.Value)
+            .FirstOrDefaultAsync() ?? throw new UserFriendlyException(L["CardNotFound"]);
+
+        card.SetNote(input.Value);
+
+        return ResponseModel.SuccessResponse(L["SuccessToast", L["Note"]]);
+    }
 }

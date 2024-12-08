@@ -1635,6 +1635,65 @@
                     "type": "System.Void",
                     "typeSimple": "System.Void"
                   }
+                },
+                {
+                  "name": "RefreshCard",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "VCardOnAbp.Models.ResponseModel",
+                    "typeSimple": "VCardOnAbp.Models.ResponseModel"
+                  }
+                },
+                {
+                  "name": "CancelDelete",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "VCardOnAbp.Models.ResponseModel",
+                    "typeSimple": "VCardOnAbp.Models.ResponseModel"
+                  }
+                },
+                {
+                  "name": "Note",
+                  "parametersOnMethod": [
+                    {
+                      "name": "id",
+                      "typeAsString": "System.Guid, System.Private.CoreLib",
+                      "type": "System.Guid",
+                      "typeSimple": "string",
+                      "isOptional": false,
+                      "defaultValue": null
+                    },
+                    {
+                      "name": "input",
+                      "typeAsString": "VCardOnAbp.Cards.Dto.NoteCardInput, VCardOnAbp.Application.Contracts",
+                      "type": "VCardOnAbp.Cards.Dto.NoteCardInput",
+                      "typeSimple": "VCardOnAbp.Cards.Dto.NoteCardInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "VCardOnAbp.Models.ResponseModel",
+                    "typeSimple": "VCardOnAbp.Models.ResponseModel"
+                  }
                 }
               ]
             }
@@ -2043,6 +2102,137 @@
               "returnValue": {
                 "type": "VCardOnAbp.Cards.Dto.CardSecretDto",
                 "typeSimple": "VCardOnAbp.Cards.Dto.CardSecretDto"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "VCardOnAbp.Cards.ICardsAppService"
+            },
+            "RefreshCardById": {
+              "uniqueName": "RefreshCardById",
+              "name": "RefreshCard",
+              "httpMethod": "POST",
+              "url": "api/app/cards/{id}/refresh-card",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "VCardOnAbp.Models.ResponseModel",
+                "typeSimple": "VCardOnAbp.Models.ResponseModel"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "VCardOnAbp.Cards.ICardsAppService"
+            },
+            "CancelDeleteById": {
+              "uniqueName": "CancelDeleteById",
+              "name": "CancelDelete",
+              "httpMethod": "POST",
+              "url": "api/app/cards/{id}/cancel-delete",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "VCardOnAbp.Models.ResponseModel",
+                "typeSimple": "VCardOnAbp.Models.ResponseModel"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "VCardOnAbp.Cards.ICardsAppService"
+            },
+            "NoteByIdAndInput": {
+              "uniqueName": "NoteByIdAndInput",
+              "name": "Note",
+              "httpMethod": "POST",
+              "url": "api/app/cards/{id}/note",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "id",
+                  "typeAsString": "System.Guid, System.Private.CoreLib",
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null
+                },
+                {
+                  "name": "input",
+                  "typeAsString": "VCardOnAbp.Cards.Dto.NoteCardInput, VCardOnAbp.Application.Contracts",
+                  "type": "VCardOnAbp.Cards.Dto.NoteCardInput",
+                  "typeSimple": "VCardOnAbp.Cards.Dto.NoteCardInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "id",
+                  "name": "id",
+                  "jsonName": null,
+                  "type": "System.Guid",
+                  "typeSimple": "string",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": [],
+                  "bindingSourceId": "Path",
+                  "descriptorName": ""
+                },
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "VCardOnAbp.Cards.Dto.NoteCardInput",
+                  "typeSimple": "VCardOnAbp.Cards.Dto.NoteCardInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "VCardOnAbp.Models.ResponseModel",
+                "typeSimple": "VCardOnAbp.Models.ResponseModel"
               },
               "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Cards.ICardsAppService"
@@ -6683,7 +6873,8 @@
         "ApproveDelete",
         "RejectDelete",
         "Refresh",
-        "Note"
+        "Note",
+        "CancelDelete"
       ],
       "enumValues": [
         0,
@@ -6692,7 +6883,8 @@
         3,
         4,
         5,
-        6
+        6,
+        7
       ],
       "genericArguments": null,
       "properties": null
@@ -7015,6 +7207,27 @@
       "properties": [
         {
           "name": "Filter",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
+    "VCardOnAbp.Cards.Dto.NoteCardInput": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Value",
           "jsonName": null,
           "type": "System.String",
           "typeSimple": "string",

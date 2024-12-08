@@ -1,11 +1,14 @@
 import { AuthService, LocalizationService } from '@abp/ng.core';
+import { ToasterService } from '@abp/ng.theme.shared';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { CardStatus } from '@proxy/cards';
+import { CardsService, CardStatus } from '@proxy/cards';
 import { CardDto, CardRowAction, GetCardInput } from '@proxy/cards/dto';
 import { CardsManagementService } from '@proxy/management/cards';
 import { GetCardManagementInput } from '@proxy/management/cards/dto';
 import { MenuItem } from 'primeng/api';
+import { FundCardModalComponent } from 'src/app/shared/components/fund-cards/fund-card.component';
+import { NoteCardModalComponent } from 'src/app/shared/components/note-cards/note-card.component';
 
 @Component({
   selector: 'app-card-management',
@@ -14,6 +17,8 @@ import { MenuItem } from 'primeng/api';
 })
 export class CardManagementComponent implements OnInit {
   @ViewChild('menu1') menu1: any;
+  @ViewChild('fundcard', { static: true }) fundcard: | FundCardModalComponent | undefined;
+  @ViewChild('notecard', { static: true }) notecard: | NoteCardModalComponent | undefined;
 
   input: GetCardInput;
   loading: boolean = true;
@@ -27,6 +32,8 @@ export class CardManagementComponent implements OnInit {
   constructor(
     private authService: AuthService, 
     private cardManagementService: CardsManagementService,
+    private cardService: CardsService,
+    private toasterService: ToasterService,
     private localizeService: LocalizationService,
     private router: Router
   ) {}
@@ -94,11 +101,12 @@ export class CardManagementComponent implements OnInit {
     let rowActions = [];
     let rowManageActions = [];
 
-    if (card.rowActions.includes(this.rowActionEnum.View)) rowActions.push({ label: this.localizeService.instant('::View'), icon: 'pi pi-eye' });
-    if (card.rowActions.includes(this.rowActionEnum.Fund)) rowActions.push({ label: this.localizeService.instant('::Fund'), icon: 'pi pi-wallet' });
+    if (card.rowActions.includes(this.rowActionEnum.View)) rowActions.push({ label: this.localizeService.instant('::View'), icon: 'pi pi-eye', command: () => this.viewCard(card.id) });
+    if (card.rowActions.includes(this.rowActionEnum.Fund)) rowActions.push({ label: this.localizeService.instant('::Fund'), icon: 'pi pi-wallet', command: () => this.fundcard.show(card) });
     if (card.rowActions.includes(this.rowActionEnum.Delete)) rowActions.push({ label: this.localizeService.instant('::Delete'), icon: 'pi pi-trash' });
-    if (card.rowActions.includes(this.rowActionEnum.Refresh)) rowActions.push({ label: this.localizeService.instant('::Refresh'), icon: 'pi pi-sync' });
-    if (card.rowActions.includes(this.rowActionEnum.Note)) rowActions.push({ label: this.localizeService.instant('::Note'), icon: 'pi pi-pen-to-square' });
+    if (card.rowActions.includes(this.rowActionEnum.Refresh)) rowActions.push({ label: this.localizeService.instant('::Refresh'), icon: 'pi pi-sync', command: () => this.refreshCard(card.id) });
+    if (card.rowActions.includes(this.rowActionEnum.Note)) rowActions.push({ label: this.localizeService.instant('::Note'), icon: 'pi pi-pen-to-square', command: () => this.notecard.show(card) });
+    if (card.rowActions.includes(this.rowActionEnum.CancelDelete)) rowActions.push({ label: this.localizeService.instant('::CancelDelete'), icon: 'pi pi-undo', command: () => this.cancelDeleleCard(card.id) });
 
     if (card.rowActions.includes(this.rowActionEnum.ApproveDelete)) rowManageActions.push({ label: this.localizeService.instant('::CardDeletionApprove'), icon: 'pi pi-check' });
     if (card.rowActions.includes(this.rowActionEnum.RejectDelete)) rowManageActions.push({ label: this.localizeService.instant('::CardDeletionReject'), icon: 'pi pi-times' });
@@ -121,6 +129,23 @@ export class CardManagementComponent implements OnInit {
 
   isDisableMenu(card: CardDto) {
     return card.rowActions.length === 0;
+  }
+
+  refreshCard(id: string) {
+    this.cardService.refreshCardById(id).subscribe((res) => {
+      if (res.success) this.toasterService.success(res.message);
+    });
+  }
+
+  viewCard(id: string) {
+    this.router.navigate([`/card/${id}`]);
+  }
+
+  cancelDeleleCard(id: string) {
+    this.cardService.cancelDeleteById(id).subscribe((res) => {
+      if (res.success) this.toasterService.success(res.message);
+      this.loadCardData(0, 10);
+    });
   }
 }
  

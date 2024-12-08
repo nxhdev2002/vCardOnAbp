@@ -18,4 +18,7 @@ public interface ICardsAppService : IApplicationService
     Task DeleteAsync(Guid id);
     Task<CardSecretDto> GetSecretAsync(Guid id);
     Task BuildCardRowActions(CardDto card);
+    Task<ResponseModel> RefreshCard(Guid id);
+    Task<ResponseModel> CancelDelete(Guid id);
+    Task<ResponseModel> Note(Guid id, NoteCardInput input);
 }

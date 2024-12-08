@@ -7,5 +7,6 @@ public enum CardRowAction
     ApproveDelete,
     RejectDelete,
     Refresh,
-    Note
+    Note,
+    CancelDelete,
 }
