@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.IO;
 
 namespace VCardOnAbp.EntityFrameworkCore;
@@ -14,9 +15,9 @@ public class VCardOnAbpDbContextFactory : IDesignTimeDbContextFactory<VCardOnAbp
         IConfigurationRoot configuration = BuildConfiguration();
 
         VCardOnAbpEfCoreEntityExtensionMappings.Configure();
-
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         DbContextOptionsBuilder<VCardOnAbpDbContext> builder = new DbContextOptionsBuilder<VCardOnAbpDbContext>()
-            .UseSqlServer(configuration.GetConnectionString("Default"));
+            .UseNpgsql(configuration.GetConnectionString("Default"));
 
         return new VCardOnAbpDbContext(builder.Options);
     }
