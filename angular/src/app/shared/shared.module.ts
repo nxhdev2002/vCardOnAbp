@@ -3,9 +3,11 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgModule } from '@angular/core';
 import { ThemeSharedModule } from '@abp/ng.theme.shared';
 import { NgxValidateCoreModule } from '@ngx-validate/core';
+import { FundCardModalComponent } from './components/fund-cards/fund-card.component';
+import { NoteCardModalComponent } from './components/note-cards/note-card.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [FundCardModalComponent, NoteCardModalComponent],
   imports: [
     CoreModule,
     ThemeSharedModule,
@@ -16,7 +18,9 @@ import { NgxValidateCoreModule } from '@ngx-validate/core';
     CoreModule,
     ThemeSharedModule,
     NgbDropdownModule,
-    NgxValidateCoreModule
+    NgxValidateCoreModule,
+    FundCardModalComponent,
+    NoteCardModalComponent
   ],
   providers: []
 })

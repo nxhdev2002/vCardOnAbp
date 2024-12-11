@@ -15,7 +15,7 @@ public interface ICardsAppService : IApplicationService
     Task<PagedResultDto<CardTransactionDto>> GetTransactionAsync(Guid id, GetCardTransactionInput input);
     Task<ResponseModel> CreateAsync(CreateCardInput input);
     Task<ResponseModel> FundAsync(Guid id, FundCardInput input);
-    Task DeleteAsync(Guid id);
+    Task<ResponseModel> DeleteAsync(Guid id);
     Task<CardSecretDto> GetSecretAsync(Guid id);
     Task BuildCardRowActions(CardDto card);
     Task<ResponseModel> RefreshCard(Guid id);

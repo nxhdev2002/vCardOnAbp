@@ -29,7 +29,7 @@ export class CardsService {
   
 
   delete = (id: string, config?: Partial<Rest.Config>) =>
-    this.restService.request<any, void>({
+    this.restService.request<any, ResponseModel>({
       method: 'DELETE',
       url: `/api/app/cards/${id}`,
     },

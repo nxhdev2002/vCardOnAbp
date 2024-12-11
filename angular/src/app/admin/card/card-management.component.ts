@@ -103,7 +103,7 @@ export class CardManagementComponent implements OnInit {
 
     if (card.rowActions.includes(this.rowActionEnum.View)) rowActions.push({ label: this.localizeService.instant('::View'), icon: 'pi pi-eye', command: () => this.viewCard(card.id) });
     if (card.rowActions.includes(this.rowActionEnum.Fund)) rowActions.push({ label: this.localizeService.instant('::Fund'), icon: 'pi pi-wallet', command: () => this.fundcard.show(card) });
-    if (card.rowActions.includes(this.rowActionEnum.Delete)) rowActions.push({ label: this.localizeService.instant('::Delete'), icon: 'pi pi-trash' });
+    if (card.rowActions.includes(this.rowActionEnum.Delete)) rowActions.push({ label: this.localizeService.instant('::Delete'), icon: 'pi pi-trash', command: () => this.deleteCard(card.id)  });
     if (card.rowActions.includes(this.rowActionEnum.Refresh)) rowActions.push({ label: this.localizeService.instant('::Refresh'), icon: 'pi pi-sync', command: () => this.refreshCard(card.id) });
     if (card.rowActions.includes(this.rowActionEnum.Note)) rowActions.push({ label: this.localizeService.instant('::Note'), icon: 'pi pi-pen-to-square', command: () => this.notecard.show(card) });
     if (card.rowActions.includes(this.rowActionEnum.CancelDelete)) rowActions.push({ label: this.localizeService.instant('::CancelDelete'), icon: 'pi pi-undo', command: () => this.cancelDeleleCard(card.id) });
@@ -147,5 +147,10 @@ export class CardManagementComponent implements OnInit {
       this.loadCardData(0, 10);
     });
   }
+
+  deleteCard(id: string) {
+    this.cardService.delete(id).subscribe(() => {
+      this.loadCardData(0, 10);
+    });
+  }
 }
- 

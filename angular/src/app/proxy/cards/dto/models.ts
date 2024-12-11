@@ -9,6 +9,7 @@ export interface CardDto extends EntityDto<string> {
   cardStatus: CardStatus;
   cardName?: string;
   binId?: string;
+  note?: string;
   rowActions: CardRowAction[];
 }
 

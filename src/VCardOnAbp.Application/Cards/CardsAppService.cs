@@ -55,9 +55,12 @@ public class CardsAppService(
             .PageBy(input)
             .ToListAsync();
 
+        var result = ObjectMapper.Map<List<Card>, List<CardDto>>(data);
+        result.ForEach(async x => await BuildCardRowActions(x));
+
         return new PagedResultDto<CardDto>(
             totalCount,
-            ObjectMapper.Map<List<Card>, List<CardDto>>(data)
+            result
         );
     }
 
@@ -184,10 +187,12 @@ public class CardsAppService(
 
 
     [Authorize(VCardOnAbpPermissions.DeleteCard)]
-    public virtual async Task DeleteAsync(Guid id)
+    public virtual async Task<ResponseModel> DeleteAsync(Guid id)
     {
         Card card = await _cardManager.GetCard(id, CurrentUser.Id!.Value) ?? throw new UserFriendlyException(L["CardNotFound"]);
         await _cardManager.DeleteAsync(card!);
+
+        return ResponseModel.SuccessResponse(L["SuccessToast", L["RequestForDelete"]]);
     }
 
 
@@ -252,6 +257,7 @@ public class CardsAppService(
 
         var card = await (await _cardRepository.GetQueryableAsync())
             .Where(x => x.OwnerId == CurrentUser.Id!.Value)
+            .Where(x => x.Id == id)
             .FirstOrDefaultAsync() ?? throw new UserFriendlyException(L["CardNotFound"]);
 
         card.SetNote(input.Value);

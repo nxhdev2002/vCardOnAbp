@@ -9,9 +9,27 @@ import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import { DialogModule } from 'primeng/dialog';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   declarations: [CardComponent],
-  imports: [SharedModule, CardRoutingModule, PageModule, TableModule, InputTextModule, InputIconModule, CommonModule, ButtonModule, TagModule],
+  imports: [
+    SharedModule,
+    InputTextareaModule,
+    InputNumberModule,
+    DialogModule,
+    CardRoutingModule,
+    PageModule,
+    TableModule,
+    InputTextModule,
+    InputIconModule,
+    CommonModule,
+    ButtonModule,
+    TagModule,
+    MenuModule
+  ],
 })
 export class CardModule {}

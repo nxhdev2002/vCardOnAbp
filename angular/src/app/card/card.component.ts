@@ -1,8 +1,12 @@
-import { AuthService } from '@abp/ng.core';
-import { Component, OnInit } from '@angular/core';
+import { AuthService, LocalizationService } from '@abp/ng.core';
+import { ToasterService } from '@abp/ng.theme.shared';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CardsService, CardStatus } from '@proxy/cards';
-import { CardDto, GetCardInput } from '@proxy/cards/dto';
+import { CardDto, CardRowAction, GetCardInput } from '@proxy/cards/dto';
+import { MenuItem } from 'primeng/api';
+import { FundCardModalComponent } from '../shared/components/fund-cards/fund-card.component';
+import { NoteCardModalComponent } from '../shared/components/note-cards/note-card.component';
 
 @Component({
   selector: 'app-card',
@@ -10,21 +14,30 @@ import { CardDto, GetCardInput } from '@proxy/cards/dto';
   styleUrls: ['./card.component.scss'],
 })
 export class CardComponent implements OnInit {
+  @ViewChild('menu1') menu1: any;
+  @ViewChild('fundcard', { static: true }) fundcard: | FundCardModalComponent | undefined;
+  @ViewChild('notecard', { static: true }) notecard: | NoteCardModalComponent | undefined;
+  
   input: GetCardInput;
   loading: boolean = true;
   cards!: CardDto[];
   totalRecords: number = 10;
+  rowActionEnum = CardRowAction;
 
   filter: string;
-  
+  items: MenuItem[] | undefined;
+
   dataViewIdName: string = 'data-view';
   constructor(
     private authService: AuthService, 
     private cardService: CardsService,
+    private localizeService: LocalizationService,
+    private toasterService: ToasterService,
     private router: Router
   ) {}
 
   ngOnInit() {
+
   }
 
   login() {
@@ -33,28 +46,6 @@ export class CardComponent implements OnInit {
 
   clear(table: any) {
     table.clear();
-  }
-
-  viewCardSecret(card: CardDto) {
-    let exp = document.getElementById(`${card.id}-exp`);
-    let cvv = document.getElementById(`${card.id}-cvv`);
-
-    if (exp.getAttribute(this.dataViewIdName) === 'false') {
-        this.cardService.getSecret(card.id).subscribe((res) => {
-        
-            exp.innerText = res.expirationTime;
-            cvv.innerText = res.cvv;
-    
-            exp.setAttribute(this.dataViewIdName, 'true');
-            cvv.setAttribute(this.dataViewIdName, 'true');
-        });
-    } else {
-        exp.innerText = "** / **";
-        cvv.innerText = "***";
-
-        exp.setAttribute(this.dataViewIdName, 'false');
-        cvv.setAttribute(this.dataViewIdName, 'false');
-    }
   }
 
   viewCardDetails(card: CardDto) {
@@ -73,7 +64,7 @@ export class CardComponent implements OnInit {
       maxResultCount: take,
       suppliers: null,
       binIds: null,
-      statuses: null,
+      statuses: null
     };
 
     this.cardService.getList(payload).subscribe((res) => {
@@ -83,28 +74,78 @@ export class CardComponent implements OnInit {
     });
   }
   
-  isAllowViewDetail(card: CardDto) {
-    return card.cardStatus == CardStatus.Active;
-  }
-
-  isAllowViewSecret(card: CardDto) {
-    return card.cardStatus == CardStatus.Active;
-  }
 
   getCardStatus(cardStatus: CardStatus) {
     switch (cardStatus) {
       case CardStatus.Active:
-        return ['Active', 'success'];
+        return [this.localizeService.instant('::CardStatus:Active'), 'success'];
       case CardStatus.Inactive:
-        return ['Inactive', 'danger'];
+        return [this.localizeService.instant('::CardStatus:Inactive'), 'danger'];
       case CardStatus.Pending:
-        return ['Pending', 'info'];
+        return [this.localizeService.instant('::CardStatus:Pending'), 'info'];
       case CardStatus.Lock:
-        return ['Lock', 'warning'];
+        return [this.localizeService.instant('::CardStatus:Lock'), 'warning'];
       case CardStatus.PendingDelete:
-        return ['Pending Delete', 'warning'];
+        return [this.localizeService.instant('::CardStatus:PendingDelete'), 'warning'];
       default:
-        return ['Unknown', 'contrast'];
+        return [this.localizeService.instant('::CardStatus:Unknown'), 'contrast'];
     }
+  }
+
+  renderRowActions(card: CardDto, event) {
+    // check if rowAction include 
+    this.items = [];
+    let rowActions = [];
+    let rowManageActions = [];
+
+    if (card.rowActions.includes(this.rowActionEnum.View)) rowActions.push({ label: this.localizeService.instant('::View'), icon: 'pi pi-eye', command: () => this.viewCard(card.id) });
+    if (card.rowActions.includes(this.rowActionEnum.Fund)) rowActions.push({ label: this.localizeService.instant('::Fund'), icon: 'pi pi-wallet', command: () => this.fundcard.show(card) });
+    if (card.rowActions.includes(this.rowActionEnum.Delete)) rowActions.push({ label: this.localizeService.instant('::Delete'), icon: 'pi pi-trash', command: () => this.deleteCard(card.id) });
+    if (card.rowActions.includes(this.rowActionEnum.Refresh)) rowActions.push({ label: this.localizeService.instant('::Refresh'), icon: 'pi pi-sync', command: () => this.refreshCard(card.id) });
+    if (card.rowActions.includes(this.rowActionEnum.Note)) rowActions.push({ label: this.localizeService.instant('::Note'), icon: 'pi pi-pen-to-square', command: () => this.notecard.show(card) });
+    if (card.rowActions.includes(this.rowActionEnum.CancelDelete)) rowActions.push({ label: this.localizeService.instant('::CancelDelete'), icon: 'pi pi-undo', command: () => this.cancelDeleleCard(card.id) });
+
+
+    if (rowActions.length > 0)
+      this.items.push({
+        label: 'Menu',
+        items: rowActions
+      });
+    
+    if (rowManageActions.length > 0)
+      this.items.push({
+        label: 'Manage',
+        items: rowManageActions
+    });
+    
+    this.menu1.show(event);
+  }
+
+  isDisableMenu(card: CardDto) {
+    return card.rowActions.length === 0;
+  }
+
+  refreshCard(id: string) {
+    this.cardService.refreshCardById(id).subscribe((res) => {
+      if (res.success) this.toasterService.success(res.message);
+    });
+  }
+
+  viewCard(id: string) {
+    this.router.navigate([`/card/${id}`]);
+  }
+
+  cancelDeleleCard(id: string) {
+    this.cardService.cancelDeleteById(id).subscribe((res) => {
+      if (res.success) this.toasterService.success(res.message);
+      this.loadCardData(0, 10);
+    });
+  }
+
+  deleteCard(id: string) {
+    this.cardService.delete(id).subscribe((res) => {
+      if (res.success) this.toasterService.success(res.message);
+      this.loadCardData(0, 10);
+    });
   }
 }
