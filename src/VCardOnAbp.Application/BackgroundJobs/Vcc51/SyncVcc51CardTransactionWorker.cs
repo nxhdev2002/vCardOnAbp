@@ -52,7 +52,7 @@ public class SyncVcc51CardTransactionWorker : HangfireBackgroundWorkerBase
             {
                 ApiServices.Vcc51.Dtos.Vcc51Card vcc51Card = await _vcc51AppService.GetCardInfo(card.CardNo);
                 if (string.IsNullOrEmpty(vcc51Card.CardNo)) throw new Exception();
-                card.SetBalance(decimal.Parse(vcc51Card.Amount!.Replace(".", ",")) - card.Balance);
+                card.SetBalance(decimal.Parse(vcc51Card.Amount!) - card.Balance);
                 card.SetSecret(null, vcc51Card.Cvv, vcc51Card.Exp?.Insert(2, "/"));
                 if (vcc51Card.Status != Vcc51Const.CardActiveStatus) card.ChangeStatus(CardStatus.Lock);
                 card.ChangeStatus(CardStatus.Active);
@@ -86,11 +86,11 @@ public class SyncVcc51CardTransactionWorker : HangfireBackgroundWorkerBase
             return new CardTransaction(
                 _guidGenerator.Create(),
                 card.Id,
-                decimal.Parse(amount[0].Replace('.', ',')),
+                decimal.Parse(amount[0]),
                 amount[1],
                 t.Description,
                 t.Merchant,
-                decimal.Parse(t.AuthorizationAmt.Replace('.', ',')),
+                decimal.Parse(t.AuthorizationAmt!),
                 Vcc51Const.TransactionStatuses.GetValueOrDefault(t.Type, t.Type),
                 t.TransactionTime,
                 parsed
