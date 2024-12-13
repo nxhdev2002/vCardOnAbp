@@ -12,10 +12,11 @@ public class VCardOnAbpDbContextFactory : IDesignTimeDbContextFactory<VCardOnAbp
 {
     public VCardOnAbpDbContext CreateDbContext(string[] args)
     {
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+        AppContext.SetSwitch("Npgsql.DisableDateTimeInfinityConversions", true);
         IConfigurationRoot configuration = BuildConfiguration();
 
         VCardOnAbpEfCoreEntityExtensionMappings.Configure();
-        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         DbContextOptionsBuilder<VCardOnAbpDbContext> builder = new DbContextOptionsBuilder<VCardOnAbpDbContext>()
             .UseNpgsql(configuration.GetConnectionString("Default"));
 

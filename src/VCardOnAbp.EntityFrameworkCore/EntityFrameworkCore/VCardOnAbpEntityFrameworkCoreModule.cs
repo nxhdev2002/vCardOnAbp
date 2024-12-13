@@ -32,7 +32,7 @@ public class VCardOnAbpEntityFrameworkCoreModule : AbpModule
 {
     public override void PreConfigureServices(ServiceConfigurationContext context)
     {
-
+        AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         VCardOnAbpEfCoreEntityExtensionMappings.Configure();
     }
 
@@ -47,7 +47,6 @@ public class VCardOnAbpEntityFrameworkCoreModule : AbpModule
 
         Configure<AbpDbContextOptions>(options =>
         {
-            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
             /* The main point to change your DBMS.
              * See also VCardOnAbpDbContextFactory for EF Core tooling. */
             options.UseNpgsql();

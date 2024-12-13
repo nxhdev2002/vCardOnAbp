@@ -1,4 +1,5 @@
 using Hangfire;
+using Hangfire.PostgreSql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Extensions.DependencyInjection;
@@ -245,7 +246,7 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
     {
         context.Services.AddHangfire(config =>
         {
-            config.UseSqlServerStorage(configuration.GetConnectionString("Default"));
+            config.UsePostgreSqlStorage(configuration.GetConnectionString("Default"));
         });
     }
 
@@ -316,5 +317,8 @@ public class VCardOnAbpHttpApiHostModule : AbpModule
         app.UseAbpSerilogEnrichers();
         app.UseHangfireDashboard();
         app.UseConfiguredEndpoints();
+        app.UseHangfireDashboard("/dashboard");
+        app.UseHangfireServer();
+
     }
 }
