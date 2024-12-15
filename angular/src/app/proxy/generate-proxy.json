@@ -2997,6 +2997,23 @@
                   }
                 },
                 {
+                  "name": "CreatePaymentMethodsAsync",
+                  "parametersOnMethod": [
+                    {
+                      "name": "input",
+                      "typeAsString": "VCardOnAbp.Payments.Dtos.CreatePaymentMethodInput, VCardOnAbp.Application.Contracts",
+                      "type": "VCardOnAbp.Payments.Dtos.CreatePaymentMethodInput",
+                      "typeSimple": "VCardOnAbp.Payments.Dtos.CreatePaymentMethodInput",
+                      "isOptional": false,
+                      "defaultValue": null
+                    }
+                  ],
+                  "returnValue": {
+                    "type": "VCardOnAbp.Models.ResponseModel",
+                    "typeSimple": "VCardOnAbp.Models.ResponseModel"
+                  }
+                },
+                {
                   "name": "CreateTransaction",
                   "parametersOnMethod": [
                     {
@@ -3162,6 +3179,43 @@
               "returnValue": {
                 "type": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Payments.Dtos.PaymentMethodDto>",
                 "typeSimple": "Volo.Abp.Application.Dtos.PagedResultDto<VCardOnAbp.Payments.Dtos.PaymentMethodDto>"
+              },
+              "allowAnonymous": false,
+              "implementFrom": "VCardOnAbp.Payments.IPaymentsAppService"
+            },
+            "CreatePaymentMethodsAsyncByInput": {
+              "uniqueName": "CreatePaymentMethodsAsyncByInput",
+              "name": "CreatePaymentMethodsAsync",
+              "httpMethod": "POST",
+              "url": "api/app/payments/payment-methods",
+              "supportedVersions": [],
+              "parametersOnMethod": [
+                {
+                  "name": "input",
+                  "typeAsString": "VCardOnAbp.Payments.Dtos.CreatePaymentMethodInput, VCardOnAbp.Application.Contracts",
+                  "type": "VCardOnAbp.Payments.Dtos.CreatePaymentMethodInput",
+                  "typeSimple": "VCardOnAbp.Payments.Dtos.CreatePaymentMethodInput",
+                  "isOptional": false,
+                  "defaultValue": null
+                }
+              ],
+              "parameters": [
+                {
+                  "nameOnMethod": "input",
+                  "name": "input",
+                  "jsonName": null,
+                  "type": "VCardOnAbp.Payments.Dtos.CreatePaymentMethodInput",
+                  "typeSimple": "VCardOnAbp.Payments.Dtos.CreatePaymentMethodInput",
+                  "isOptional": false,
+                  "defaultValue": null,
+                  "constraintTypes": null,
+                  "bindingSourceId": "Body",
+                  "descriptorName": ""
+                }
+              ],
+              "returnValue": {
+                "type": "VCardOnAbp.Models.ResponseModel",
+                "typeSimple": "VCardOnAbp.Models.ResponseModel"
               },
               "allowAnonymous": false,
               "implementFrom": "VCardOnAbp.Payments.IPaymentsAppService"
@@ -7603,6 +7657,99 @@
         }
       ]
     },
+    "VCardOnAbp.Payments.Dtos.CreatePaymentMethodInput": {
+      "baseType": null,
+      "isEnum": false,
+      "enumNames": null,
+      "enumValues": null,
+      "genericArguments": null,
+      "properties": [
+        {
+          "name": "Name",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "Description",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "FixedFee",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "PercentageFee",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "GatewayType",
+          "jsonName": null,
+          "type": "VCardOnAbp.Payments.GatewayType",
+          "typeSimple": "VCardOnAbp.Payments.GatewayType",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "GuideContent",
+          "jsonName": null,
+          "type": "System.String",
+          "typeSimple": "string",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "MinAmount",
+          "jsonName": null,
+          "type": "System.Decimal",
+          "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        }
+      ]
+    },
     "VCardOnAbp.Payments.Dtos.DepositTransactionDto": {
       "baseType": "Volo.Abp.Application.Dtos.EntityDto<System.Guid>",
       "isEnum": false,
@@ -7683,6 +7830,22 @@
           "regex": null
         }
       ]
+    },
+    "VCardOnAbp.Payments.Dtos.GatewayRowActions": {
+      "baseType": "System.Enum",
+      "isEnum": true,
+      "enumNames": [
+        "Deposit",
+        "Delete",
+        "Edit"
+      ],
+      "enumValues": [
+        0,
+        1,
+        2
+      ],
+      "genericArguments": null,
+      "properties": null
     },
     "VCardOnAbp.Payments.Dtos.GetDepositTransactionInput": {
       "baseType": "Volo.Abp.Application.Dtos.PagedAndSortedResultRequestDto",
@@ -7870,6 +8033,18 @@
           "jsonName": null,
           "type": "System.Decimal",
           "typeSimple": "number",
+          "isRequired": false,
+          "minLength": null,
+          "maxLength": null,
+          "minimum": null,
+          "maximum": null,
+          "regex": null
+        },
+        {
+          "name": "RowActions",
+          "jsonName": null,
+          "type": "[VCardOnAbp.Payments.Dtos.GatewayRowActions]",
+          "typeSimple": "[VCardOnAbp.Payments.Dtos.GatewayRowActions]",
           "isRequired": false,
           "minLength": null,
           "maxLength": null,

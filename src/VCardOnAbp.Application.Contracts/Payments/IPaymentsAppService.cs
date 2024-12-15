@@ -9,6 +9,7 @@ namespace VCardOnAbp.Payments;
 public interface IPaymentsAppService : IApplicationService
 {
     Task<PagedResultDto<PaymentMethodDto>> GetPaymentMethodsAsync(GetPaymentMethodsInput input);
+    Task<ResponseModel> CreatePaymentMethodsAsync(CreatePaymentMethodInput input);
     Task<CreateDepositTransactionDto> CreateTransaction(int id, CreateDepositTransactionInput input);
     Task<PagedResultDto<DepositTransactionDto>> GetDepositTransactions(GetDepositTransactionInput input);
     Task<ResponseModel> ApproveTransaction(Guid id);

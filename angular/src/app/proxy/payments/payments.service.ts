@@ -1,4 +1,4 @@
-import type { CreateDepositTransactionDto, CreateDepositTransactionInput, DepositTransactionDto, GetDepositTransactionInput, GetPaymentMethodsInput, PaymentMethodDto } from './dtos/models';
+import type { CreateDepositTransactionDto, CreateDepositTransactionInput, CreatePaymentMethodInput, DepositTransactionDto, GetDepositTransactionInput, GetPaymentMethodsInput, PaymentMethodDto } from './dtos/models';
 import { RestService, Rest } from '@abp/ng.core';
 import type { PagedResultDto } from '@abp/ng.core';
 import { Injectable } from '@angular/core';
@@ -15,6 +15,15 @@ export class PaymentsService {
     this.restService.request<any, ResponseModel>({
       method: 'POST',
       url: `/api/app/payments/${id}/approve-transaction`,
+    },
+    { apiName: this.apiName,...config });
+  
+
+  createPaymentMethods = (input: CreatePaymentMethodInput, config?: Partial<Rest.Config>) =>
+    this.restService.request<any, ResponseModel>({
+      method: 'POST',
+      url: '/api/app/payments/payment-methods',
+      body: input,
     },
     { apiName: this.apiName,...config });
   

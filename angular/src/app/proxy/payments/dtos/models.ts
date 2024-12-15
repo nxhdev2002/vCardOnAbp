@@ -1,6 +1,7 @@
+import type { GatewayType } from '../gateway-type.enum';
 import type { EntityDto, PagedAndSortedResultRequestDto } from '@abp/ng.core';
 import type { DepositTransactionStatus } from '../deposit-transaction-status.enum';
-import type { GatewayType } from '../gateway-type.enum';
+import type { GatewayRowActions } from './gateway-row-actions.enum';
 
 export interface CreateDepositTransactionDto {
   id?: string;
@@ -9,6 +10,16 @@ export interface CreateDepositTransactionDto {
 export interface CreateDepositTransactionInput {
   signature?: string;
   amount: number;
+}
+
+export interface CreatePaymentMethodInput {
+  name?: string;
+  description?: string;
+  fixedFee: number;
+  percentageFee: number;
+  gatewayType: GatewayType;
+  guideContent?: string;
+  minAmount: number;
 }
 
 export interface DepositTransactionDto extends EntityDto<string> {
@@ -41,4 +52,5 @@ export interface PaymentMethodDto {
   gatewayType: GatewayType;
   guideContent?: string;
   minAmount: number;
+  rowActions: GatewayRowActions[];
 }

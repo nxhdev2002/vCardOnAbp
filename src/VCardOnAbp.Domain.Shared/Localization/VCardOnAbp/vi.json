@@ -117,6 +117,7 @@
     "PleaseFillValue": "Vui lòng nhập giá trị {0}",
     "RequestForDelete": "Yêu cầu xoá thẻ",
     "QRCodeSetupTutorial": "Vui lòng sử dụng một ứng dụng xác thực 2 yếu tố (Google Authenticator, Authy, ...) và quét mã QR trên. Hoặc copy đoạn văn bản phía dưới.",
-    "RefreshCardSuccess_PleaseWait5MinutesToApply": "Làm mới thẻ thành công. Vui lòng chờ khoảng 5 phút để áp dụng thay đổi"
+    "RefreshCardSuccess_PleaseWait5MinutesToApply": "Làm mới thẻ thành công. Vui lòng chờ khoảng 5 phút để áp dụng thay đổi",
+    "DepositGuide": "Hướng dẫn nạp tiền"
   }
 }

@@ -1,10 +1,10 @@
 import { LocalizationService, PermissionService } from '@abp/ng.core';
 import { ToasterService } from '@abp/ng.theme.shared';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GetCardInput } from '@proxy/cards/dto';
 import { CurrencyDto } from '@proxy/currencies/dto';
 import { DepositTransactionStatus, GatewayType, PaymentsService } from '@proxy/payments';
-import { DepositTransactionDto, GetDepositTransactionInput, GetPaymentMethodsInput, PaymentMethodDto } from '@proxy/payments/dtos';
+import { CreatePaymentMethodInput, DepositTransactionDto, GatewayRowActions, GetDepositTransactionInput, GetPaymentMethodsInput, PaymentMethodDto } from '@proxy/payments/dtos';
 import * as crypto from 'crypto-js';
 import { MenuItem, ConfirmationService } from 'primeng/api';
 
@@ -12,9 +12,11 @@ import { MenuItem, ConfirmationService } from 'primeng/api';
   selector: 'app-payment',
   templateUrl: './payment.component.html',
   styleUrls: ['./payment.component.scss'],
-  providers: [ConfirmationService]
+  providers: [ConfirmationService],
 })
 export class PaymentComponent implements OnInit {
+  @ViewChild('menu1') menu1: any;
+  
   input: GetCardInput;
   loading: boolean = true;
   gateways!: PaymentMethodDto[];
@@ -32,8 +34,16 @@ export class PaymentComponent implements OnInit {
   selectedGateway: PaymentMethodDto;
   inputAmount: number;
 
+  addGatewayVisible: boolean = false;
+  gatewayType;
+  selectedGatewayType;
+
+  createPaymentMethodInput: CreatePaymentMethodInput;
   secretKey = Date.now().toString();
   dataViewIdName: string = 'data-view';
+
+  menuItems: MenuItem[] | undefined;
+  rowAction = GatewayRowActions;
   constructor(
     private _paymentService: PaymentsService, 
     private _toasterService: ToasterService,
@@ -52,6 +62,11 @@ export class PaymentComponent implements OnInit {
     this.activeItem = this.items[0];
     this.loadStatuses();
     this.loadGateways();
+    this.gatewayType = [
+      { name: this._localizationService.instant('::GatewayType_0'), code: GatewayType.MANUAL },
+      { name: this._localizationService.instant('::GatewayType_1'), code: GatewayType.AUTOBANK }
+  ];
+    this.createPaymentMethodInput = {} as CreatePaymentMethodInput;
   }
 
   loadStatuses() {
@@ -115,6 +130,10 @@ export class PaymentComponent implements OnInit {
   openAddModal(gateway: PaymentMethodDto) {
     this.visible = true;
     this.selectedGateway = gateway;
+  }
+
+  openAddGatewayModal() {
+    this.addGatewayVisible = true;
   }
 
   getType(gateways: PaymentMethodDto) {
@@ -199,6 +218,18 @@ export class PaymentComponent implements OnInit {
     return transaction?.transactionStatus == DepositTransactionStatus.Pending;
   }
 
+  isAllowAddGateway() {
+    return this._permissionService.getGrantedPolicy('Payment.Add');
+  }
+
+  addGateway() {
+    this._paymentService.createPaymentMethods(this.createPaymentMethodInput as CreatePaymentMethodInput).subscribe((res) => {
+      this._toasterService.success(res.message);
+      this.addGatewayVisible = false;
+      this.loadGateways();
+    });
+  }
+
   processTransaction(id: string, isApprove: boolean = true) {
     var request = isApprove ? this._paymentService.approveTransactionById(id) : this._paymentService.rejectTransactionById(id);
 
@@ -210,4 +241,23 @@ export class PaymentComponent implements OnInit {
     })
   }
 
+   renderRowActions(gateway: PaymentMethodDto, event) {
+      // check if rowAction include 
+      this.menuItems = [];
+      let rowActions = [];
+
+      if (gateway.rowActions.includes(this.rowAction.Deposit)) rowActions.push({ label: this._localizationService.instant('::Deposit'), icon: 'pi pi-dollar', command: () => this.openAddModal(gateway) });
+
+      if (rowActions.length > 0)
+        this.menuItems.push({
+          label: 'Menu',
+          items: rowActions
+        });
+      
+      this.menu1.show(event);
+    }
+
+    isDisableMenu(gateway: PaymentMethodDto) {
+      return gateway.rowActions.length === 0;
+    }
 }

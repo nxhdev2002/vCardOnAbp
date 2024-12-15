@@ -21,13 +21,15 @@ public class PaymentsAppService(
     IRepository<PaymentMethod, int> paymentMethodRepository,
     IRepository<DepositTransaction, Guid> depositTransactionRepository,
     IRepository<UserTransaction, Guid> userTransactionRepository,
-    IdentityUserManager identityUserManager
+    IdentityUserManager identityUserManager,
+    IAuthorizationService authorizationService
 ) : VCardOnAbpAppService, IPaymentsAppService
 {
     private readonly IRepository<PaymentMethod, int> _paymentMethodRepository = paymentMethodRepository;
     private readonly IRepository<DepositTransaction, Guid> _depositTransactionRepository = depositTransactionRepository;
     private readonly IRepository<UserTransaction, Guid> _userTransactionRepository = userTransactionRepository;
     private readonly IdentityUserManager _identityUserManager = identityUserManager;
+    private readonly IAuthorizationService _authorizationService = authorizationService;
 
     [Authorize(VCardOnAbpPermissions.ViewPayment)]
     public virtual async Task<PagedResultDto<PaymentMethodDto>> GetPaymentMethodsAsync(GetPaymentMethodsInput input)
@@ -42,10 +44,23 @@ public class PaymentsAppService(
             .PageBy(input)
             .ToListAsync();
 
+        var result = ObjectMapper.Map<List<PaymentMethod>, List<PaymentMethodDto>>(data);
+
+        result.ForEach(async x => await BuildRowActions(x));
+
         return new PagedResultDto<PaymentMethodDto>(
             totalCount,
-            ObjectMapper.Map<List<PaymentMethod>, List<PaymentMethodDto>>(data)
+            result
         );
+    }
+
+    [Authorize(VCardOnAbpPermissions.AddPayment)]
+    public Task<ResponseModel> CreatePaymentMethodsAsync(CreatePaymentMethodInput input)
+    {
+        input.SanitizeInput();
+        var paymentMethod = ObjectMapper.Map<CreatePaymentMethodInput, PaymentMethod>(input);
+        return _paymentMethodRepository.InsertAsync(paymentMethod)
+            .ContinueWith(_ => ResponseModel.SuccessResponse(L["SuccessToast", L["PaymentMethod"]]));
     }
 
     [Authorize(VCardOnAbpPermissions.Deposit)]
@@ -59,7 +74,6 @@ public class PaymentsAppService(
             await CreateManualTransaction(input, gateway) :
             await CreateAutoTransaction(input, gateway);
     }
-
 
     [Authorize(VCardOnAbpPermissions.ViewDepositTransaction)]
     public async Task<PagedResultDto<DepositTransactionDto>> GetDepositTransactions(GetDepositTransactionInput input)
@@ -168,8 +182,10 @@ public class PaymentsAppService(
         return ObjectMapper.Map<DepositTransaction, CreateDepositTransactionDto>(transaction);
     }
 
-
-
+    private async Task BuildRowActions(PaymentMethodDto paymentMethod)
+    {
+        if (await _authorizationService.IsGrantedAsync(VCardOnAbpPermissions.Deposit)) paymentMethod.RowActions.Add(GatewayRowActions.Deposit);
+    }
 
     #endregion
 }

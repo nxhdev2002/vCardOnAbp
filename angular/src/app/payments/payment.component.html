@@ -11,21 +11,29 @@
         [loading]="loading"
         [tableStyle]="{ 'min-width': '75rem' }"
     >
+    <ng-template pTemplate="caption">
+        <div class="flex">
+            <p-button label="{{ '::Add' | abpLocalization }}" *ngIf="isAllowAddGateway()" (click)="openAddGatewayModal()" />
+        </div>
+    </ng-template>
     <ng-template pTemplate="header">
         <tr>
             <th style="width:5%">{{ '::Id' | abpLocalization }}</th>
+            <th style="width:10%">{{ '::Action' | abpLocalization }}</th>
             <th style="width:20%">{{ '::Name' | abpLocalization }}</th>
             <th style="width:20%">{{ '::Description' | abpLocalization }}</th>
             <th style="width:10%">{{ '::FixedFee' | abpLocalization }}</th>
             <th style="width:10%">{{ '::PercentageFee' | abpLocalization }}</th>
             <th style="width:10%">{{ '::Type' | abpLocalization }}</th>
             <th style="width:10%">{{ '::IsEnabled' | abpLocalization }}</th>
-            <th style="width:20%">{{ '::Action' | abpLocalization }}</th>
         </tr>
     </ng-template>
     <ng-template pTemplate="body" let-gateway let-rowIndex="rowIndex" >
         <tr>
                 <td>{{rowIndex + 1}}</td>
+                <td>
+                    <p-button (onClick)="renderRowActions(gateway, $event);" icon="pi pi-ellipsis-v" [text]="true" [disabled]="isDisableMenu(gateway)" />
+                </td>
                 <td>
                     {{ gateway.name }}
                 </td>
@@ -45,9 +53,6 @@
                 <td>
                     <span class="p-column-title">Status</span>
                     <p-tag [value]="gateway.isEnabled" [severity]="gateway.isEnabled ? 'info' : 'danger'" />
-                </td>
-                <td>
-                    <p-button (onClick)="openAddModal(gateway)" label="{{ '::Deposit' | abpLocalization }}" />     
                 </td>
         </tr>
     </ng-template>
@@ -224,3 +229,68 @@
             </p-button>
             </div>
 </p-dialog>
+
+<p-dialog 
+    header="{{ '::Add' | abpLocalization}}" 
+    [(visible)]="addGatewayVisible" 
+    [modal]="true" 
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }" 
+    [style]="{ width: '50vw' }" 
+    [draggable]="false" 
+    [resizable]="false">
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="firstname" class="font-semibold w-8rem">{{ '::Name' | abpLocalization }}</label>
+            <input pInputText id="firstname" class="flex-auto" autocomplete="off" [(ngModel)]="createPaymentMethodInput.name" />
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="lastname" class="font-semibold w-8rem">{{ '::Description' | abpLocalization }}</label>
+            <input pInputText id="lastname" class="flex-auto" autocomplete="off" [(ngModel)]="createPaymentMethodInput.description" />
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="binSupplier" class="font-semibold w-10rem">{{ '::Supplier' | abpLocalization }}</label>
+            <p-dropdown 
+                [options]="gatewayType" 
+                [(ngModel)]="selectedGatewayType" 
+                optionLabel="name" 
+                placeholder="Select a Supplier" />
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="amount" class="font-semibold w-8rem">{{ '::FixedFee' | abpLocalization }} ($)</label>
+            <p-inputNumber 
+                class="flex-auto"
+                inputId="minmaxfraction" 
+                mode="decimal" 
+                [minFractionDigits]="2" 
+                [maxFractionDigits]="5"
+                [(ngModel)]="createPaymentMethodInput.fixedFee" /> 
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="amount" class="font-semibold w-8rem">{{ '::PercentageFee' | abpLocalization }} (%)</label>
+            <p-inputNumber 
+                class="flex-auto"
+                inputId="percent" 
+                mode="decimal" 
+                [min]="0" 
+                [max]="100"
+                [(ngModel)]="createPaymentMethodInput.percentageFee" /> 
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="amount" class="font-semibold w-8rem">{{ '::MinAmount' | abpLocalization }} ($)</label>
+            <p-inputNumber 
+                class="flex-auto"
+                inputId="minmax" 
+                mode="decimal" 
+                [minFractionDigits]="2" 
+                [maxFractionDigits]="5" 
+                [(ngModel)]="createPaymentMethodInput.minAmount"  /> 
+        </div>
+        <div class="flex align-items-center gap-3 mb-3">
+            <label for="lastname" class="font-semibold w-8rem">{{ '::DepositGuide' | abpLocalization }}</label>
+            <p-editor [style]="{ height: '320px' }" [(ngModel)]="createPaymentMethodInput.guideContent"  />
+        </div>
+        <div class="flex justify-content-end gap-2">
+            <p-button label="Submit" (click)="addGateway()" />
+        </div>
+</p-dialog>
+
+<p-menu #menu1 [model]="menuItems" [popup]="true" styleClass="w-full md:w-15rem" />

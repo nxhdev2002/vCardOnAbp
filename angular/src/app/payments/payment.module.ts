@@ -14,9 +14,12 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { EditorModule } from 'primeng/editor';
+import { DropdownModule } from 'primeng/dropdown';
+import { MenuModule } from 'primeng/menu';
 
 @NgModule({
   declarations: [PaymentComponent],
-  imports: [SharedModule, MultiSelectModule, ConfirmPopupModule, TabMenuModule, InputNumberModule, PaymentRoutingModule, PageModule, TableModule, InputTextModule, InputIconModule, CommonModule, ButtonModule, DialogModule, TagModule],
+  imports: [SharedModule, MenuModule, DropdownModule, EditorModule, MultiSelectModule, ConfirmPopupModule, TabMenuModule, InputNumberModule, PaymentRoutingModule, PageModule, TableModule, InputTextModule, InputIconModule, CommonModule, ButtonModule, DialogModule, TagModule],
 })
 export class PaymentModule {}

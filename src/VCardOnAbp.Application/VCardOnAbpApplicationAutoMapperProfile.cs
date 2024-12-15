@@ -29,6 +29,7 @@ public class VCardOnAbpApplicationAutoMapperProfile : Profile
         CreateMap<Currency, CreateCurrencyDto>().ReverseMap();
         CreateMap<Currency, UpdateCurrencyDto>().ReverseMap();
         CreateMap<PaymentMethod, PaymentMethodDto>().ReverseMap();
+        CreateMap<PaymentMethod, CreatePaymentMethodInput>().ReverseMap();
 
         // Vmcardio
         CreateMap<Card, VmCardDto>()
