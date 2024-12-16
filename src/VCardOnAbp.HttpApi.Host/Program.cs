@@ -4,6 +4,7 @@ using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using System;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace VCardOnAbp;
@@ -14,6 +15,7 @@ public class Program
     {
         try
         {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             Log.Information("Starting VCardOnAbp.HttpApi.Host.");
             WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
             builder.Host
